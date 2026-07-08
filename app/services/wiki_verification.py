@@ -73,9 +73,23 @@ ENTITY_BUCKET_TARGETS = {
 }
 
 
+# These exclusion groups are intentionally broad and conservative. They only
+# reject direct first-hop Wikidata classifications that are clearly impossible
+# for a category family, which keeps the cheap prefilter from replacing the
+# deeper category-specific proof for plausible answers.
+EXCLUDE_PERSON_ANSWERS = {"person", "animal", "place", "creative_work", "organization"}
+EXCLUDE_PLACE_ANSWERS = {"person", "animal", "creative_work", "organization"}
+EXCLUDE_CREATIVE_WORK_ANSWERS = {"person", "animal", "place", "organization"}
+EXCLUDE_ORGANIZATION_ANSWERS = {"person", "animal", "place", "creative_work"}
+EXCLUDE_ANIMAL_ANSWERS = {"person", "place", "creative_work", "organization"}
+EXCLUDE_FOOD_ANSWERS = {"person", "place", "creative_work", "organization"}
+EXCLUDE_ABSTRACT_ANSWERS = {"person", "animal", "place", "creative_work", "organization"}
+
+
 CATEGORY_RULES: dict[str, dict[str, Any]] = {
     "animals": {
         "targets": ANIMAL_BRANCH_TARGETS,
+        "excluded_buckets": EXCLUDE_ANIMAL_ANSWERS,
         "properties": {PARENT_TAXON},
         "max_depth": 24,
         "mode": "taxonomy",
@@ -83,25 +97,28 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "countries": {
         "targets": {"Q3624078", "Q6256"},
+        "excluded_buckets": EXCLUDE_PLACE_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches country or sovereign state",
     },
     "fruits": {
         "targets": {"Q3314483", "Q1364", "Q1470762"},
-        "excluded_buckets": {"person", "animal", "place", "creative_work", "organization"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF, PART_OF, USE},
         "mode": "flat",
         "reason": "structured claims connect to culinary or botanical fruit",
     },
     "us-states": {
         "targets": {"Q35657"},
+        "excluded_buckets": EXCLUDE_PLACE_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches U.S. state",
     },
     "women": {
         "targets": {"Q6581072"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {SEX_OR_GENDER},
         "max_depth": 2,
         "mode": "flat",
@@ -109,6 +126,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "men": {
         "targets": {"Q6581097"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {SEX_OR_GENDER},
         "max_depth": 2,
         "mode": "flat",
@@ -116,48 +134,56 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "foods": {
         "targets": {"Q2095", "Q746549", "Q25403900"},
+        "excluded_buckets": EXCLUDE_FOOD_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF, PART_OF, USE},
         "mode": "flat",
         "reason": "structured claims connect to food, dish, or food ingredient",
     },
     "cities": {
         "targets": {"Q515", "Q1093829", "Q1549591", "Q62049", "Q2154459", "Q15127012"},
+        "excluded_buckets": EXCLUDE_PLACE_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches city or compatible U.S. municipality type",
     },
     "movies": {
         "targets": {"Q11424"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches film",
     },
     "tv-shows": {
         "targets": {"Q5398426", "Q15416"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches television series or television program",
     },
     "video-games": {
         "targets": {"Q7889"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches video game",
     },
     "musicians": {
         "targets": {"Q639669"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "mode": "flat",
         "reason": "occupation path reaches musician",
     },
     "dog-breeds": {
         "targets": {"Q39367"},
+        "excluded_buckets": EXCLUDE_ANIMAL_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches dog breed",
     },
     "pokemon": {
         "targets": {"Q3966183"},
+        "excluded_buckets": EXCLUDE_ANIMAL_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"pokemon species"},
         "mode": "flat",
@@ -165,16 +191,19 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "harry-potter-characters": {
         "category_patterns": {"harry potter characters"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "mode": "flat",
         "reason": "page categories identify a Harry Potter character",
     },
     "lord-of-the-rings-characters": {
         "category_patterns": {"lord of the rings characters", "the lord of the rings characters", "middle earth characters"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "mode": "flat",
         "reason": "page categories identify a Lord of the Rings character",
     },
     "gods-deities": {
         "targets": {"Q178885", "Q22989102"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"deities", "gods"},
         "mode": "flat",
@@ -182,41 +211,48 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "biblical-figures": {
         "category_patterns": {"biblical people", "biblical figures", "people in the hebrew bible", "people in the new testament"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "mode": "flat",
         "reason": "page categories identify a Biblical figure",
     },
     "currencies": {
         "targets": {"Q8142"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches currency",
     },
     "languages": {
         "targets": {"Q34770", "Q20162172", "Q33742"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches language or human language",
     },
     "rivers": {
         "targets": {"Q4022"},
+        "excluded_buckets": EXCLUDE_PLACE_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches river",
     },
     "mountains": {
         "targets": {"Q8502"},
+        "excluded_buckets": EXCLUDE_PLACE_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches mountain",
     },
     "islands": {
         "targets": {"Q23442"},
+        "excluded_buckets": EXCLUDE_PLACE_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches island",
     },
     "us-presidents": {
         "targets": {"Q11696"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {POSITION_HELD},
         "max_depth": 2,
         "mode": "flat",
@@ -224,6 +260,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "world-leaders": {
         "targets": {"Q48352", "Q2285706"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {POSITION_HELD, INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {
             "heads of government",
@@ -237,30 +274,35 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "philosophers": {
         "targets": {"Q4964182"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "mode": "flat",
         "reason": "occupation path reaches philosopher",
     },
     "painters": {
         "targets": {"Q1028181"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "mode": "flat",
         "reason": "occupation path reaches painter",
     },
     "authors": {
         "targets": {"Q482980"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "mode": "flat",
         "reason": "occupation path reaches author",
     },
     "poets": {
         "targets": {"Q49757"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "mode": "flat",
         "reason": "occupation path reaches poet",
     },
     "anime": {
         "targets": {"Q1107"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"anime"},
         "mode": "flat",
@@ -268,12 +310,14 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "actors": {
         "targets": {"Q33999"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "mode": "flat",
         "reason": "occupation path reaches actor",
     },
     "albums": {
         "targets": {"Q482994"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"albums"},
         "mode": "flat",
@@ -281,6 +325,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "athletes": {
         "targets": {"Q2066131"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "category_patterns": {"sportspeople", "athletes", "players"},
         "mode": "flat",
@@ -288,12 +333,14 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "chemical-elements": {
         "targets": {"Q11344"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches chemical element",
     },
     "dinosaurs": {
         "targets": {"Q430"},
+        "excluded_buckets": EXCLUDE_ANIMAL_ANSWERS,
         "properties": {PARENT_TAXON},
         "max_depth": 24,
         "mode": "taxonomy",
@@ -301,6 +348,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "classical-composers": {
         "targets": {"Q36834"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "category_patterns": {"classical composers"},
         "mode": "flat",
@@ -308,6 +356,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "novels": {
         "targets": {"Q8261"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"novels"},
         "mode": "flat",
@@ -315,6 +364,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "nobel-prize-winners": {
         "targets": {"Q7191"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {AWARD_RECEIVED},
         "max_depth": 2,
         "category_patterns": {"nobel laureates", "nobel prize winners"},
@@ -323,6 +373,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "olympic-sports": {
         "targets": {"Q212434"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"olympic sports", "sports at the olympics"},
         "mode": "flat",
@@ -330,6 +381,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "paintings": {
         "targets": {"Q3305213"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"paintings"},
         "mode": "flat",
@@ -337,6 +389,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "scientists": {
         "targets": {"Q901"},
+        "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "category_patterns": {"scientists"},
         "mode": "flat",
@@ -344,6 +397,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "sports-franchises": {
         "targets": {"Q847017"},
+        "excluded_buckets": EXCLUDE_ORGANIZATION_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"sports clubs", "sports teams", "sports franchises"},
         "mode": "flat",
@@ -351,6 +405,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "fonts": {
         "targets": {"Q17451"},
+        "excluded_buckets": EXCLUDE_CREATIVE_WORK_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"typefaces", "fonts"},
         "mode": "flat",
@@ -358,12 +413,14 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "religions": {
         "targets": {"Q9174"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "mode": "flat",
         "reason": "instance/subclass path reaches religion",
     },
     "medical-specialties": {
         "targets": {"Q930752"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"medical specialties", "medical specialities"},
         "mode": "flat",
@@ -371,6 +428,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "units-of-measurement": {
         "targets": {"Q47574"},
+        "excluded_buckets": EXCLUDE_ABSTRACT_ANSWERS,
         "properties": {INSTANCE_OF, SUBCLASS_OF},
         "category_patterns": {"units of measurement"},
         "mode": "flat",
@@ -680,10 +738,10 @@ def resolve_and_cache_entity_for_category(
     """Resolve an uncached answer with a cheap category-specific reject screen.
 
     The normal full Wikidata entity can be very large for people and other
-    heavily-linked subjects. When the active category has broad excluded buckets,
-    first fetch only the direct ``instance of`` claims. If those claims already
-    prove the answer is incompatible, cache that minimal fact and skip the full
-    entity download.
+    heavily-linked subjects. First fetch only the direct ``instance of`` claims.
+    If those claims already prove the answer is incompatible, or directly prove
+    the category target such as ``New Hampshire -> U.S. state``, cache that
+    minimal fact and skip the full entity download.
     """
 
     started_at = time.perf_counter()
@@ -708,14 +766,17 @@ def resolve_and_cache_entity_for_category(
 
     rule = CATEGORY_RULES.get(category["slug"])
     excluded_buckets = set(rule.get("excluded_buckets", set())) if rule else set()
-    if excluded_buckets:
+    properties = set(rule.get("properties", set())) if rule else set()
+    direct_claim_entity = None
+    if excluded_buckets or properties:
         direct_claim_entity = _timed_step(
             "wiki resolve lightweight direct claims",
             lambda: _fetch_wikidata_direct_claims(qid, budget=budget),
             submitted_text=submitted_text,
             qid=qid,
         )
-        if _direct_claim_bucket(_claim_value_qids_from_entity(direct_claim_entity), excluded_buckets):
+        direct_claim_qids = _claim_value_qids_from_entity(direct_claim_entity)
+        if _direct_claim_bucket(direct_claim_qids, excluded_buckets):
             entity_id = _timed_step(
                 "wiki resolve upsert lightweight entity",
                 lambda: _upsert_wiki_entity(db, direct_claim_entity, page, submitted_text, claims_complete=False),
@@ -736,6 +797,28 @@ def resolve_and_cache_entity_for_category(
             )
             resolved = get_entity_by_id(db, entity_id)
             _log_timing("wiki resolve lightweight exclusion total", started_at, submitted_text=submitted_text, qid=qid)
+            return resolved
+        if direct_claim_qids & set(rule.get("targets", set())):
+            entity_id = _timed_step(
+                "wiki resolve upsert lightweight entity",
+                lambda: _upsert_wiki_entity(db, direct_claim_entity, page, submitted_text, claims_complete=False),
+                submitted_text=submitted_text,
+                qid=qid,
+            )
+            _timed_step(
+                "wiki resolve replace lightweight claims",
+                lambda: _replace_wiki_entity_claims(db, entity_id, direct_claim_entity),
+                submitted_text=submitted_text,
+                qid=qid,
+            )
+            _timed_step(
+                "wiki resolve insert lightweight aliases",
+                lambda: _insert_entity_aliases(db, entity_id, direct_claim_entity, page, submitted_text),
+                submitted_text=submitted_text,
+                qid=qid,
+            )
+            resolved = get_entity_by_id(db, entity_id)
+            _log_timing("wiki resolve lightweight direct target total", started_at, submitted_text=submitted_text, qid=qid)
             return resolved
 
     return _resolve_and_cache_entity_from_page(db, submitted_text, page=page, budget=budget, started_at=started_at)

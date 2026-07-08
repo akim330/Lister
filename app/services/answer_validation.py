@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from difflib import SequenceMatcher
+from pathlib import Path
 import sqlite3
 
 from flask import current_app
@@ -30,6 +32,13 @@ class MatchResult:
     normalized_text: str = ""
     matched_from: str | None = None
     message: str = ""
+
+
+# These categories have complete source-of-truth element lists in JSON. Exact
+# JSON names and aliases are still allowed to reach live verification so they can
+# populate the wiki cache, but anything outside the JSON list should fail locally.
+CLOSED_LIST_CATEGORY_SLUGS = {"countries", "us-states"}
+_CLOSED_LIST_TEXT_CACHE: dict[str, set[str]] = {}
 
 
 def _element_row(db: sqlite3.Connection, element_id: int) -> sqlite3.Row | None:
@@ -159,6 +168,14 @@ def match_answer(db: sqlite3.Connection, category_id: int, submitted_text: str) 
                 matched_from=normalized,
             )
 
+    closed_list_invalid_message = _closed_list_invalid_message(category["slug"], normalized)
+    if closed_list_invalid_message:
+        return MatchResult(
+            status="invalid",
+            normalized_text=normalized,
+            message=closed_list_invalid_message,
+        )
+
     threshold = _threshold_for(normalized)
     best: list[tuple[float, str, int]] = []
     for candidate_text, ids in candidates.items():
@@ -196,6 +213,119 @@ def match_answer(db: sqlite3.Connection, category_id: int, submitted_text: str) 
         matched_from=normalized,
         message=f"Accepted as {canonical_name}.",
     )
+
+
+def _closed_list_invalid_message(category_slug: str, normalized: str) -> str | None:
+    """Return an immediate invalid result for closed-list misses.
+
+    Some categories, such as U.S. states and countries, have a complete
+    canonical list in the category JSON. For those categories, an answer that is
+    not an exact JSON name or alias should stay local instead of spending
+    network time on Wikipedia search, where typo correction can resolve to an
+    unrelated page. Near misses get a spelling-specific message; unrelated
+    misses get the normal invalid-category message.
+    """
+
+    if category_slug not in CLOSED_LIST_CATEGORY_SLUGS:
+        return None
+    reference_texts = _closed_list_reference_texts(category_slug)
+    if not reference_texts:
+        current_app.logger.error("Closed-list category %r did not provide reference texts.", category_slug)
+        return None
+    # This may still need live verification on a fresh database, so exact JSON
+    # matches are allowed through rather than accepted outright.
+    if normalized in reference_texts:
+        return None
+    for reference in reference_texts:
+        if _looks_like_closed_list_typo(normalized, reference):
+            return "Check the spelling and try again."
+    return "That is not a valid answer for this category."
+
+
+def _looks_like_closed_list_typo(normalized: str, reference: str) -> bool:
+    """Return whether ``normalized`` is probably a typo of ``reference``.
+
+    The normal fuzzy threshold is tuned for accepting playable answers, which is
+    intentionally strict. Closed-list rejection has a different job: keep likely
+    typos local and explain them as spelling issues. A tiny bounded edit-distance
+    check catches common one- or two-character mistakes like "new hampsher"
+    without allowing unrelated answers to look like misspellings.
+    """
+
+    threshold = _threshold_for(reference)
+    if SequenceMatcher(None, normalized, reference).ratio() >= threshold:
+        return True
+    max_distance = _closed_list_typo_distance(reference)
+    if max_distance <= 0 or abs(len(normalized) - len(reference)) > max_distance:
+        return False
+    return _bounded_edit_distance(normalized, reference, max_distance) <= max_distance
+
+
+def _closed_list_typo_distance(reference: str) -> int:
+    """Choose a conservative edit-distance allowance for closed-list names."""
+
+    compact_length = len(reference.replace(" ", ""))
+    if compact_length <= 4:
+        return 0
+    if compact_length <= 8:
+        return 1
+    if compact_length <= 14:
+        return 2
+    return 3
+
+
+def _bounded_edit_distance(left: str, right: str, max_distance: int) -> int:
+    """Compute edit distance, stopping once the answer cannot be close enough.
+
+    Closed-list typo checks run over small category lists, but this bound keeps
+    the helper cheap and makes the intended behavior explicit: we only care
+    whether two strings are within a very small number of edits.
+    """
+
+    previous = list(range(len(right) + 1))
+    for left_index, left_char in enumerate(left, start=1):
+        current = [left_index]
+        row_min = current[0]
+        for right_index, right_char in enumerate(right, start=1):
+            substitution_cost = 0 if left_char == right_char else 1
+            current.append(
+                min(
+                    previous[right_index] + 1,
+                    current[right_index - 1] + 1,
+                    previous[right_index - 1] + substitution_cost,
+                )
+            )
+            row_min = min(row_min, current[-1])
+        if row_min > max_distance:
+            return max_distance + 1
+        previous = current
+    return previous[-1]
+
+
+def _closed_list_reference_texts(category_slug: str) -> set[str]:
+    """Return normalized canonical names and aliases for a closed-list category."""
+
+    cached = _CLOSED_LIST_TEXT_CACHE.get(category_slug)
+    if cached is not None:
+        return cached
+    path = Path(current_app.root_path) / "data" / "categories" / f"{category_slug}.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        current_app.logger.error("Could not load closed-list category %r from %s: %s", category_slug, path, exc)
+        _CLOSED_LIST_TEXT_CACHE[category_slug] = set()
+        return set()
+    reference_texts: set[str] = set()
+    for element in data.get("elements", []):
+        name = normalize_text(element.get("name", ""))
+        if name:
+            reference_texts.add(name)
+        for alias in element.get("aliases", []):
+            normalized_alias = normalize_text(alias)
+            if normalized_alias:
+                reference_texts.add(normalized_alias)
+    _CLOSED_LIST_TEXT_CACHE[category_slug] = reference_texts
+    return reference_texts
 
 
 def _match_live_wiki_answer(

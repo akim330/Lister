@@ -626,6 +626,10 @@ def seed_manual_aliases_for_category(category_id: int, data: dict[str, Any]) -> 
 
     db = get_db()
     now = utc_now_iso()
+    # Treat category JSON as the source of truth for manual lookup hints. This
+    # prevents removed typo aliases from lingering forever in an existing SQLite
+    # database and silently bypassing spelling guards.
+    db.execute("DELETE FROM category_manual_aliases WHERE category_id = ?", (category_id,))
     for element in data.get("elements", []):
         lookup_text = element["name"]
         normalized_name = normalize_text(lookup_text)
