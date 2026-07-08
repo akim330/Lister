@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS wiki_entities (
     canonical_name TEXT NOT NULL,
     description TEXT,
     sitelinks INTEGER NOT NULL DEFAULT 0,
+    claims_complete INTEGER NOT NULL DEFAULT 1,
     fetched_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
 );
@@ -180,6 +181,20 @@ CREATE TABLE IF NOT EXISTS category_entity_memberships (
 );
 
 CREATE INDEX IF NOT EXISTS idx_category_entity_memberships_category ON category_entity_memberships(category_id);
+
+CREATE TABLE IF NOT EXISTS wiki_verification_failures (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category_id INTEGER NOT NULL,
+    normalized_text TEXT NOT NULL,
+    message TEXT NOT NULL,
+    expires_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    UNIQUE(category_id, normalized_text),
+    FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_wiki_verification_failures_expires
+ON wiki_verification_failures(expires_at);
 
 CREATE TABLE IF NOT EXISTS game_sessions (
     id TEXT PRIMARY KEY,
@@ -281,6 +296,7 @@ def init_db() -> None:
     _ensure_user_lookup_column(db)
     _ensure_category_bucket_column(db)
     _ensure_live_wiki_columns(db)
+    _ensure_wiki_verification_failure_table(db)
     _ensure_game_mode_columns(db)
     _ensure_friend_tables(db)
     db.commit()
@@ -437,9 +453,43 @@ def _ensure_live_wiki_columns(db: sqlite3.Connection) -> None:
         db.execute("ALTER TABLE category_elements ADD COLUMN wiki_entity_id INTEGER")
     if "wiki_qid" not in existing:
         db.execute("ALTER TABLE category_elements ADD COLUMN wiki_qid TEXT")
+    entity_columns = {
+        row["name"]
+        for row in db.execute("PRAGMA table_info(wiki_entities)").fetchall()
+    }
+    if "claims_complete" not in entity_columns:
+        db.execute("ALTER TABLE wiki_entities ADD COLUMN claims_complete INTEGER NOT NULL DEFAULT 1")
     db.execute(
         "CREATE UNIQUE INDEX IF NOT EXISTS idx_category_elements_category_wiki_entity "
         "ON category_elements(category_id, wiki_entity_id)"
+    )
+
+
+def _ensure_wiki_verification_failure_table(db: sqlite3.Connection) -> None:
+    """Create the short-lived wiki failure cache for existing databases.
+
+    The table is deliberately tiny and stores only normalized answer text plus
+    an expiry. It lets separate app workers agree that a recent answer was
+    temporarily unverifiable without preserving that failure forever.
+    """
+
+    db.execute(
+        """
+        CREATE TABLE IF NOT EXISTS wiki_verification_failures (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            category_id INTEGER NOT NULL,
+            normalized_text TEXT NOT NULL,
+            message TEXT NOT NULL,
+            expires_at TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            UNIQUE(category_id, normalized_text),
+            FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE CASCADE
+        )
+        """
+    )
+    db.execute(
+        "CREATE INDEX IF NOT EXISTS idx_wiki_verification_failures_expires "
+        "ON wiki_verification_failures(expires_at)"
     )
 
 

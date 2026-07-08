@@ -17,7 +17,7 @@ from .wiki_verification import (
     new_wiki_request_budget,
     recently_failed_live_verification,
     remember_failed_live_verification,
-    resolve_and_cache_entity,
+    resolve_and_cache_entity_for_category,
     upsert_category_element,
 )
 
@@ -224,22 +224,22 @@ def _match_live_wiki_answer(
     budget = new_wiki_request_budget()
     try:
         entity = cached_entity_for_text(db, lookup_normalized)
-        if recently_failed_live_verification(category_id, lookup_normalized):
+        if recently_failed_live_verification(db, category_id, lookup_normalized):
             return MatchResult(
                 status="invalid",
                 normalized_text=normalized,
                 message="Could not verify that answer right now.",
             )
         if not entity:
-            entity = resolve_and_cache_entity(db, lookup_text, budget=budget)
+            entity = resolve_and_cache_entity_for_category(db, lookup_text, category, budget=budget)
         membership = evaluate_category_membership(db, category, entity, budget=budget)
     except WikiEntityAmbiguous as exc:
         return MatchResult(status="ambiguous", normalized_text=normalized, message=str(exc))
     except WikiEntityNotFound:
-        remember_failed_live_verification(category_id, lookup_normalized)
+        remember_failed_live_verification(db, category_id, lookup_normalized)
         return MatchResult(status="invalid", normalized_text=normalized, message="That is not a valid answer for this category.")
     except WikiVerificationError as exc:
-        remember_failed_live_verification(category_id, lookup_normalized)
+        remember_failed_live_verification(db, category_id, lookup_normalized)
         return MatchResult(status="invalid", normalized_text=normalized, message=str(exc))
 
     if not membership.is_member:

@@ -10,7 +10,7 @@ import urllib.parse
 import urllib.request
 import zlib
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from typing import Any
 
@@ -35,9 +35,47 @@ POSITION_HELD = "P39"
 AWARD_RECEIVED = "P166"
 
 
+ANIMAL_BRANCH_TARGETS = {
+    # These branch QIDs are broad animal classes that let non-food categories
+    # reject obvious living-creature answers early when Wikidata exposes a clear
+    # instance/subclass relationship, such as peafowl -> bird.
+    "Q729",
+    "Q7377",
+    "Q5113",
+    "Q10811",
+    "Q152",
+    "Q10908",
+    "Q1390",
+    "Q1358",
+    "Q25326",
+    "Q25364",
+}
+
+
+HUMAN_EXCLUSION_TARGETS = {
+    # Wikidata represents real people such as Albert Einstein as instances of
+    # human. For categories like fruits, this is as decisive as seeing a bird or
+    # mammal branch, so the live walk can reject early instead of exploring a
+    # person's generic class relationships.
+    "Q5",
+}
+
+
+ENTITY_BUCKET_TARGETS = {
+    # These broad buckets are deliberately coarse. They are not meant to prove
+    # category membership; they only catch obvious incompatibilities before the
+    # more expensive category-specific target walk runs.
+    "person": HUMAN_EXCLUSION_TARGETS,
+    "animal": ANIMAL_BRANCH_TARGETS,
+    "place": {"Q2221906", "Q17334923", "Q618123", "Q82794", "Q6256", "Q515", "Q35657"},
+    "creative_work": {"Q17537576", "Q7725634", "Q11424", "Q5398426", "Q15416", "Q7889"},
+    "organization": {"Q43229", "Q4830453", "Q6881511"},
+}
+
+
 CATEGORY_RULES: dict[str, dict[str, Any]] = {
     "animals": {
-        "targets": {"Q729", "Q7377", "Q5113", "Q10811", "Q152", "Q10908", "Q1390", "Q1358", "Q25326", "Q25364"},
+        "targets": ANIMAL_BRANCH_TARGETS,
         "properties": {PARENT_TAXON},
         "max_depth": 24,
         "mode": "taxonomy",
@@ -51,6 +89,7 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
     },
     "fruits": {
         "targets": {"Q3314483", "Q1364", "Q1470762"},
+        "excluded_buckets": {"person", "animal", "place", "creative_work", "organization"},
         "properties": {INSTANCE_OF, SUBCLASS_OF, PART_OF, USE},
         "mode": "flat",
         "reason": "structured claims connect to culinary or botanical fruit",
@@ -340,6 +379,18 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
 }
 
 
+WIKIDATA_TRAVERSAL_PRUNE_QIDS = {
+    # These QIDs are ontology scaffolding that frequently appear after the
+    # useful gameplay signal has already been missed. Walking through them tends
+    # to spend request budget on abstract Wikidata modeling concepts instead of
+    # evidence that an answer belongs to a player-facing category.
+    "Q55983715",  # organisms known by a particular common name
+    "Q19478619",  # metaclass
+    "Q21871294",  # group or class of living things
+    "Q115949945",  # scientific concept
+}
+
+
 _WIKIDATA_ACTION_API_THROTTLED = False
 _WIKI_THROTTLED_UNTIL = 0.0
 _NEGATIVE_VERIFICATION_CACHE: dict[tuple[int, str], float] = {}
@@ -368,6 +419,7 @@ class CachedWikiEntity:
     page_title: str
     canonical_name: str
     description: str | None
+    claims_complete: bool
 
 
 @dataclass(frozen=True)
@@ -387,6 +439,7 @@ class WikiRequestBudget:
     """
 
     wikipedia_lookup_remaining: int
+    lightweight_wikidata_fetches_remaining: int
     primary_wikidata_fetches_remaining: int
     related_qid_fetches_remaining: int
     live_path_max_nodes: int
@@ -394,10 +447,10 @@ class WikiRequestBudget:
     def consume_wikipedia_lookup(self, submitted_text: str) -> None:
         """Reserve the single Wikipedia lookup flow for this answer.
 
-        The lookup flow may perform OpenSearch and page metadata requests, but
-        it should only happen once for a player submission. If another call path
-        unexpectedly tries to resolve the same answer again, failing loudly keeps
-        the request fan-out visible instead of silently hammering Wikimedia.
+        The lookup flow uses one combined page search/pageprops request in the
+        normal path. If a category-pattern fallback later needs page categories,
+        that extra request happens only after Wikidata checks fail; this budget
+        still catches accidental repeated full resolution of the same answer.
         """
 
         if self.wikipedia_lookup_remaining <= 0:
@@ -407,6 +460,23 @@ class WikiRequestBudget:
             )
             raise WikiVerificationError("Could not verify that answer right now.")
         self.wikipedia_lookup_remaining -= 1
+
+    def consume_lightweight_wikidata_fetch(self, qid: str) -> None:
+        """Reserve the tiny direct-claim fetch used for obvious exclusions.
+
+        This fetch is intentionally separate from the full primary entity fetch:
+        it lets answers such as Barack Obama for Fruit reject after a small P31
+        lookup, while still allowing plausible answers to fetch the full entity
+        later in the same request.
+        """
+
+        if self.lightweight_wikidata_fetches_remaining <= 0:
+            current_app.logger.error(
+                "Wiki request budget exhausted before fetching lightweight claims for %s.",
+                qid,
+            )
+            raise WikiVerificationError("Could not verify that answer right now.")
+        self.lightweight_wikidata_fetches_remaining -= 1
 
     def consume_primary_wikidata_fetch(self, qid: str) -> None:
         """Reserve the one primary Wikidata entity fetch for the submitted answer."""
@@ -441,37 +511,97 @@ def new_wiki_request_budget() -> WikiRequestBudget:
 
     return WikiRequestBudget(
         wikipedia_lookup_remaining=1,
+        lightweight_wikidata_fetches_remaining=1,
         primary_wikidata_fetches_remaining=1,
         related_qid_fetches_remaining=_config_int("WIKI_LIVE_RELATED_QID_FETCH_BUDGET", 5),
         live_path_max_nodes=_config_int("WIKI_LIVE_PATH_MAX_NODES", 8),
     )
 
 
-def recently_failed_live_verification(category_id: int, normalized: str) -> bool:
+def recently_failed_live_verification(db: sqlite3.Connection, category_id: int, normalized: str) -> bool:
     """Return whether a recent cold-cache failure should short-circuit retries.
 
-    This cache is intentionally short-lived and in-memory. It protects gameplay
-    and Wikimedia from repeated submissions of the same currently-unverifiable
-    text without changing the permanent SQLite answer cache.
+    The in-memory cache catches repeats within one worker, and the SQLite row
+    lets separate workers share the same short-lived answer failure. Expired
+    entries are deleted lazily so temporary throttles never become permanent
+    answer data.
     """
 
     key = (category_id, normalized)
-    expires_at = _NEGATIVE_VERIFICATION_CACHE.get(key)
-    if expires_at is None:
-        return False
-    if expires_at <= time.monotonic():
+    memory_expires_at = _NEGATIVE_VERIFICATION_CACHE.get(key)
+    if memory_expires_at is not None and memory_expires_at > time.monotonic():
+        return True
+    if memory_expires_at is not None:
         _NEGATIVE_VERIFICATION_CACHE.pop(key, None)
+
+    row = db.execute(
+        """
+        SELECT expires_at
+        FROM wiki_verification_failures
+        WHERE category_id = ? AND normalized_text = ?
+        """,
+        (category_id, normalized),
+    ).fetchone()
+    if not row:
         return False
+    try:
+        expires_at = datetime.fromisoformat(row["expires_at"])
+    except ValueError:
+        current_app.logger.error(
+            "Invalid wiki verification failure expiry %r for category %s text %r.",
+            row["expires_at"],
+            category_id,
+            normalized,
+        )
+        db.execute(
+            "DELETE FROM wiki_verification_failures WHERE category_id = ? AND normalized_text = ?",
+            (category_id, normalized),
+        )
+        return False
+    if expires_at <= datetime.now(timezone.utc):
+        db.execute(
+            "DELETE FROM wiki_verification_failures WHERE category_id = ? AND normalized_text = ?",
+            (category_id, normalized),
+        )
+        return False
+    _NEGATIVE_VERIFICATION_CACHE[key] = time.monotonic() + max(
+        (expires_at - datetime.now(timezone.utc)).total_seconds(),
+        0.0,
+    )
     return True
 
 
-def remember_failed_live_verification(category_id: int, normalized: str) -> None:
-    """Temporarily remember a failed uncached verification attempt."""
+def remember_failed_live_verification(db: sqlite3.Connection, category_id: int, normalized: str) -> None:
+    """Temporarily remember a failed uncached verification attempt.
+
+    The row is intentionally overwritten on repeat failures so another worker
+    can stop retrying the same unverifiable answer until the configured TTL
+    passes. This is not a permanent invalid-answer cache.
+    """
 
     ttl = _config_int("WIKI_NEGATIVE_CACHE_TTL_SECONDS", 300)
     if ttl <= 0:
         return
     _NEGATIVE_VERIFICATION_CACHE[(category_id, normalized)] = time.monotonic() + ttl
+    now = datetime.now(timezone.utc)
+    db.execute(
+        """
+        INSERT INTO wiki_verification_failures
+            (category_id, normalized_text, message, expires_at, created_at)
+        VALUES (?, ?, ?, ?, ?)
+        ON CONFLICT(category_id, normalized_text) DO UPDATE SET
+            message = excluded.message,
+            expires_at = excluded.expires_at,
+            created_at = excluded.created_at
+        """,
+        (
+            category_id,
+            normalized,
+            "Could not verify that answer right now.",
+            (now + timedelta(seconds=ttl)).isoformat(),
+            now.isoformat(),
+        ),
+    )
 
 
 def _config_int(key: str, default: int) -> int:
@@ -538,10 +668,32 @@ def resolve_and_cache_entity(
 ) -> CachedWikiEntity:
     """Resolve submitted text through Wikipedia, then cache the linked Wikidata item."""
 
+    return _resolve_and_cache_entity_from_page(db, submitted_text, budget=budget)
+
+
+def resolve_and_cache_entity_for_category(
+    db: sqlite3.Connection,
+    submitted_text: str,
+    category: sqlite3.Row,
+    budget: WikiRequestBudget | None = None,
+) -> CachedWikiEntity:
+    """Resolve an uncached answer with a cheap category-specific reject screen.
+
+    The normal full Wikidata entity can be very large for people and other
+    heavily-linked subjects. When the active category has broad excluded buckets,
+    first fetch only the direct ``instance of`` claims. If those claims already
+    prove the answer is incompatible, cache that minimal fact and skip the full
+    entity download.
+    """
+
+    started_at = time.perf_counter()
     if budget:
         budget.consume_wikipedia_lookup(submitted_text)
-    title = _opensearch_title(submitted_text)
-    page = _fetch_page_metadata(title)
+    page = _timed_step(
+        "wiki resolve page search",
+        lambda: _resolve_page_metadata(submitted_text),
+        submitted_text=submitted_text,
+    )
     if page.get("disambiguation"):
         raise WikiEntityAmbiguous("Too ambiguous. Try being more specific.")
 
@@ -554,12 +706,99 @@ def resolve_and_cache_entity(
         )
         raise WikiEntityNotFound("Could not verify that answer.")
 
-    entity = _fetch_wikidata_entity(qid, budget=budget, fetch_kind="primary")
-    entity_id = _upsert_wiki_entity(db, entity, page, submitted_text)
-    _replace_wiki_entity_claims(db, entity_id, entity)
-    _replace_wikipedia_categories(db, entity_id, page.get("categories", []))
-    _insert_entity_aliases(db, entity_id, entity, page, submitted_text)
-    return get_entity_by_id(db, entity_id)
+    rule = CATEGORY_RULES.get(category["slug"])
+    excluded_buckets = set(rule.get("excluded_buckets", set())) if rule else set()
+    if excluded_buckets:
+        direct_claim_entity = _timed_step(
+            "wiki resolve lightweight direct claims",
+            lambda: _fetch_wikidata_direct_claims(qid, budget=budget),
+            submitted_text=submitted_text,
+            qid=qid,
+        )
+        if _direct_claim_bucket(_claim_value_qids_from_entity(direct_claim_entity), excluded_buckets):
+            entity_id = _timed_step(
+                "wiki resolve upsert lightweight entity",
+                lambda: _upsert_wiki_entity(db, direct_claim_entity, page, submitted_text, claims_complete=False),
+                submitted_text=submitted_text,
+                qid=qid,
+            )
+            _timed_step(
+                "wiki resolve replace lightweight claims",
+                lambda: _replace_wiki_entity_claims(db, entity_id, direct_claim_entity),
+                submitted_text=submitted_text,
+                qid=qid,
+            )
+            _timed_step(
+                "wiki resolve insert lightweight aliases",
+                lambda: _insert_entity_aliases(db, entity_id, direct_claim_entity, page, submitted_text),
+                submitted_text=submitted_text,
+                qid=qid,
+            )
+            resolved = get_entity_by_id(db, entity_id)
+            _log_timing("wiki resolve lightweight exclusion total", started_at, submitted_text=submitted_text, qid=qid)
+            return resolved
+
+    return _resolve_and_cache_entity_from_page(db, submitted_text, page=page, budget=budget, started_at=started_at)
+
+
+def _resolve_and_cache_entity_from_page(
+    db: sqlite3.Connection,
+    submitted_text: str,
+    page: dict[str, Any] | None = None,
+    budget: WikiRequestBudget | None = None,
+    started_at: float | None = None,
+) -> CachedWikiEntity:
+    """Fetch and cache the full Wikidata entity for a resolved page."""
+
+    if started_at is None:
+        started_at = time.perf_counter()
+    if page is None:
+        if budget:
+            budget.consume_wikipedia_lookup(submitted_text)
+        page = _timed_step(
+            "wiki resolve page search",
+            lambda: _resolve_page_metadata(submitted_text),
+            submitted_text=submitted_text,
+        )
+        if page.get("disambiguation"):
+            raise WikiEntityAmbiguous("Too ambiguous. Try being more specific.")
+
+    qid = page.get("qid")
+    if not qid:
+        current_app.logger.error(
+            "Wikipedia page %r resolved from %r did not include a linked Wikidata item.",
+            page.get("title"),
+            submitted_text,
+        )
+        raise WikiEntityNotFound("Could not verify that answer.")
+
+    entity = _timed_step(
+        "wiki resolve primary wikidata entity",
+        lambda: _fetch_wikidata_entity(qid, budget=budget, fetch_kind="primary"),
+        submitted_text=submitted_text,
+        qid=qid,
+    )
+    entity_id = _timed_step(
+        "wiki resolve upsert entity",
+        lambda: _upsert_wiki_entity(db, entity, page, submitted_text, claims_complete=True),
+        submitted_text=submitted_text,
+        qid=qid,
+    )
+    _timed_step(
+        "wiki resolve replace claims",
+        lambda: _replace_wiki_entity_claims(db, entity_id, entity),
+        submitted_text=submitted_text,
+        qid=qid,
+    )
+    _timed_step(
+        "wiki resolve insert aliases",
+        lambda: _insert_entity_aliases(db, entity_id, entity, page, submitted_text),
+        submitted_text=submitted_text,
+        qid=qid,
+    )
+    resolved = get_entity_by_id(db, entity_id)
+    _log_timing("wiki resolve total", started_at, submitted_text=submitted_text, qid=qid)
+    return resolved
 
 
 def ensure_qid_cached(
@@ -567,6 +806,7 @@ def ensure_qid_cached(
     qid: str,
     budget: WikiRequestBudget | None = None,
     fetch_kind: str = "related",
+    require_complete: bool = True,
 ) -> CachedWikiEntity | None:
     """Make sure an ancestor/class QID exists in the local structured cache.
 
@@ -576,11 +816,16 @@ def ensure_qid_cached(
     """
 
     row = db.execute("SELECT * FROM wiki_entities WHERE qid = ?", (qid,)).fetchone()
-    if row:
+    if row and (not require_complete or bool(row["claims_complete"])):
         return _entity_from_row(row)
 
     try:
-        entity = _fetch_wikidata_entity(qid, budget=budget, fetch_kind=fetch_kind)
+        entity = _timed_step(
+            "wiki related wikidata entity",
+            lambda: _fetch_wikidata_entity(qid, budget=budget, fetch_kind=fetch_kind),
+            qid=qid,
+            fetch_kind=fetch_kind,
+        )
     except WikiVerificationError:
         raise
     except Exception as exc:
@@ -609,6 +854,7 @@ def evaluate_category_membership(
 ) -> MembershipResult:
     """Check and cache whether one wiki entity belongs to one game category."""
 
+    started_at = time.perf_counter()
     cached = db.execute(
         """
         SELECT is_member, reason
@@ -618,6 +864,13 @@ def evaluate_category_membership(
         (int(category["id"]), entity.id),
     ).fetchone()
     if cached:
+        _log_timing(
+            "wiki membership cached",
+            started_at,
+            category=category["slug"],
+            qid=entity.qid,
+            is_member=bool(cached["is_member"]),
+        )
         return MembershipResult(bool(cached["is_member"]), cached["reason"])
 
     slug = category["slug"]
@@ -626,27 +879,35 @@ def evaluate_category_membership(
     if not rule:
         current_app.logger.error("Category %r has no live wiki membership rule.", slug)
         result = MembershipResult(False, "No live verification rule is configured for this category.")
-    elif properties and _has_any_path(
-        db,
-        entity.qid,
-        set(rule.get("excluded", set())),
-        properties,
-        max_depth=2,
-        max_nodes=budget.live_path_max_nodes if budget else 40,
-        budget=budget,
+    elif _timed_step(
+        "wiki membership excluded bucket check",
+        lambda: _has_any_excluded_bucket(db, entity.qid, set(rule.get("excluded_buckets", set())), budget=budget),
+        category=slug,
+        qid=entity.qid,
     ):
         result = MembershipResult(False, "Excluded by category rule.")
-    elif properties and _has_any_path(
-        db,
-        entity.qid,
-        set(rule["targets"]),
-        properties,
-        max_depth=int(rule.get("max_depth", 10)),
-        max_nodes=budget.live_path_max_nodes if budget else 40,
-        budget=budget,
+    elif properties and _timed_step(
+        "wiki membership target path check",
+        lambda: _has_any_path(
+            db,
+            entity.qid,
+            set(rule["targets"]),
+            properties,
+            max_depth=int(rule.get("max_depth", 10)),
+            max_nodes=budget.live_path_max_nodes if budget else 40,
+            budget=budget,
+            walk_name="target",
+        ),
+        category=slug,
+        qid=entity.qid,
     ):
         result = MembershipResult(True, rule["reason"])
-    elif _has_any_matching_category(db, entity.id, set(rule.get("category_patterns", set()))):
+    elif _timed_step(
+        "wiki membership category pattern check",
+        lambda: _has_any_matching_category(db, entity, set(rule.get("category_patterns", set()))),
+        category=slug,
+        qid=entity.qid,
+    ):
         result = MembershipResult(True, rule["reason"])
     else:
         result = MembershipResult(False, "That is not a valid answer for this category.")
@@ -662,6 +923,14 @@ def evaluate_category_membership(
             checked_at = excluded.checked_at
         """,
         (int(category["id"]), entity.id, 1 if result.is_member else 0, result.reason, utc_now_iso()),
+    )
+    _log_timing(
+        "wiki membership total",
+        started_at,
+        category=slug,
+        qid=entity.qid,
+        is_member=result.is_member,
+        reason=result.reason,
     )
     return result
 
@@ -889,6 +1158,7 @@ def _has_any_path(
     max_depth: int = 10,
     max_nodes: int = 40,
     budget: WikiRequestBudget | None = None,
+    walk_name: str = "target",
 ) -> bool:
     """Walk Wikidata QID relationships looking for a category target.
 
@@ -902,36 +1172,183 @@ def _has_any_path(
         return False
     queue: list[tuple[str, int]] = [(start_qid, 0)]
     seen: set[str] = set()
+    # Keep a plain record of the nodes this gameplay request actually examined
+    # so production logs can explain surprising category decisions. This log is
+    # intentionally built only from entities already fetched for verification;
+    # it must never trigger additional Wikimedia requests just to make the log
+    # prettier.
+    traversed_nodes: list[tuple[str, int, str | None]] = []
     while queue:
         if len(seen) >= max_nodes:
             current_app.logger.warning(
-                "Stopped Wikidata path walk from %s after %s nodes without finding %s.",
+                "Stopped Wikidata path walk from %s after %s nodes without finding %s. Traversed nodes: %s",
                 start_qid,
                 max_nodes,
                 sorted(target_qids),
+                _format_traversed_nodes(traversed_nodes),
             )
             if budget:
                 raise WikiVerificationError("Could not verify that answer right now.")
             return False
         qid, depth = queue.pop(0)
         if qid in target_qids:
+            traversed_nodes.append((qid, depth, _cached_qid_name(db, qid)))
+            _log_path_walk_success(
+                walk_name,
+                "Wikidata path walk from %s found target %s. Traversed nodes: %s",
+                start_qid,
+                qid,
+                _format_traversed_nodes(traversed_nodes),
+            )
             return True
         if qid in seen or depth >= max_depth:
             continue
         seen.add(qid)
         entity = ensure_qid_cached(db, qid, budget=budget)
         if not entity:
+            traversed_nodes.append((qid, depth, None))
             continue
+        traversed_nodes.append((qid, depth, entity.canonical_name))
         value_qids = _claim_values(db, entity.id, properties)
         for value_qid in value_qids:
             if value_qid in target_qids:
+                traversed_nodes.append((value_qid, depth + 1, _cached_qid_name(db, value_qid)))
+                _log_path_walk_success(
+                    walk_name,
+                    "Wikidata path walk from %s reached target %s through %s. Traversed nodes: %s",
+                    start_qid,
+                    value_qid,
+                    qid,
+                    _format_traversed_nodes(traversed_nodes),
+                )
                 return True
+            if value_qid in WIKIDATA_TRAVERSAL_PRUNE_QIDS:
+                traversed_nodes.append((value_qid, depth + 1, _cached_qid_name(db, value_qid)))
+                current_app.logger.info(
+                    "Pruned generic Wikidata node %s while walking from %s. Traversed nodes so far: %s",
+                    value_qid,
+                    start_qid,
+                    _format_traversed_nodes(traversed_nodes),
+                )
+                continue
             if value_qid not in seen:
                 queue.append((value_qid, depth + 1))
+    current_app.logger.info(
+        "Wikidata path walk from %s did not find targets %s. Traversed nodes: %s",
+        start_qid,
+        sorted(target_qids),
+        _format_traversed_nodes(traversed_nodes),
+    )
     return False
 
 
-def _has_any_matching_category(db: sqlite3.Connection, entity_id: int, category_patterns: set[str]) -> bool:
+def _has_any_excluded_bucket(
+    db: sqlite3.Connection,
+    start_qid: str,
+    excluded_buckets: set[str],
+    budget: WikiRequestBudget | None = None,
+) -> bool:
+    """Return whether an entity clearly falls into a disallowed broad bucket.
+
+    Buckets are a cheap prefilter for gameplay categories. For example, Fruit
+    does not need a deep fruit proof once the answer classifies as ``person`` or
+    ``animal`` through the same early Wikidata claims that category walking
+    already uses.
+    """
+
+    if not excluded_buckets:
+        return False
+    unknown_buckets = excluded_buckets - set(ENTITY_BUCKET_TARGETS)
+    if unknown_buckets:
+        current_app.logger.error(
+            "Category rule referenced unknown excluded entity buckets: %s.",
+            sorted(unknown_buckets),
+        )
+    direct_bucket = _direct_entity_bucket(db, start_qid, excluded_buckets, budget=budget)
+    if direct_bucket:
+        current_app.logger.warning(
+            "Wikidata classified %s into excluded bucket %r from direct claims.",
+            start_qid,
+            direct_bucket,
+        )
+        return True
+    return False
+
+
+def _direct_entity_bucket(
+    db: sqlite3.Connection,
+    start_qid: str,
+    candidate_buckets: set[str],
+    budget: WikiRequestBudget | None = None,
+) -> str | None:
+    """Classify an entity from its first-hop claims before doing path walks.
+
+    Many obvious rejects are direct ``instance of`` or ``subclass of`` values:
+    Einstein -> human and peafowl -> bird. Checking those cached claims first
+    avoids spending budget proving the answer is not in every other bucket.
+    """
+
+    entity = ensure_qid_cached(db, start_qid, budget=budget, require_complete=False)
+    if not entity:
+        return None
+    direct_values = set(_claim_values(db, entity.id, {INSTANCE_OF, SUBCLASS_OF, PART_OF, USE}))
+    return _direct_claim_bucket(direct_values, candidate_buckets)
+
+
+def _direct_claim_bucket(direct_values: set[str], candidate_buckets: set[str]) -> str | None:
+    """Return the excluded bucket hit by already-fetched direct claim QIDs."""
+
+    for bucket in sorted(candidate_buckets):
+        targets = ENTITY_BUCKET_TARGETS.get(bucket)
+        if targets and direct_values & targets:
+            return bucket
+    return None
+
+
+def _log_path_walk_success(walk_name: str, message: str, *args: Any) -> None:
+    """Log path-walk hits at a level that matches their gameplay meaning.
+
+    Target hits are normal successful validation details, so they remain info.
+    Exclusion hits explain an early rejection such as peafowl -> bird for a
+    fruit answer, so they are warnings to remain visible in the same logs that
+    previously showed node-cap warnings.
+    """
+
+    if walk_name == "exclusion":
+        current_app.logger.warning(message, *args)
+    else:
+        current_app.logger.info(message, *args)
+
+
+def _cached_qid_name(db: sqlite3.Connection, qid: str) -> str | None:
+    """Return a cached display name for log output without making network calls."""
+
+    row = db.execute("SELECT canonical_name FROM wiki_entities WHERE qid = ?", (qid,)).fetchone()
+    return row["canonical_name"] if row else None
+
+
+def _format_traversed_nodes(nodes: list[tuple[str, int, str | None]]) -> str:
+    """Format a compact path-walk trace for logs.
+
+    The depth annotation makes it easier to see why an answer was rejected: an
+    unrelated answer usually fans out through claims such as species/taxon or
+    instance/subclass nodes that never approach the configured category targets.
+    """
+
+    if not nodes:
+        return "[]"
+    formatted = []
+    for qid, depth, name in nodes:
+        label = f"{qid}:{name}" if name else qid
+        formatted.append(f"{label}@depth{depth}")
+    return "[" + " -> ".join(formatted) + "]"
+
+
+def _has_any_matching_category(
+    db: sqlite3.Connection,
+    entity: CachedWikiEntity,
+    category_patterns: set[str],
+) -> bool:
     """Return whether cached Wikipedia categories match configured text hints.
 
     Wikidata paths are preferred for categories with crisp structured claims,
@@ -940,10 +1357,16 @@ def _has_any_matching_category(db: sqlite3.Connection, entity_id: int, category_
     The patterns are normalized with the same helper used for cached category
     titles, then checked as substrings so labels such as "American Nobel
     laureates" can still satisfy the broader "Nobel laureates" rule.
+
+    Categories are fetched lazily here instead of during the initial answer
+    resolution. Most answers are accepted or rejected through Wikidata claims,
+    so fetching page categories up front added a full Wikipedia round trip to
+    every cold-cache answer even when no category-pattern fallback was needed.
     """
 
     if not category_patterns:
         return False
+    _ensure_wikipedia_categories_cached(db, entity)
     normalized_patterns = {normalize_text(pattern) for pattern in category_patterns if normalize_text(pattern)}
     if not normalized_patterns:
         current_app.logger.error("Category rule supplied only empty Wikipedia category patterns.")
@@ -954,13 +1377,50 @@ def _has_any_matching_category(db: sqlite3.Connection, entity_id: int, category_
         FROM wiki_entity_categories
         WHERE wiki_entity_id = ?
         """,
-        (entity_id,),
+        (entity.id,),
     ).fetchall()
     for row in rows:
         normalized_category = row["normalized_category"]
         if any(pattern in normalized_category for pattern in normalized_patterns):
             return True
     return False
+
+
+def _ensure_wikipedia_categories_cached(db: sqlite3.Connection, entity: CachedWikiEntity) -> None:
+    """Populate cached page categories only when category-pattern rules need them.
+
+    The normal cold path avoids Wikipedia categories entirely because Wikidata
+    claims usually decide the answer. When a category rule has text patterns,
+    this helper performs the extra Wikipedia request at the last possible moment
+    and then stores the result in the existing category cache table.
+    """
+
+    existing = db.execute(
+        """
+        SELECT 1
+        FROM wiki_entity_categories
+        WHERE wiki_entity_id = ?
+        LIMIT 1
+        """,
+        (entity.id,),
+    ).fetchone()
+    if existing:
+        return
+    if not entity.page_title:
+        current_app.logger.error("Cannot fetch Wikipedia categories for %s without a page title.", entity.qid)
+        return
+    categories = _timed_step(
+        "wiki category fallback fetch categories",
+        lambda: _fetch_wikipedia_categories(entity.page_title),
+        qid=entity.qid,
+        title=entity.page_title,
+    )
+    _timed_step(
+        "wiki category fallback replace categories",
+        lambda: _replace_wikipedia_categories(db, entity.id, categories),
+        qid=entity.qid,
+        title=entity.page_title,
+    )
 
 
 def _first_claim_value(
@@ -999,46 +1459,25 @@ def _claim_values(db: sqlite3.Connection, entity_id: int, properties: set[str]) 
     return [row["value_qid"] for row in rows]
 
 
-def _opensearch_title(search_text: str) -> str:
-    try:
-        data = _wiki_json(
-            current_app.config["WIKIPEDIA_API_URL"],
-            {
-                "action": "opensearch",
-                "search": search_text,
-                "namespace": "0",
-                "limit": "3",
-                "redirects": "resolve",
-                "format": "json",
-            },
-        )
-    except WikiRateLimitedError:
-        current_app.logger.error(
-            "Wikipedia OpenSearch rate-limited for %r; skipping direct title fallback.",
-            search_text,
-        )
-        raise
-    except WikiVerificationError:
-        current_app.logger.error(
-            "Wikipedia OpenSearch failed for %r; trying direct title lookup.",
-            search_text,
-        )
-        return search_text
-    titles = data[1] if isinstance(data, list) and len(data) > 1 else []
-    if not titles:
-        raise WikiEntityNotFound("That is not a valid answer for this category.")
-    return titles[0]
+def _resolve_page_metadata(search_text: str) -> dict[str, Any]:
+    """Resolve submitted text to a Wikipedia page and linked Wikidata QID.
 
+    This uses MediaWiki's search generator so the initial cold-cache path gets
+    the best page candidate, pageprops, and Wikidata item in one request. The old
+    OpenSearch-then-page-metadata flow cost two Wikipedia round trips before the
+    app could even fetch the Wikidata entity.
+    """
 
-def _fetch_page_metadata(title: str) -> dict[str, Any]:
     data = _wiki_json(
         current_app.config["WIKIPEDIA_API_URL"],
         {
             "action": "query",
-            "prop": "info|pageprops|categories",
-            "titles": title,
+            "generator": "search",
+            "gsrsearch": search_text,
+            "gsrnamespace": "0",
+            "gsrlimit": "1",
+            "prop": "info|pageprops",
             "redirects": "1",
-            "cllimit": "max",
             "format": "json",
             "formatversion": "2",
         },
@@ -1050,15 +1489,78 @@ def _fetch_page_metadata(title: str) -> dict[str, Any]:
     pageprops = page.get("pageprops", {})
     return {
         "page_id": page.get("pageid"),
-        "title": page.get("title", title),
+        "title": page.get("title", search_text),
         "qid": pageprops.get("wikibase_item"),
         "disambiguation": "disambiguation" in pageprops,
-        "categories": [
-            category.get("title", "")
-            for category in page.get("categories", [])
-            if category.get("title")
-        ],
     }
+
+
+def _fetch_wikipedia_categories(title: str) -> list[str]:
+    """Fetch Wikipedia category titles only for rules that need text fallback."""
+
+    data = _wiki_json(
+        current_app.config["WIKIPEDIA_API_URL"],
+        {
+            "action": "query",
+            "prop": "categories",
+            "titles": title,
+            "redirects": "1",
+            "cllimit": "max",
+            "format": "json",
+            "formatversion": "2",
+        },
+    )
+    pages = data.get("query", {}).get("pages", [])
+    if not pages or pages[0].get("missing"):
+        raise WikiEntityNotFound("That is not a valid answer for this category.")
+    return [
+        category.get("title", "")
+        for category in pages[0].get("categories", [])
+        if category.get("title")
+    ]
+
+
+def _fetch_wikidata_direct_claims(qid: str, budget: WikiRequestBudget | None = None) -> dict[str, Any]:
+    """Fetch only direct instance-of claims for cheap obvious rejection.
+
+    ``wbgetentities`` with full claims/aliases/sitelinks can be hundreds of KB
+    for famous people. A direct ``P31`` claim fetch is tiny and enough to reject
+    common incompatible answers such as people, birds, movies, and companies for
+    categories like Fruit.
+    """
+
+    if budget:
+        budget.consume_lightweight_wikidata_fetch(qid)
+    data = _wiki_json(
+        current_app.config["WIKIDATA_API_URL"],
+        {
+            "action": "wbgetclaims",
+            "entity": qid,
+            "property": INSTANCE_OF,
+            "format": "json",
+        },
+    )
+    return {
+        "id": qid,
+        "claims": data.get("claims", {}),
+    }
+
+
+def _claim_value_qids_from_entity(entity: dict[str, Any]) -> set[str]:
+    """Extract item-valued claim QIDs from a partial or full Wikidata entity."""
+
+    value_qids: set[str] = set()
+    for claims in entity.get("claims", {}).values():
+        for claim in claims:
+            mainsnak = claim.get("mainsnak", {})
+            datavalue = mainsnak.get("datavalue", {})
+            value = datavalue.get("value")
+            if not isinstance(value, dict) or value.get("entity-type") != "item":
+                continue
+            numeric_id = value.get("numeric-id")
+            if numeric_id is not None:
+                value_qids.add(f"Q{numeric_id}")
+    return value_qids
 
 
 def _fetch_wikidata_entity(
@@ -1124,6 +1626,7 @@ def _wiki_url_json(full_url: str, retries: int = 1) -> Any:
     if _wiki_throttle_active():
         raise WikiRateLimitedError("Could not verify that answer right now.")
 
+    request_started_at = time.perf_counter()
     request = urllib.request.Request(
         full_url,
         headers={
@@ -1133,6 +1636,7 @@ def _wiki_url_json(full_url: str, retries: int = 1) -> Any:
         },
     )
     for attempt in range(retries + 1):
+        attempt_started_at = time.perf_counter()
         try:
             with urllib.request.urlopen(request, timeout=12) as response:
                 raw = response.read()
@@ -1141,8 +1645,25 @@ def _wiki_url_json(full_url: str, retries: int = 1) -> Any:
                     raw = gzip.decompress(raw)
                 elif "deflate" in encoding:
                     raw = zlib.decompress(raw)
-                return json.loads(raw.decode("utf-8"))
+                data = json.loads(raw.decode("utf-8"))
+                _log_timing(
+                    "wiki http attempt",
+                    attempt_started_at,
+                    url=full_url,
+                    attempt=attempt + 1,
+                    status="ok",
+                    bytes=len(raw),
+                )
+                _log_timing("wiki http total", request_started_at, url=full_url, attempts=attempt + 1, status="ok")
+                return data
         except urllib.error.HTTPError as exc:
+            _log_timing(
+                "wiki http attempt",
+                attempt_started_at,
+                url=full_url,
+                attempt=attempt + 1,
+                status=f"http-{exc.code}",
+            )
             retry_after = exc.headers.get("Retry-After")
             if exc.code == 429:
                 retry_after_seconds = _retry_after_seconds(retry_after)
@@ -1157,11 +1678,48 @@ def _wiki_url_json(full_url: str, retries: int = 1) -> Any:
                 raise WikiVerificationError("Could not verify that answer right now.") from exc
             time.sleep(0.5 + attempt)
         except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+            _log_timing(
+                "wiki http attempt",
+                attempt_started_at,
+                url=full_url,
+                attempt=attempt + 1,
+                status=type(exc).__name__,
+            )
             if attempt >= retries:
                 current_app.logger.error("Wiki API request failed for %s: %s", full_url, exc)
                 raise WikiVerificationError("Could not verify that answer right now.") from exc
             time.sleep(0.5 + attempt)
     raise WikiVerificationError("Could not verify that answer right now.")
+
+
+def _timed_step(label: str, callback: Any, **context: Any) -> Any:
+    """Run a small verification step and log its elapsed time.
+
+    These logs are intentionally fine-grained because live verification latency
+    can come from several places: remote HTTP calls, local SQLite writes, or the
+    membership walk. Keeping each step visible makes slow answers diagnosable
+    without changing the player-facing API.
+    """
+
+    started_at = time.perf_counter()
+    try:
+        result = callback()
+    except Exception:
+        _log_timing(label, started_at, status="error", **context)
+        raise
+    _log_timing(label, started_at, status="ok", **context)
+    return result
+
+
+def _log_timing(label: str, started_at: float, **context: Any) -> None:
+    """Log one timing sample with compact key/value context."""
+
+    elapsed_ms = (time.perf_counter() - started_at) * 1000
+    context_text = " ".join(f"{key}={value!r}" for key, value in sorted(context.items()))
+    if context_text:
+        current_app.logger.info("%s took %.1fms %s", label, elapsed_ms, context_text)
+    else:
+        current_app.logger.info("%s took %.1fms", label, elapsed_ms)
 
 
 def _wiki_throttle_active() -> bool:
@@ -1218,6 +1776,7 @@ def _upsert_wiki_entity(
     entity: dict[str, Any],
     page: dict[str, Any] | None,
     submitted_text: str | None,
+    claims_complete: bool = True,
 ) -> int:
     qid = entity["id"]
     labels = entity.get("labels", {})
@@ -1230,14 +1789,24 @@ def _upsert_wiki_entity(
     db.execute(
         """
         INSERT INTO wiki_entities
-            (qid, page_id, page_title, canonical_name, description, sitelinks, fetched_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            (qid, page_id, page_title, canonical_name, description, sitelinks, claims_complete, fetched_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(qid) DO UPDATE SET
             page_id = COALESCE(excluded.page_id, wiki_entities.page_id),
             page_title = excluded.page_title,
             canonical_name = excluded.canonical_name,
-            description = excluded.description,
-            sitelinks = excluded.sitelinks,
+            description = CASE
+                WHEN excluded.claims_complete = 1 THEN excluded.description
+                ELSE wiki_entities.description
+            END,
+            sitelinks = CASE
+                WHEN excluded.claims_complete = 1 THEN excluded.sitelinks
+                ELSE wiki_entities.sitelinks
+            END,
+            claims_complete = CASE
+                WHEN wiki_entities.claims_complete = 1 THEN 1
+                ELSE excluded.claims_complete
+            END,
             fetched_at = excluded.fetched_at,
             updated_at = excluded.updated_at
         """,
@@ -1248,6 +1817,7 @@ def _upsert_wiki_entity(
             canonical_name,
             descriptions.get("en", {}).get("value"),
             len(sitelinks),
+            1 if claims_complete else 0,
             now,
             now,
         ),
@@ -1374,4 +1944,5 @@ def _entity_from_row(row: sqlite3.Row) -> CachedWikiEntity:
         page_title=row["page_title"],
         canonical_name=row["canonical_name"],
         description=row["description"],
+        claims_complete=bool(row["claims_complete"]),
     )
