@@ -10,7 +10,12 @@
   let elapsed = 0;
   let intervalId = null;
   let gameEnded = false;
-  let answerPending = false;
+  // Submitted answers wait here while the server verifies earlier answers.
+  // Keeping a local FIFO queue lets the player keep typing without creating
+  // concurrent writes against the same game session.
+  const answerQueue = [];
+  let isProcessingAnswerQueue = false;
+  let answerInFlight = false;
 
   const countdownEl = document.getElementById("countdown");
   const gameArea = document.getElementById("gameArea");
@@ -81,6 +86,7 @@
   async function finishGame(reason) {
     if (gameEnded) return;
     gameEnded = true;
+    answerQueue.length = 0;
     clearInterval(intervalId);
     answerInput.disabled = true;
     stopBtn.disabled = true;
@@ -132,43 +138,91 @@
     }, 800);
   }
 
-  answerForm.addEventListener("submit", async function (event) {
+  async function applyAnswerResult(data) {
+    // Every server response uses the same state update path that the old
+    // single-answer submit handler used. Keeping this centralized prevents
+    // queued answers from drifting away from the existing score, timer,
+    // accepted-list, timeout, and completion behavior.
+    if (data.status === "too_late") {
+      answerQueue.length = 0;
+      await finishGame("timeout");
+      return;
+    }
+    if (data.game_ended && data.results_url) {
+      gameEnded = true;
+      answerQueue.length = 0;
+      clearInterval(intervalId);
+      window.location.href = data.results_url;
+      return;
+    }
+    if (typeof data.current_score === "number") scoreEl.textContent = data.current_score;
+    if (typeof data.remaining_seconds === "number") remaining = data.remaining_seconds;
+    if (typeof data.elapsed_seconds === "number") elapsed = data.elapsed_seconds;
+    renderTimer();
+    renderAnswers(data.accepted_answers || []);
+    const good = ["accepted", "replaced", "completed"].includes(data.status);
+    setMessage(data.message, good ? "success" : "");
+  }
+
+  function renderQueueProgress() {
+    // The queue no longer disables typing, so the message area gives players a
+    // lightweight signal that their submitted answers are still moving through
+    // the ordered verification pipeline.
+    const answerCount = answerQueue.length + (answerInFlight ? 1 : 0);
+    if (gameEnded || answerCount === 0) return;
+    setMessage(`Checking ${answerCount} ${answerCount === 1 ? "answer" : "answers"}...`, "");
+  }
+
+  async function processAnswerQueue() {
+    // Only one worker may drain the queue. New submits can add more entries
+    // while this loop is awaiting the API, and the loop will pick them up after
+    // the current answer finishes.
+    if (isProcessingAnswerQueue) return;
+    isProcessingAnswerQueue = true;
+
+    while (!gameEnded && answerQueue.length > 0) {
+      // The server and database remain the source of truth for scoring and
+      // timers, so requests are intentionally processed one at a time in the
+      // exact order the player submitted them.
+      const answer = answerQueue.shift();
+      answerInFlight = true;
+      renderQueueProgress();
+      try {
+        const data = await postJSON(`/api/games/${config.gameId}/answers`, { answer });
+        await applyAnswerResult(data);
+      } catch (error) {
+        setMessage(error.message, "danger-text");
+      } finally {
+        answerInFlight = false;
+      }
+    }
+
+    isProcessingAnswerQueue = false;
+    if (!gameEnded) {
+      renderQueueProgress();
+      answerInput.disabled = false;
+      answerInput.focus();
+    }
+  }
+
+  function enqueueAnswer(answer) {
+    // Submitting is now intentionally decoupled from verification: the typed
+    // text is captured, the field clears immediately, and the queue worker owns
+    // the eventual API call.
+    answerQueue.push(answer);
+    renderQueueProgress();
+    processAnswerQueue();
+  }
+
+  answerForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    if (gameEnded || answerPending) return;
+    if (gameEnded) return;
     const answer = answerInput.value.trim();
     if (!answer) return;
     answerInput.value = "";
-    answerPending = true;
-    answerInput.disabled = true;
-
-    try {
-      const data = await postJSON(`/api/games/${config.gameId}/answers`, { answer });
-      if (data.status === "too_late") {
-        await finishGame("timeout");
-        return;
-      }
-      if (data.game_ended && data.results_url) {
-        gameEnded = true;
-        clearInterval(intervalId);
-        window.location.href = data.results_url;
-        return;
-      }
-      if (typeof data.current_score === "number") scoreEl.textContent = data.current_score;
-      if (typeof data.remaining_seconds === "number") remaining = data.remaining_seconds;
-      if (typeof data.elapsed_seconds === "number") elapsed = data.elapsed_seconds;
-      renderTimer();
-      renderAnswers(data.accepted_answers || []);
-      const good = ["accepted", "replaced", "completed"].includes(data.status);
-      setMessage(data.message, good ? "success" : "");
-    } catch (error) {
-      setMessage(error.message, "danger-text");
-    } finally {
-      answerPending = false;
-      if (!gameEnded) {
-        answerInput.disabled = false;
-        answerInput.focus();
-      }
-    }
+    answerInput.disabled = false;
+    answerInput.focus();
+    enqueueAnswer(answer);
   });
 
   stopBtn.addEventListener("click", function () {

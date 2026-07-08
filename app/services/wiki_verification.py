@@ -87,6 +87,12 @@ EXCLUDE_ABSTRACT_ANSWERS = {"person", "animal", "place", "creative_work", "organ
 
 
 CATEGORY_RULES: dict[str, dict[str, Any]] = {
+    # ``category_patterns_first`` means a rule should try bounded Wikipedia page
+    # categories before walking Wikidata relationships. That is mainly useful
+    # for person-role categories where broad human entities can have many noisy
+    # occupation/position links. ``category_patterns_decide_miss`` is stricter:
+    # if the page categories do not match, gameplay treats the answer as invalid
+    # instead of spending related-QID budget on a live graph walk.
     "animals": {
         "targets": ANIMAL_BRANCH_TARGETS,
         "excluded_buckets": EXCLUDE_ANIMAL_ANSWERS,
@@ -171,8 +177,21 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
         "targets": {"Q639669"},
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
+        "category_patterns": {
+            "musicians",
+            "singers",
+            "songwriters",
+            "rappers",
+            "guitarists",
+            "pianists",
+            "drummers",
+            "violinists",
+            "composers",
+        },
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
-        "reason": "occupation path reaches musician",
+        "reason": "occupation path or page categories identify a musician",
     },
     "dog-breeds": {
         "targets": {"Q39367"},
@@ -255,8 +274,11 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {POSITION_HELD},
         "max_depth": 2,
+        "category_patterns": {"presidents of the united states", "united states presidents"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
-        "reason": "position-held claim reaches president of the United States",
+        "reason": "position-held claim or page categories identify a president of the United States",
     },
     "world-leaders": {
         "targets": {"Q48352", "Q2285706"},
@@ -276,29 +298,41 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
         "targets": {"Q4964182"},
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
+        "category_patterns": {"philosophers"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
-        "reason": "occupation path reaches philosopher",
+        "reason": "occupation path or page categories identify a philosopher",
     },
     "painters": {
         "targets": {"Q1028181"},
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
+        "category_patterns": {"painters"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
-        "reason": "occupation path reaches painter",
+        "reason": "occupation path or page categories identify a painter",
     },
     "authors": {
         "targets": {"Q482980"},
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
+        "category_patterns": {"authors", "writers", "novelists", "essayists", "screenwriters", "playwrights"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
-        "reason": "occupation path reaches author",
+        "reason": "occupation path or page categories identify an author",
     },
     "poets": {
         "targets": {"Q49757"},
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
+        "category_patterns": {"poets"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
-        "reason": "occupation path reaches poet",
+        "reason": "occupation path or page categories identify a poet",
     },
     "anime": {
         "targets": {"Q1107"},
@@ -312,8 +346,11 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
         "targets": {"Q33999"},
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
+        "category_patterns": {"actors", "actresses"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
-        "reason": "occupation path reaches actor",
+        "reason": "occupation path or page categories identify an actor",
     },
     "albums": {
         "targets": {"Q482994"},
@@ -328,6 +365,8 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "category_patterns": {"sportspeople", "athletes", "players"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
         "reason": "occupation path or page categories identify an athlete",
     },
@@ -351,6 +390,8 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
         "category_patterns": {"classical composers"},
+        "category_patterns_first": True,
+        "category_patterns_decide_miss": True,
         "mode": "flat",
         "reason": "occupation path or page categories identify a classical composer",
     },
@@ -391,7 +432,16 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
         "targets": {"Q901"},
         "excluded_buckets": EXCLUDE_PERSON_ANSWERS - {"person"},
         "properties": {OCCUPATION, SUBCLASS_OF},
-        "category_patterns": {"scientists"},
+        "category_patterns": {
+            "scientists",
+            "physicists",
+            "chemists",
+            "biologists",
+            "mathematicians",
+            "astronomers",
+            "computer scientists",
+        },
+        "category_patterns_first": True,
         "mode": "flat",
         "reason": "occupation path or page categories identify a scientist",
     },
@@ -959,6 +1009,8 @@ def evaluate_category_membership(
     slug = category["slug"]
     rule = CATEGORY_RULES.get(slug)
     properties = set(rule.get("properties", set())) if rule else set()
+    category_patterns = set(rule.get("category_patterns", set())) if rule else set()
+    result: MembershipResult | None = None
     if not rule:
         current_app.logger.error("Category %r has no live wiki membership rule.", slug)
         result = MembershipResult(False, "No live verification rule is configured for this category.")
@@ -969,31 +1021,52 @@ def evaluate_category_membership(
         qid=entity.qid,
     ):
         result = MembershipResult(False, "Excluded by category rule.")
-    elif properties and _timed_step(
-        "wiki membership target path check",
-        lambda: _has_any_path(
-            db,
-            entity.qid,
-            set(rule["targets"]),
-            properties,
-            max_depth=int(rule.get("max_depth", 10)),
-            max_nodes=budget.live_path_max_nodes if budget else 40,
-            budget=budget,
-            walk_name="target",
-        ),
-        category=slug,
-        qid=entity.qid,
-    ):
-        result = MembershipResult(True, rule["reason"])
-    elif _timed_step(
-        "wiki membership category pattern check",
-        lambda: _has_any_matching_category(db, entity, set(rule.get("category_patterns", set()))),
-        category=slug,
-        qid=entity.qid,
-    ):
-        result = MembershipResult(True, rule["reason"])
     else:
-        result = MembershipResult(False, "That is not a valid answer for this category.")
+        pattern_checked = False
+        if category_patterns and rule.get("category_patterns_first"):
+            pattern_checked = True
+            if _timed_step(
+                "wiki membership category pattern check",
+                lambda: _has_any_matching_category(db, entity, category_patterns),
+                category=slug,
+                qid=entity.qid,
+            ):
+                # Category-pattern evidence is bounded to one Wikipedia category
+                # lookup, so opted-in rules can use it before a cold Wikidata
+                # graph walk. This especially helps person-role categories such
+                # as Actors: obvious actors tend to have actor page categories.
+                result = MembershipResult(True, rule["reason"])
+            elif rule.get("category_patterns_decide_miss"):
+                # For selected role categories, a category miss is an intentional
+                # live-gameplay stop. Accepting every obscure true positive is
+                # less important than avoiding a non-actor politician spending
+                # the whole related-QID budget through occupation/position links.
+                result = MembershipResult(False, "That is not a valid answer for this category.")
+        if result is None and properties and _timed_step(
+            "wiki membership target path check",
+            lambda: _has_any_path(
+                db,
+                entity.qid,
+                set(rule["targets"]),
+                properties,
+                max_depth=int(rule.get("max_depth", 10)),
+                max_nodes=budget.live_path_max_nodes if budget else 40,
+                budget=budget,
+                walk_name="target",
+            ),
+            category=slug,
+            qid=entity.qid,
+        ):
+            result = MembershipResult(True, rule["reason"])
+        elif result is None and category_patterns and not pattern_checked and _timed_step(
+            "wiki membership category pattern check",
+            lambda: _has_any_matching_category(db, entity, category_patterns),
+            category=slug,
+            qid=entity.qid,
+        ):
+            result = MembershipResult(True, rule["reason"])
+        elif result is None:
+            result = MembershipResult(False, "That is not a valid answer for this category.")
 
     db.execute(
         """
@@ -1434,17 +1507,17 @@ def _has_any_matching_category(
 ) -> bool:
     """Return whether cached Wikipedia categories match configured text hints.
 
-    Wikidata paths are preferred for categories with crisp structured claims,
-    but some game categories, especially fictional universes and broad award
-    groupings, are more consistently exposed through Wikipedia category titles.
-    The patterns are normalized with the same helper used for cached category
-    titles, then checked as substrings so labels such as "American Nobel
-    laureates" can still satisfy the broader "Nobel laureates" rule.
+    Some game categories, especially fictional universes, person-role buckets,
+    and broad award groupings, are consistently exposed through Wikipedia
+    category titles. The patterns are normalized with the same helper used for
+    cached category titles, then checked as substrings so labels such as
+    "American Nobel laureates" can still satisfy the broader "Nobel laureates"
+    rule.
 
     Categories are fetched lazily here instead of during the initial answer
-    resolution. Most answers are accepted or rejected through Wikidata claims,
-    so fetching page categories up front added a full Wikipedia round trip to
-    every cold-cache answer even when no category-pattern fallback was needed.
+    resolution. Rules can opt into checking these patterns before a path walk
+    when page categories are the safer gameplay signal; otherwise this remains a
+    fallback after structured Wikidata checks.
     """
 
     if not category_patterns:
