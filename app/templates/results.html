@@ -20,6 +20,18 @@
     </ol>
   </div>
 
+  {% if game.status == "ended" %}
+    <div class="share-panel">
+      <h2>Challenge a Friend</h2>
+      <p class="muted">Generate a shareable link that starts the same {{ mode.name }} / {{ game.category_name }} game for someone else.</p>
+      <div class="challenge-link-row">
+        <button id="generateChallengeLinkBtn" class="secondary" type="button">Generate Challenge Link</button>
+        <input id="challengeLinkInput" class="challenge-link-input hidden" type="text" readonly aria-label="Challenge link">
+      </div>
+      <p id="challengeLinkStatus" class="status-line"></p>
+    </div>
+  {% endif %}
+
   {% if can_submit %}
     <div id="submitPanel" class="submit-panel">
       <p>Submit this score to the {{ mode.name }} / {{ game.category_name }} leaderboard?</p>

@@ -381,11 +381,28 @@ button:disabled {
   font-weight: 800;
 }
 
-.submit-panel {
+.submit-panel,
+.share-panel {
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 18px;
   margin: 20px 0;
+}
+
+.share-panel h2 {
+  margin-bottom: 8px;
+}
+
+.challenge-link-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.challenge-link-input {
+  flex: 1;
+  min-width: min(100%, 280px);
 }
 
 .leaderboard-block {
@@ -595,6 +612,7 @@ button:disabled {
 
   .inline-form,
   .actions,
+  .challenge-link-row,
   .category-tile {
     flex-direction: column;
     align-items: stretch;

@@ -93,6 +93,7 @@
     const saveUsernameBtn = document.getElementById("saveUsernameBtn");
     const playSelectedBtn = document.getElementById("playSelectedBtn");
     const selectionStatus = document.getElementById("selectionStatus");
+    const challengePanel = document.getElementById("challengePanel");
     const modeBtns = document.querySelectorAll(".mode-select-btn");
     const categorySelectBtns = document.querySelectorAll(".category-select-btn");
     const categoryBtns = document.querySelectorAll(".play-category-btn");
@@ -139,6 +140,24 @@
       }
     }
 
+    function applyChallengeDefaults() {
+      if (!challengePanel) return;
+      selectedMode = challengePanel.dataset.gameMode;
+      selectedCategorySlug = challengePanel.dataset.categorySlug;
+      selectedCategoryName = challengePanel.dataset.categoryName || "the challenged category";
+
+      // Challenge links are really presets for a new independent run. Marking
+      // the matching buttons as selected keeps the page honest about what will
+      // be created if the receiver accepts, while still allowing them to change
+      // the mode or category before starting.
+      modeBtns.forEach(function (btn) {
+        btn.classList.toggle("selected", btn.dataset.gameMode === selectedMode);
+      });
+      categorySelectBtns.forEach(function (btn) {
+        btn.classList.toggle("selected", btn.dataset.categorySlug === selectedCategorySlug);
+      });
+    }
+
     modeBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
         selectedMode = btn.dataset.gameMode;
@@ -161,6 +180,7 @@
     });
 
     if (playSelectedBtn) {
+      applyChallengeDefaults();
       playSelectedBtn.addEventListener("click", async function () {
         if (!selectedMode || !selectedCategorySlug) return;
         playSelectedBtn.disabled = true;

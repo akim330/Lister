@@ -4,8 +4,22 @@
 {% block content %}
 <section class="hero card">
   <p class="eyebrow">A fast listing game</p>
-  <h1>Choose your mode, pick a category, and start listing.</h1>
-  <p class="muted">Duplicates do not count. Minor typos and aliases are supported.</p>
+  {% if challenge %}
+    <div
+      id="challengePanel"
+      class="challenge-panel"
+      data-game-mode="{{ challenge.mode_slug }}"
+      data-category-slug="{{ challenge.category_slug }}"
+      data-category-name="{{ challenge.category_name }}"
+    >
+      <p class="eyebrow">Challenge received</p>
+      <h1>Beat {{ challenge.score }} in {{ challenge.mode_name }} / {{ challenge.category_name }}.</h1>
+      <p class="muted">This starts your own run with the same mode and category.</p>
+    </div>
+  {% else %}
+    <h1>Choose your mode, pick a category, and start listing.</h1>
+    <p class="muted">Duplicates do not count. Minor typos and aliases are supported.</p>
+  {% endif %}
 
   <div class="username-panel">
     <label for="usernameInput">Username</label>
@@ -17,7 +31,7 @@
   </div>
 
   <div class="actions">
-    <button id="playSelectedBtn" class="primary" disabled>Play</button>
+    <button id="playSelectedBtn" class="primary" disabled>{% if challenge %}Accept Challenge{% else %}Play{% endif %}</button>
     <a class="button secondary" href="/leaderboards">View All Leaderboards</a>
   </div>
   <p id="selectionStatus" class="status-line">Choose a mode and category to play.</p>
