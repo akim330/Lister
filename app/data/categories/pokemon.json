@@ -1,0 +1,9 @@
+{
+  "slug": "pokemon",
+  "name": "Pokemon",
+  "mode": "flat",
+  "bucket": "Fiction",
+  "bucket_order": 6,
+  "display_order": 1,
+  "elements": []
+}

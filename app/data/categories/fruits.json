@@ -1,0 +1,200 @@
+{
+  "slug": "fruits",
+  "name": "Fruits",
+  "mode": "flat",
+  "bucket": "Everyday life",
+  "bucket_order": 7,
+  "display_order": 3,
+  "source": "wikidata",
+  "last_fetched_at": "2026-07-07T21:23:13+00:00",
+  "elements": [
+    {
+      "key": "apple",
+      "name": "apple",
+      "aliases": [
+        "apple fruit",
+        "apples"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q89"
+    },
+    {
+      "key": "banana",
+      "name": "banana",
+      "aliases": [
+        "banana fruit, bananas",
+        "bananas"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q503"
+    },
+    {
+      "key": "blackberry",
+      "name": "blackberry",
+      "aliases": [
+        "blackberries"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q19842373"
+    },
+    {
+      "key": "blueberry",
+      "name": "Blueberry",
+      "aliases": [
+        "blueberries"
+      ],
+      "is_playable_answer": true
+    },
+    {
+      "key": "cantaloupe",
+      "name": "Cantaloupe",
+      "aliases": [
+        "cantaloupes"
+      ],
+      "is_playable_answer": true
+    },
+    {
+      "key": "cherry",
+      "name": "Cherry",
+      "aliases": [
+        "cherries"
+      ],
+      "is_playable_answer": true
+    },
+    {
+      "key": "grape",
+      "name": "grape",
+      "aliases": [
+        "grapes",
+        "grapes, 🍇"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q10978"
+    },
+    {
+      "key": "kiwi",
+      "name": "Kiwi",
+      "aliases": [
+        "kiwifruit",
+        "kiwis"
+      ],
+      "is_playable_answer": true
+    },
+    {
+      "key": "lemon",
+      "name": "lemon",
+      "aliases": [
+        "lemons"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1093742"
+    },
+    {
+      "key": "lime",
+      "name": "lime",
+      "aliases": [
+        "lime fruit, green lemon, sour lime",
+        "limes"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q13195"
+    },
+    {
+      "key": "mango",
+      "name": "mango",
+      "aliases": [
+        "mangoes",
+        "mangoes, Mangifera indica",
+        "mangos"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q169"
+    },
+    {
+      "key": "orange",
+      "name": "orange",
+      "aliases": [
+        "citrus orange, orange fruit",
+        "oranges"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q13191"
+    },
+    {
+      "key": "papaya",
+      "name": "papaya",
+      "aliases": [
+        "papayas",
+        "pawpaw, papaw"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q12330939"
+    },
+    {
+      "key": "peach",
+      "name": "peach",
+      "aliases": [
+        "fruit of peach trees, peach fruit, peachfruit",
+        "peaches"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q13202263"
+    },
+    {
+      "key": "pear",
+      "name": "pear",
+      "aliases": [
+        "pears"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q13099586"
+    },
+    {
+      "key": "pineapple",
+      "name": "pineapple",
+      "aliases": [
+        "anana, ananas",
+        "pineapples"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q10817602"
+    },
+    {
+      "key": "plum",
+      "name": "plum",
+      "aliases": [
+        "plums"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q12372598"
+    },
+    {
+      "key": "raspberry",
+      "name": "raspberry",
+      "aliases": [
+        "raspberries",
+        "raspberries, hindberry"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q13179"
+    },
+    {
+      "key": "strawberry",
+      "name": "strawberry",
+      "aliases": [
+        "strawberries"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q14458220"
+    },
+    {
+      "key": "watermelon",
+      "name": "watermelon",
+      "aliases": [
+        "watermelons"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q38645"
+    }
+  ]
+}

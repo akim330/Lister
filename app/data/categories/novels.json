@@ -1,0 +1,9 @@
+{
+  "slug": "novels",
+  "name": "Novels",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 13,
+  "elements": []
+}

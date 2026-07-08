@@ -1,0 +1,9 @@
+{
+  "slug": "authors",
+  "name": "Authors",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 2,
+  "elements": []
+}

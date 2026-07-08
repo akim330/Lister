@@ -1,0 +1,9 @@
+{
+  "slug": "chemical-elements",
+  "name": "Chemical elements",
+  "mode": "flat",
+  "bucket": "Nature and Science",
+  "bucket_order": 2,
+  "display_order": 2,
+  "elements": []
+}

@@ -1,0 +1,9 @@
+{
+  "slug": "sports-franchises",
+  "name": "Sports Franchises",
+  "mode": "flat",
+  "bucket": "Sports",
+  "bucket_order": 8,
+  "display_order": 2,
+  "elements": []
+}

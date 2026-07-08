@@ -1,0 +1,9 @@
+{
+  "slug": "movies",
+  "name": "Movies",
+  "mode": "flat",
+  "bucket": "Fiction",
+  "bucket_order": 6,
+  "display_order": 5,
+  "elements": []
+}

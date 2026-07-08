@@ -1,0 +1,9 @@
+{
+  "slug": "lord-of-the-rings-characters",
+  "name": "Lord of the Rings characters",
+  "mode": "flat",
+  "bucket": "Fiction",
+  "bucket_order": 6,
+  "display_order": 4,
+  "elements": []
+}

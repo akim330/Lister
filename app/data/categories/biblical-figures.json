@@ -1,0 +1,9 @@
+{
+  "slug": "biblical-figures",
+  "name": "Biblical figures",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 9,
+  "elements": []
+}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Leaderboards — Lister{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+  <h1>Leaderboards</h1>
+  <p class="muted">Top 10 per category and mode. Each player appears once on each board with their best submitted result.</p>
+</section>
+
+<div class="leaderboard-grid">
+  {% for card in cards %}
+    <section class="card leaderboard-card">
+      <h2>{{ card.category.name }}</h2>
+      <div class="mode-switcher" role="tablist" aria-label="{{ card.category.name }} leaderboard mode">
+        {% for board in card.boards %}
+          <button
+            class="mode-switch-btn{% if loop.first %} selected{% endif %}"
+            type="button"
+            role="tab"
+            aria-selected="{{ 'true' if loop.first else 'false' }}"
+            data-board-target="{{ card.category.slug }}-{{ board.mode.slug }}"
+          >
+            {{ board.mode.name }}
+          </button>
+        {% endfor %}
+      </div>
+      {% for board in card.boards %}
+        <div
+          class="leaderboard-board{% if not loop.first %} hidden{% endif %}"
+          data-board-id="{{ card.category.slug }}-{{ board.mode.slug }}"
+        >
+          <ol class="leaderboard-list">
+            {% for entry in board.entries %}
+              <li>
+                <span class="rank">{{ entry.rank }}.</span>
+                <strong>{{ entry.username }}</strong>
+                {% if board.mode.leaderboard_metric == "elapsed" %}
+                  — {{ entry.elapsed_seconds // 60 }}:{{ "%02d"|format(entry.elapsed_seconds % 60) }}
+                {% else %}
+                  — {{ entry.score }}
+                {% endif %}
+                <a class="inline-link" href="{{ entry.results_url }}">View list</a>
+              </li>
+            {% else %}
+              <li class="muted">No submitted scores yet.</li>
+            {% endfor %}
+          </ol>
+          <button class="secondary play-category-btn" data-game-mode="{{ board.mode.slug }}" data-category-slug="{{ card.category.slug }}">Play this board</button>
+        </div>
+      {% endfor %}
+    </section>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll(".leaderboard-card").forEach(function (card) {
+    const switches = card.querySelectorAll(".mode-switch-btn");
+    const boards = card.querySelectorAll(".leaderboard-board");
+    switches.forEach(function (button) {
+      button.addEventListener("click", function () {
+        const target = button.dataset.boardTarget;
+        switches.forEach(function (otherButton) {
+          const selected = otherButton === button;
+          otherButton.classList.toggle("selected", selected);
+          otherButton.setAttribute("aria-selected", selected ? "true" : "false");
+        });
+        boards.forEach(function (board) {
+          board.classList.toggle("hidden", board.dataset.boardId !== target);
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

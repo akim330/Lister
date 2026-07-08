@@ -1,0 +1,9 @@
+{
+  "slug": "women",
+  "name": "Women",
+  "mode": "flat",
+  "bucket": "People",
+  "bucket_order": 3,
+  "display_order": 1,
+  "elements": []
+}

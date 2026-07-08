@@ -1,0 +1,9 @@
+{
+  "slug": "languages",
+  "name": "Languages",
+  "mode": "flat",
+  "bucket": "Societies and Politics",
+  "bucket_order": 5,
+  "display_order": 4,
+  "elements": []
+}

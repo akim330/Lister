@@ -1,0 +1,9 @@
+{
+  "slug": "olympic-sports",
+  "name": "Olympic Sports",
+  "mode": "flat",
+  "bucket": "Sports",
+  "bucket_order": 8,
+  "display_order": 1,
+  "elements": []
+}

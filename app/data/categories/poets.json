@@ -1,0 +1,9 @@
+{
+  "slug": "poets",
+  "name": "Poets",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 8,
+  "elements": []
+}

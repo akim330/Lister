@@ -1,0 +1,9 @@
+{
+  "slug": "harry-potter-characters",
+  "name": "Harry Potter characters",
+  "mode": "flat",
+  "bucket": "Fiction",
+  "bucket_order": 6,
+  "display_order": 3,
+  "elements": []
+}

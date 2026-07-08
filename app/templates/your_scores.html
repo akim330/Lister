@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Your Scores — Lister{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Your Scores</h1>
+  <p class="muted">These are saved privately for this browser.</p>
+  <div id="scoresContainer" class="scores-list">
+    <p class="muted">Loading scores...</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scores.js') }}"></script>
+{% endblock %}

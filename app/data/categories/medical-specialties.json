@@ -1,0 +1,9 @@
+{
+  "slug": "medical-specialties",
+  "name": "Medical specialties",
+  "mode": "flat",
+  "bucket": "Misc",
+  "bucket_order": 9,
+  "display_order": 1,
+  "elements": []
+}

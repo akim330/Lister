@@ -1,0 +1,1803 @@
+{
+  "slug": "countries",
+  "name": "Countries",
+  "mode": "flat",
+  "bucket": "Geography",
+  "bucket_order": 1,
+  "display_order": 1,
+  "source": "wikidata",
+  "last_fetched_at": "2026-07-07T21:23:13+00:00",
+  "elements": [
+    {
+      "key": "afghanistan",
+      "name": "Afghanistan",
+      "aliases": [
+        "Affghanistan, Affghanisthan, Affghaunistan, Afghania, Afghanisthan, Afghaunistan, Afghaunistaun"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q889"
+    },
+    {
+      "key": "albania",
+      "name": "Albania",
+      "aliases": [
+        "Republic of Albania, People's Republic of Albania, People's Socialist Republic of Albania, Republika Popullore e Shqiperise, Republika Popullore Socialiste e Shqiperise, Shqipërisë"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q222"
+    },
+    {
+      "key": "algeria",
+      "name": "Algeria",
+      "aliases": [
+        "Djazaïr, Dzayer, People's Democratic Republic of Algeria"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q262"
+    },
+    {
+      "key": "andorra",
+      "name": "Andorra",
+      "aliases": [
+        "Principality of Andorra, Principality of the Valleys of Andorra"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q228"
+    },
+    {
+      "key": "angola",
+      "name": "Angola",
+      "aliases": [
+        "Ngola, ao, Republic of Angola"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q916"
+    },
+    {
+      "key": "antigua_and_barbuda",
+      "name": "Antigua and Barbuda",
+      "aliases": [
+        "Antigua-Barbuda, Antigua & Barbuda, Antigua–Barbuda"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q781"
+    },
+    {
+      "key": "argentina",
+      "name": "Argentina",
+      "aliases": [
+        "Argentine Republic, Republic of Argentina, Republica Argentina"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q414"
+    },
+    {
+      "key": "armenia",
+      "name": "Armenia",
+      "aliases": [
+        "Hayastan, Hayastani Hanrapetut’yun, Republic of Armenia, Հայաստան"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q399"
+    },
+    {
+      "key": "australia",
+      "name": "Australia",
+      "aliases": [
+        "Down Under, Oz, Stria, Commonwealth of Australia, New Holland, Straya, Nova Hollandia, Aussieland, New Hollandia, Stralia, The Commonwealth of Australia, 'Straya"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q408"
+    },
+    {
+      "key": "austria",
+      "name": "Austria",
+      "aliases": [
+        "Republic of Austria"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q40"
+    },
+    {
+      "key": "azerbaijan",
+      "name": "Azerbaijan",
+      "aliases": [
+        "Republic of Azerbaijan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q227"
+    },
+    {
+      "key": "bahrain",
+      "name": "Bahrain",
+      "aliases": [
+        "bh, Bahrein Islands, Dawlat al-Bahrain, ISO 3166-1:BH, Kingdom of Bahrain, Mamlakat al-Baḥrayn"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q398"
+    },
+    {
+      "key": "bangladesh",
+      "name": "Bangladesh",
+      "aliases": [
+        "bd, Bangla Desh, Country of Bengal, Land of Bengal, People's Republic of Bangladesh"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q902"
+    },
+    {
+      "key": "barbados",
+      "name": "Barbados",
+      "aliases": [
+        "BAR, Barbadoes, bb"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q244"
+    },
+    {
+      "key": "belarus",
+      "name": "Belarus",
+      "aliases": [
+        "by, White Russia, Belorussia, Bielaruś, Bielorussia, Byeloruss, Byelorussia, Republic of Belarus, Respublika Belarus', Respublika Bielaruś, White Ruthenia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q184"
+    },
+    {
+      "key": "belgium",
+      "name": "Belgium",
+      "aliases": [
+        "Kingdom of Belgium"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q31"
+    },
+    {
+      "key": "belize",
+      "name": "Belize",
+      "aliases": [
+        "bz"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q242"
+    },
+    {
+      "key": "benin",
+      "name": "Benin",
+      "aliases": [
+        "Dahomey, BJ, Republic of Benin, BEN"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q962"
+    },
+    {
+      "key": "bhutan",
+      "name": "Bhutan",
+      "aliases": [
+        "bt, BHU, Kingdom of Bhutan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q917"
+    },
+    {
+      "key": "bolivia",
+      "name": "Bolivia",
+      "aliases": [
+        "Bolivia (Plurinational State of), Plurinational State of Bolivia, Republic of Bolivia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q750"
+    },
+    {
+      "key": "bosnia_and_herzegovina",
+      "name": "Bosnia and Herzegovina",
+      "aliases": [
+        "ba, Bosnia & Herzegovina, Bosnia and Hercegovina, Bosnia-Herzegovina"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q225"
+    },
+    {
+      "key": "botswana",
+      "name": "Botswana",
+      "aliases": [
+        "bw, Lefatshe la Botswana, Republic of Botswana"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q963"
+    },
+    {
+      "key": "brazil",
+      "name": "Brazil",
+      "aliases": [
+        "Federative Republic of Brazil"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q155"
+    },
+    {
+      "key": "brunei",
+      "name": "Brunei",
+      "aliases": [
+        "bn, BRN, BRU, Brunei Darussalam, Nation of Brunei, the Abode of Peace, Negara Brunei Darussalam"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q921"
+    },
+    {
+      "key": "bulgaria",
+      "name": "Bulgaria",
+      "aliases": [
+        "Republic of Bulgaria, Bulgarian Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q219"
+    },
+    {
+      "key": "burkina_faso",
+      "name": "Burkina Faso",
+      "aliases": [
+        "bf, Republic of Burkina Faso, Republic of Upper Volta (-1984)"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q965"
+    },
+    {
+      "key": "burundi",
+      "name": "Burundi",
+      "aliases": [
+        "bi, Gouvernement du Burundi, Republic of Burundi, Republika y'Uburundi"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q967"
+    },
+    {
+      "key": "cambodia",
+      "name": "Cambodia",
+      "aliases": [
+        "Kamboja, Kingdom of Cambodia, kh, Camboya, Campuchia, Kambodzha, Kampuchea"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q424"
+    },
+    {
+      "key": "cameroon",
+      "name": "Cameroon",
+      "aliases": [
+        "Republic of Cameroon"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1009"
+    },
+    {
+      "key": "canada",
+      "name": "Canada",
+      "aliases": [
+        "Can"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q16"
+    },
+    {
+      "key": "cape_verde",
+      "name": "Cape Verde",
+      "aliases": [
+        "Cape Verde Islands, Republic of Cabo Verde, Republic of Cape Verde"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1011"
+    },
+    {
+      "key": "central_african_republic",
+      "name": "Central African Republic",
+      "aliases": [
+        "Central Africa, cf"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q929"
+    },
+    {
+      "key": "chad",
+      "name": "Chad",
+      "aliases": [
+        "GUM, CHA, td, Republic of Chad"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q657"
+    },
+    {
+      "key": "chile",
+      "name": "Chile",
+      "aliases": [
+        "CHI, Republic of Chile"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q298"
+    },
+    {
+      "key": "colombia",
+      "name": "Colombia",
+      "aliases": [
+        "Colombiá, Republic of Colombia, The Republic of Colombia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q739"
+    },
+    {
+      "key": "comoros",
+      "name": "Comoros",
+      "aliases": [
+        "the Comoros, km, al-Ittiḥād al-Qumurī, Juzur al-Qamar, Juzur al-Qumur, Massiwa ya komori, ouvoimoja wakomori, Udzima wa Komori, Union des Comores, Union of the Comoros"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q970"
+    },
+    {
+      "key": "costa_rica",
+      "name": "Costa Rica",
+      "aliases": [
+        "cr, Republic of Costa Rica"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q800"
+    },
+    {
+      "key": "croatia",
+      "name": "Croatia",
+      "aliases": [
+        "HR, CRO, RH, HRV, Republic of Croatia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q224"
+    },
+    {
+      "key": "cuba",
+      "name": "Cuba",
+      "aliases": [
+        "Republic of Cuba, cu"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q241"
+    },
+    {
+      "key": "cyprus",
+      "name": "Cyprus",
+      "aliases": [
+        "Republic of Cyprus, Greek Administration of Southern Cyprus, Greek Cypriot State"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q229"
+    },
+    {
+      "key": "czech_republic",
+      "name": "Czech Republic",
+      "aliases": [
+        "Czechia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q213"
+    },
+    {
+      "key": "democratic_republic_of_the_congo",
+      "name": "Democratic Republic of the Congo",
+      "aliases": [
+        "DRC, D.R.C., COD, cd, Congo (Kinshasa), Dem. Rep. Congo, Dem. Republic of Congo, Dem. Republic of the Congo, Democratic Republic of Congo, DR Congo"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q974"
+    },
+    {
+      "key": "djibouti",
+      "name": "Djibouti",
+      "aliases": [
+        "dj, Jabuuti, Gabuuti, Jībūtī, Republic of Djibouti"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q977"
+    },
+    {
+      "key": "dominica",
+      "name": "Dominica",
+      "aliases": [
+        "DOM, dm, Commonwealth of Dominica, Island of Dominica, The Commonwealth of Dominica, Wai'tu kubuli, Wai‘tu kubuli"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q784"
+    },
+    {
+      "key": "dominican_republic",
+      "name": "Dominican Republic",
+      "aliases": [
+        "RD, Dominicana, DomRep, Republica Dominicana, República Dominicana"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q786"
+    },
+    {
+      "key": "ecuador",
+      "name": "Ecuador",
+      "aliases": [
+        "Republic of Ecuador, Republic of the Equator, The Ecuadorian State, Republic of Equator"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q736"
+    },
+    {
+      "key": "egypt",
+      "name": "Egypt",
+      "aliases": [
+        "Misr, Republic of Egypt, Arab Rep. Egypt, Arab Republic of Egypt, Rep. Egypt"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q79"
+    },
+    {
+      "key": "el_salvador",
+      "name": "El Salvador",
+      "aliases": [
+        "Salvador, ESA, sv, Republic of El Salvador"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q792"
+    },
+    {
+      "key": "equatorial_guinea",
+      "name": "Equatorial Guinea",
+      "aliases": [
+        "GEQ, gq, Republic of Equatorial Guinea"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q983"
+    },
+    {
+      "key": "eritrea",
+      "name": "Eritrea",
+      "aliases": [
+        "er, Ertrā, Iritriyā, State of Eritrea"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q986"
+    },
+    {
+      "key": "estonia",
+      "name": "Estonia",
+      "aliases": [
+        "ee, Estland, Eesti Vabariik, Republic of Estonia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q191"
+    },
+    {
+      "key": "eswatini",
+      "name": "Eswatini",
+      "aliases": [
+        "Swaziland, eSwatini, Kingdom of Eswatini, Kingdom of Swaziland, sz, Umbuso weSwatini"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1050"
+    },
+    {
+      "key": "ethiopia",
+      "name": "Ethiopia",
+      "aliases": [
+        "et, Federal Democratic Republic of Ethiopia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q115"
+    },
+    {
+      "key": "federated_states_of_micronesia",
+      "name": "Federated States of Micronesia",
+      "aliases": [
+        "Micronesia, FSM, fm, Fed. Sts. Micronesia, Fed. Sts. of Micronesia, Federated States of Micronesia, FSM"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q702"
+    },
+    {
+      "key": "fiji",
+      "name": "Fiji",
+      "aliases": [
+        "Viti, fj, Fijī, Fijī Gaṇarājya, Matanitu Tugalala o Viti, Republic of Fiji, Republic of the Fiji Islands"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q712"
+    },
+    {
+      "key": "finland",
+      "name": "Finland",
+      "aliases": [
+        "fi, Suomi, Finnia, Land of Thousand Lakes, Republic of Finland, Republiken Finland, Suomen tasavalta"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q33"
+    },
+    {
+      "key": "france",
+      "name": "France",
+      "aliases": [
+        "French Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q142"
+    },
+    {
+      "key": "gabon",
+      "name": "Gabon",
+      "aliases": [
+        "ga, GAB, Gabonese Republic, Republique Gabonaise, République Gabonaise"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1000"
+    },
+    {
+      "key": "georgia",
+      "name": "Georgia",
+      "aliases": [
+        "Georgia (country), Sakartvelo, Republic of Georgia, Georgia (Sakartvelo)"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q230"
+    },
+    {
+      "key": "germany",
+      "name": "Germany",
+      "aliases": [
+        "Deutschland",
+        "Federal Republic of Germany"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q183"
+    },
+    {
+      "key": "ghana",
+      "name": "Ghana",
+      "aliases": [
+        "Republic of Ghana, gh"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q117"
+    },
+    {
+      "key": "greece",
+      "name": "Greece",
+      "aliases": [
+        "Hellas, el, gr, Hellenic Republic, Ellada, Greek Republic, Hellas, Greece"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q41"
+    },
+    {
+      "key": "grenada",
+      "name": "Grenada",
+      "aliases": [
+        "GRN, gd"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q769"
+    },
+    {
+      "key": "guatemala",
+      "name": "Guatemala",
+      "aliases": [
+        "GT, GTM, gt, Republic of Guatemala"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q774"
+    },
+    {
+      "key": "guinea",
+      "name": "Guinea",
+      "aliases": [
+        "gn, GUI, Guinea-Conakry, Republic of Guinea"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1006"
+    },
+    {
+      "key": "guinea_bissau",
+      "name": "Guinea-Bissau",
+      "aliases": [
+        "GBS, gw, Republic of Guinea-Bissau"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1007"
+    },
+    {
+      "key": "guyana",
+      "name": "Guyana",
+      "aliases": [
+        "gy, Co-operative Republic of Guyana, Republic of Guyana"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q734"
+    },
+    {
+      "key": "haiti",
+      "name": "Haiti",
+      "aliases": [
+        "Hayti, ht, HAI, Ayiti, Haitian Republic, Republic of Haiti"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q790"
+    },
+    {
+      "key": "honduras",
+      "name": "Honduras",
+      "aliases": [
+        "HON, HND, HN, hn, Honduran Republic, Republic of Honduras"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q783"
+    },
+    {
+      "key": "hungary",
+      "name": "Hungary",
+      "aliases": [],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q28"
+    },
+    {
+      "key": "iceland",
+      "name": "Iceland",
+      "aliases": [
+        "Ysland, Icelandic republic, Isl., Republic of Iceland"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q189"
+    },
+    {
+      "key": "india",
+      "name": "India",
+      "aliases": [
+        "Bharat, Hindustan, Bharata, Tianzhu, Hindoostan, Al Hind, Bharatvarsh, Tenjiku, Bharat Ganarajya, Indostan, Republic of India"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q668"
+    },
+    {
+      "key": "indonesia",
+      "name": "Indonesia",
+      "aliases": [
+        "id, Republic of Indonesia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q252"
+    },
+    {
+      "key": "iran",
+      "name": "Iran",
+      "aliases": [
+        "Persia, IRI, ir, Islamic Rep. Iran, Islamic Republic of Iran"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q794"
+    },
+    {
+      "key": "iraq",
+      "name": "Iraq",
+      "aliases": [
+        "Republic of Iraq, iq"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q796"
+    },
+    {
+      "key": "ireland",
+      "name": "Ireland",
+      "aliases": [
+        "Hibernia, Southern Ireland, Irish Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q27"
+    },
+    {
+      "key": "israel",
+      "name": "Israel",
+      "aliases": [
+        "State of Israel, ISR, il, Yisrael"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q801"
+    },
+    {
+      "key": "italy",
+      "name": "Italy",
+      "aliases": [
+        "Italian Republic, Republic of Italy"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q38"
+    },
+    {
+      "key": "ivory_coast",
+      "name": "Ivory Coast",
+      "aliases": [
+        "Côte d'Ivoire, ci, CIV, Cote d'Ivoire, Cote d'lvoire, Côte d’Ivoire, Cote Ivoire, Cote-d'Ivoire, Côte-d'Ivoire, Republic of Cote d'Ivoire, Republic of Côte d'Ivoire, Republic of Ivory Coast, Republic of the Ivory Coast, The Ivory Coast"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1008"
+    },
+    {
+      "key": "jamaica",
+      "name": "Jamaica",
+      "aliases": [
+        "JA, Commonwealth of Jamaica"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q766"
+    },
+    {
+      "key": "japan",
+      "name": "Japan",
+      "aliases": [
+        "Land of the Rising Sun, Iapan, Iapon, Land of Rising Sun, Nihon-koku, Nippon-koku, State of Japan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q17"
+    },
+    {
+      "key": "jordan",
+      "name": "Jordan",
+      "aliases": [
+        "HKJ, Yarden, Giordania, Hashemite Kingdom of Jordan, ISO 3166-1:JO, Kingdom of Jordan, State of Jordan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q810"
+    },
+    {
+      "key": "kazakhstan",
+      "name": "Kazakhstan",
+      "aliases": [
+        "kz, Qazaqstan, Republic of Kazakhstan, Republic of Qazaqstan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q232"
+    },
+    {
+      "key": "kenya",
+      "name": "Kenya",
+      "aliases": [
+        "ke, Republic of Kenya"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q114"
+    },
+    {
+      "key": "kingdom_of_denmark",
+      "name": "Kingdom of Denmark",
+      "aliases": [
+        "Denmark, Danish Realm, Danmarkar Ríki, Danmarkip Naalagaaffik, Danmarks Rige, Kongeriget Danmark, Kongsríki Danmarkar, Kunngeqarfik Danmarki, Realm of Denmark, Danish Commonwealth"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q756617"
+    },
+    {
+      "key": "kingdom_of_the_netherlands",
+      "name": "Kingdom of the Netherlands",
+      "aliases": [
+        "Netherlands, the Netherlands, Nederlanden, Kingdom of Netherlands"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q29999"
+    },
+    {
+      "key": "kiribati",
+      "name": "Kiribati",
+      "aliases": [
+        "ki, Republic of Kiribati"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q710"
+    },
+    {
+      "key": "kosovo",
+      "name": "Kosovo",
+      "aliases": [
+        "KOS, XK, KV, Kosova, Republic of Kosovo, RKS, XKX"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1246"
+    },
+    {
+      "key": "kuwait",
+      "name": "Kuwait",
+      "aliases": [
+        "kw, State of Kuwait"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q817"
+    },
+    {
+      "key": "kyrgyzstan",
+      "name": "Kyrgyzstan",
+      "aliases": [
+        "kg, Kyrgyz Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q813"
+    },
+    {
+      "key": "laos",
+      "name": "Laos",
+      "aliases": [
+        "la, LAO, Lao PDR, Lao People's Democratic Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q819"
+    },
+    {
+      "key": "latvia",
+      "name": "Latvia",
+      "aliases": [
+        "lv, Latveja, Latvejas Republika, Latvian Republic, Latvija, Latvijas Republika, Leţmо̄, Leţmо̄ Vabāmо̄, Republic of Latvia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q211"
+    },
+    {
+      "key": "lebanon",
+      "name": "Lebanon",
+      "aliases": [
+        "lb, Lebanese Republic, Lubnan, Republic of Lebanon, State of Lebanon"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q822"
+    },
+    {
+      "key": "lesotho",
+      "name": "Lesotho",
+      "aliases": [
+        "ls, Kingdom of Lesotho, LES, The Mountain Kingdom"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1013"
+    },
+    {
+      "key": "liberia",
+      "name": "Liberia",
+      "aliases": [
+        "Liber, lr, Republic of Liberia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1014"
+    },
+    {
+      "key": "libya",
+      "name": "Libya",
+      "aliases": [
+        "ly, LBA, State of Libya"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1016"
+    },
+    {
+      "key": "liechtenstein",
+      "name": "Liechtenstein",
+      "aliases": [
+        "li, FL, Principality of Liechtenstein"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q347"
+    },
+    {
+      "key": "lithuania",
+      "name": "Lithuania",
+      "aliases": [
+        "Republic of Lithuania"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q37"
+    },
+    {
+      "key": "luxembourg",
+      "name": "Luxembourg",
+      "aliases": [
+        "Grand Duchy of Luxembourg"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q32"
+    },
+    {
+      "key": "madagascar",
+      "name": "Madagascar",
+      "aliases": [
+        "Malagascar, Malagaskar, mg, Republic of Madagascar"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1019"
+    },
+    {
+      "key": "malawi",
+      "name": "Malawi",
+      "aliases": [
+        "MAW, mw, Republic of Malawi"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1020"
+    },
+    {
+      "key": "malaysia",
+      "name": "Malaysia",
+      "aliases": [
+        "MAS, Federation of Malaysia, Malaysia Federation"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q833"
+    },
+    {
+      "key": "maldives",
+      "name": "Maldives",
+      "aliases": [
+        "MDV, mv, Republic of Maldives"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q826"
+    },
+    {
+      "key": "mali",
+      "name": "Mali",
+      "aliases": [
+        "ml, Republic of Mali"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q912"
+    },
+    {
+      "key": "malta",
+      "name": "Malta",
+      "aliases": [
+        "Republic of Malta"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q233"
+    },
+    {
+      "key": "marshall_islands",
+      "name": "Marshall Islands",
+      "aliases": [
+        "mh, Republic of the Marshall Islands"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q709"
+    },
+    {
+      "key": "mauritania",
+      "name": "Mauritania",
+      "aliases": [
+        "Agawej, Gannaar, Gànnaar, Islamic Republic of Mauritania, Mauretania, Moritani, mr, Muritanya, Murutaane"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1025"
+    },
+    {
+      "key": "mauritius",
+      "name": "Mauritius",
+      "aliases": [
+        "Maurice, MRI, MU, Moris, Republic of Mauritius"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1027"
+    },
+    {
+      "key": "mexico",
+      "name": "Mexico",
+      "aliases": [
+        "United Mexican States, mx, MXN, Mexican Republic, Mexican United States, US of M, United States of Mexico"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q96"
+    },
+    {
+      "key": "moldova",
+      "name": "Moldova",
+      "aliases": [
+        "Moldavia, Republic of Moldova, Republica Moldova"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q217"
+    },
+    {
+      "key": "monaco",
+      "name": "Monaco",
+      "aliases": [
+        "mc, Fort-Hercule, Mùnegu, Principality and Diocese of Monaco, Principality of Monaco, Principato di Monaco, Principatu de Mu̍negu, Prinçipatu de Mùnegu, Principauté de Monaco"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q235"
+    },
+    {
+      "key": "mongolia",
+      "name": "Mongolia",
+      "aliases": [
+        "Mongol State, State of Mongolia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q711"
+    },
+    {
+      "key": "montenegro",
+      "name": "Montenegro",
+      "aliases": [],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q236"
+    },
+    {
+      "key": "morocco",
+      "name": "Morocco",
+      "aliases": [
+        "al-Maġrib, Kingdom of Morocco, Lmaġrib, Maroc, Marocco"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1028"
+    },
+    {
+      "key": "mozambique",
+      "name": "Mozambique",
+      "aliases": [
+        "Moçambique, MOZ, mz, MZ, Republic of Mozambique, República de Moçambique"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1029"
+    },
+    {
+      "key": "myanmar",
+      "name": "Myanmar",
+      "aliases": [
+        "Burma, Union of Burma, Republic of the Union of Myanmar"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q836"
+    },
+    {
+      "key": "namibia",
+      "name": "Namibia",
+      "aliases": [
+        "na, Republic of Namibia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1030"
+    },
+    {
+      "key": "nauru",
+      "name": "Nauru",
+      "aliases": [
+        "Pleasant Island, nr, Naoero, Republic of Nauru"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q697"
+    },
+    {
+      "key": "nepal",
+      "name": "Nepal",
+      "aliases": [
+        "Palpa, Balbo, Nekbal, Bal-bo, Bal-po'i yul, Bal-yul, Balpo, Balpo-yul, Federal Democratic Republic of Nepal, Naipál, Naipala, Naipála, Ne-pel, Necbal, Nehpal, Nei-pal, Nekpal, Népaal, Nepál, Népál, Nepall, Nepaul, Nercerri, Ni-po-lo, Ni-po-louo, Niepal, Nipal, Pa-eul-pou, Pa-le-pou, Pa-lo-pou, Pai-pou, Paï-pou, Palpou"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q837"
+    },
+    {
+      "key": "new_zealand",
+      "name": "New Zealand",
+      "aliases": [
+        "nz, Dominion of New Zealand, Aotearoa New Zealand"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q664"
+    },
+    {
+      "key": "nicaragua",
+      "name": "Nicaragua",
+      "aliases": [
+        "NCA, NI, NIC, ni, Republic of Nicaragua"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q811"
+    },
+    {
+      "key": "niger",
+      "name": "Niger",
+      "aliases": [
+        "ne, Republic Niger, Republic of Niger, Republic of the Niger, The Niger"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1032"
+    },
+    {
+      "key": "nigeria",
+      "name": "Nigeria",
+      "aliases": [
+        "Federal Republic of Nigeria, Naija"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1033"
+    },
+    {
+      "key": "north_korea",
+      "name": "North Korea",
+      "aliases": [
+        "DPR Korea, kp, Democratic People's Republic of Korea, DPRK, N. Korea",
+        "DPRK"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q423"
+    },
+    {
+      "key": "north_macedonia",
+      "name": "North Macedonia",
+      "aliases": [
+        "Macedonia, Former Yugoslav Republic of Macedonia, FYR Macedonia, FYROM, Republic of Macedonia, Republic of North Macedonia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q221"
+    },
+    {
+      "key": "norway",
+      "name": "Norway",
+      "aliases": [
+        "Kingdom of Norway"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q20"
+    },
+    {
+      "key": "oman",
+      "name": "Oman",
+      "aliases": [
+        "Uman, om, omn, Sultanate of Oman"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q842"
+    },
+    {
+      "key": "pakistan",
+      "name": "Pakistan",
+      "aliases": [
+        "PAK, pk, Islamic Republic of Pakistan, Republic of Pakistan, Hồi Quốc, Tây Hồi"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q843"
+    },
+    {
+      "key": "palau",
+      "name": "Palau",
+      "aliases": [
+        "Belau, pw, Pellew, Peeloo, Pelew, Pelew islands, Republic of Belau, Republic of Palau"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q695"
+    },
+    {
+      "key": "palestine",
+      "name": "Palestine",
+      "aliases": [
+        "State of Palestine, PSE, Palestinian Authority, Palestinian National Authority"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q219060"
+    },
+    {
+      "key": "panama",
+      "name": "Panama",
+      "aliases": [
+        "pa, Republic of Panama"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q804"
+    },
+    {
+      "key": "papua_new_guinea",
+      "name": "Papua New Guinea",
+      "aliases": [
+        "PNG, pg, Independent State of Papua New Guinea"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q691"
+    },
+    {
+      "key": "paraguay",
+      "name": "Paraguay",
+      "aliases": [
+        "Heart of South America, Republic of Paraguay"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q733"
+    },
+    {
+      "key": "people_s_republic_of_china",
+      "name": "People's Republic of China",
+      "aliases": [
+        "China, RPC, cn, Red China, Communist China, China PR, P.R.C., PR China, The PRC, the People's Republic of China",
+        "PRC"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q148"
+    },
+    {
+      "key": "peru",
+      "name": "Peru",
+      "aliases": [
+        "per, pe, Republic of Peru, Republica del Peru"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q419"
+    },
+    {
+      "key": "philippines",
+      "name": "Philippines",
+      "aliases": [
+        "RP, Republic of the Philippines, Philippine Islands, The Philippines"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q928"
+    },
+    {
+      "key": "poland",
+      "name": "Poland",
+      "aliases": [
+        "Republic of Poland"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q36"
+    },
+    {
+      "key": "portugal",
+      "name": "Portugal",
+      "aliases": [
+        "PRT, POR, Portuguese Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q45"
+    },
+    {
+      "key": "qatar",
+      "name": "Qatar",
+      "aliases": [
+        "qat, qa, State of Qatar"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q846"
+    },
+    {
+      "key": "republic_of_the_congo",
+      "name": "Republic of the Congo",
+      "aliases": [
+        "Congo, CGO, cg, Congo (Brazzaville), Congo Republic, Congo-Brazzaville, Rep. Congo, Republic of Congo, Republique du Congo, République du Congo"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q971"
+    },
+    {
+      "key": "romania",
+      "name": "Romania",
+      "aliases": [
+        "Roumania, ro, Rumania, România"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q218"
+    },
+    {
+      "key": "russia",
+      "name": "Russia",
+      "aliases": [
+        "Russian Federation",
+        "Russian Federation, Federation of Russia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q159"
+    },
+    {
+      "key": "rwanda",
+      "name": "Rwanda",
+      "aliases": [
+        "Republic of Rwanda, The Land of a Thousand Hills"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1037"
+    },
+    {
+      "key": "saint_kitts_and_nevis",
+      "name": "Saint Kitts and Nevis",
+      "aliases": [
+        "SKN, Federation of Saint Christopher and Nevis, Federation of Saint Kitts and Nevis, Kitts & Nevis, Kitts and Nevis, Saint Christopher and Nevis, St Kitts & Nevis, St Kitts and Nevis, St. Kitts & Nevis, St. Kitts and Nevis"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q763"
+    },
+    {
+      "key": "saint_lucia",
+      "name": "Saint Lucia",
+      "aliases": [
+        "St Lucia, St. Lucia, lca, Hewanorra, Iyonola, lc"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q760"
+    },
+    {
+      "key": "saint_vincent_and_the_grenadines",
+      "name": "Saint Vincent and the Grenadines",
+      "aliases": [
+        "St. Vincent, St Vincent, Saint Vincent, vc, St Vincent and the Grenadines, St. Vincent and the Grenadines, vct"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q757"
+    },
+    {
+      "key": "samoa",
+      "name": "Samoa",
+      "aliases": [
+        "ws, SAM, Western Samoa, Independent State of Samoa"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q683"
+    },
+    {
+      "key": "san_marino",
+      "name": "San Marino",
+      "aliases": [
+        "sm, Most Serene Republic of San Marino"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q238"
+    },
+    {
+      "key": "saudi_arabia",
+      "name": "Saudi Arabia",
+      "aliases": [
+        "Kingdom of Saudi Arabia, Saudi, KSA"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q851"
+    },
+    {
+      "key": "senegal",
+      "name": "Senegal",
+      "aliases": [
+        "Republic of Senegal"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1041"
+    },
+    {
+      "key": "serbia",
+      "name": "Serbia",
+      "aliases": [
+        "Republic of Serbia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q403"
+    },
+    {
+      "key": "seychelles",
+      "name": "Seychelles",
+      "aliases": [
+        "Republic of Seychelles, sc, SEY"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1042"
+    },
+    {
+      "key": "sierra_leone",
+      "name": "Sierra Leone",
+      "aliases": [
+        "Republic of Sierra Leone, sl, SLE"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1044"
+    },
+    {
+      "key": "singapore",
+      "name": "Singapore",
+      "aliases": [
+        "Garden City, SG, SIN, sg, SGP, Lion City, Singapore City, Republic of Singapore, S'pore"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q334"
+    },
+    {
+      "key": "slovakia",
+      "name": "Slovakia",
+      "aliases": [
+        "SVK, SK, Slovak Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q214"
+    },
+    {
+      "key": "slovenia",
+      "name": "Slovenia",
+      "aliases": [
+        "si, svn, Slovenija, Republic of Slovenia, slo"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q215"
+    },
+    {
+      "key": "solomon_islands",
+      "name": "Solomon Islands",
+      "aliases": [
+        "the Solomon Islands, SOL, sb"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q685"
+    },
+    {
+      "key": "somalia",
+      "name": "Somalia",
+      "aliases": [
+        "Federal Republic of Somalia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1045"
+    },
+    {
+      "key": "south_africa",
+      "name": "South Africa",
+      "aliases": [
+        "SA, RSA, R.S.A., Republic of South Africa, zaf"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q258"
+    },
+    {
+      "key": "south_korea",
+      "name": "South Korea",
+      "aliases": [
+        "Republic of Korea",
+        "Republic of Korea, Silla, Choson, Korea (South), Hanguk, Daehan Minguk, Daehanminguk, Korea Republic, Rep. Korea, S. Korea"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q884"
+    },
+    {
+      "key": "south_sudan",
+      "name": "South Sudan",
+      "aliases": [
+        "ss, SSD, Southern Sudan, Republic of South Sudan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q958"
+    },
+    {
+      "key": "spain",
+      "name": "Spain",
+      "aliases": [
+        "Kingdom of Spain"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q29"
+    },
+    {
+      "key": "sri_lanka",
+      "name": "Sri Lanka",
+      "aliases": [
+        "SRI, Ceylan, ce, Serendib, Taprobane, sri, Srilanka, Democratic Socialist Republic of Sri Lanka, Lanka, Sri, lk, lke"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q854"
+    },
+    {
+      "key": "sudan",
+      "name": "Sudan",
+      "aliases": [
+        "al-Sudan, as-Sudan, as-Sūdān, North Sudan, Republic of Sudan, Republic of the Sudan, sd, Soudan, SUD, the Sudan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1049"
+    },
+    {
+      "key": "suriname",
+      "name": "Suriname",
+      "aliases": [
+        "sr, Surinam, Dutch Guiana, Republic of Surinam, Republic of Suriname, Surrinam"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q730"
+    },
+    {
+      "key": "sweden",
+      "name": "Sweden",
+      "aliases": [
+        "Kingdom of Sweden, se, Swedish Kingdom"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q34"
+    },
+    {
+      "key": "switzerland",
+      "name": "Switzerland",
+      "aliases": [
+        "Swiss, Confoederatio Helvetica, Swiss Confederation"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q39"
+    },
+    {
+      "key": "syria",
+      "name": "Syria",
+      "aliases": [
+        "Surya, Syrian Arab Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q858"
+    },
+    {
+      "key": "sao_tome_and_principe",
+      "name": "São Tomé and Príncipe",
+      "aliases": [
+        "Sao Tome and Principe, Democratic Republic of São Tomé and Príncipe, Sao Tome & Principe, São Tomé og Príncipe, st"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1039"
+    },
+    {
+      "key": "taiwan",
+      "name": "Taiwan",
+      "aliases": [
+        "TPE, ROC, Chinese Taipei, TWN, Formosa, Republic of China (Taiwan), TW, Republic of China, Nationalist China, Free China, Taiwan ROC, Chunghwa Minkuo, Chunghwa Minkwo, The ROC, China, Republic of, Chinese Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q865"
+    },
+    {
+      "key": "tajikistan",
+      "name": "Tajikistan",
+      "aliases": [
+        "Republic of Tajikistan, tj"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q863"
+    },
+    {
+      "key": "tanzania",
+      "name": "Tanzania",
+      "aliases": [
+        "United Republic of Tanzania, Tanzania, United Republic of, tz, tza, United Republic of Tanganyika and Zanzibar"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q924"
+    },
+    {
+      "key": "thailand",
+      "name": "Thailand",
+      "aliases": [
+        "th, Thai, Kingdom of Siam, Kingdom of Thailand, The Kingdom of Siam, The Kingdom of Thailand, Prathet Thai, Ratcha-anachak Thai"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q869"
+    },
+    {
+      "key": "the_bahamas",
+      "name": "The Bahamas",
+      "aliases": [
+        "Bahamas, bs, Bahama Islands, Commonwealth of the Bahamas, Commonwealth of The Bahamas, Bahamas, The"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q778"
+    },
+    {
+      "key": "the_gambia",
+      "name": "The Gambia",
+      "aliases": [
+        "Gambia, Islamic Republic of the Gambia, Republic of the Gambia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1005"
+    },
+    {
+      "key": "timor_leste",
+      "name": "Timor-Leste",
+      "aliases": [
+        "East Timor, TL, Democratic Republic of Timor-Leste"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q574"
+    },
+    {
+      "key": "togo",
+      "name": "Togo",
+      "aliases": [
+        "tg, Togolese Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q945"
+    },
+    {
+      "key": "tonga",
+      "name": "Tonga",
+      "aliases": [
+        "to, TGA, Kingdom of Tonga, Tonga Islands, Friendly Islands"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q678"
+    },
+    {
+      "key": "trinidad_and_tobago",
+      "name": "Trinidad and Tobago",
+      "aliases": [
+        "TTO, TRI, Republic of Trinidad and Tobago, tt, Trinidad & Tobago"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q754"
+    },
+    {
+      "key": "tschardakenhof",
+      "name": "Tschardakenhof",
+      "aliases": [],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q105646554"
+    },
+    {
+      "key": "tunisia",
+      "name": "Tunisia",
+      "aliases": [
+        "tn, Republic of Tunisia, Tunisian Republic"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q948"
+    },
+    {
+      "key": "turkey",
+      "name": "Turkey",
+      "aliases": [
+        "Republic of Turkey, Republic of Türkiye"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q43"
+    },
+    {
+      "key": "turkmenistan",
+      "name": "Turkmenistan",
+      "aliases": [
+        "TKM, tm, Turkmenia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q874"
+    },
+    {
+      "key": "tuvalu",
+      "name": "Tuvalu",
+      "aliases": [
+        "tv, TUV, Ellice Islands"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q672"
+    },
+    {
+      "key": "uganda",
+      "name": "Uganda",
+      "aliases": [
+        "+256, Ouganda, Pearl of Africa, Republic of Uganda, The Republic of Uganda, ug, Ugandah"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q1036"
+    },
+    {
+      "key": "ukraine",
+      "name": "Ukraine",
+      "aliases": [
+        "Ukrainia, Ukraina, Ukr., Ukraïna"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q212"
+    },
+    {
+      "key": "united_arab_emirates",
+      "name": "United Arab Emirates",
+      "aliases": [
+        "Emirates, ae, the United Arab Emirates, the Emirates, the U.A.E., the UAE, U.A.E."
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q878"
+    },
+    {
+      "key": "united_kingdom",
+      "name": "United Kingdom",
+      "aliases": [
+        "Britain",
+        "Great Britain",
+        "Great Britain, the United Kingdom of Great Britain and Northern Ireland, G B, Great Britain and Northern Ireland, U K, United Kingdom of Great Britain and Northern Ireland, the UK, the United Kingdom",
+        "U.K.",
+        "UK"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q145"
+    },
+    {
+      "key": "united_states",
+      "name": "United States",
+      "aliases": [
+        "America",
+        "the United States, the USA, Murica, Merica, the States, the U.S., the U.S. of A, the U.S. of America, the U.S.A., the United States of America, the US, the US of A, the US of America, U. S., U. S. A., U.S. of America, US of A, US of America",
+        "U.S.",
+        "U.S.A.",
+        "United States of America",
+        "US",
+        "USA"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q30"
+    },
+    {
+      "key": "uruguay",
+      "name": "Uruguay",
+      "aliases": [
+        "uy, URU, Eastern Republic of Uruguay, Oriental Republic of Uruguay"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q77"
+    },
+    {
+      "key": "uzbekistan",
+      "name": "Uzbekistan",
+      "aliases": [
+        "Republic of Uzbekistan"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q265"
+    },
+    {
+      "key": "vanuatu",
+      "name": "Vanuatu",
+      "aliases": [
+        "van, VAN, vu, Republic of Vanuatu, vut"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q686"
+    },
+    {
+      "key": "vatican_city",
+      "name": "Vatican City",
+      "aliases": [
+        "Vatican, The Vatican, Holy See, Papal State, Città del Vaticano, State of Vatican City, Stato della Città del Vaticano, Status Civitatis Vaticanae, Vatican City State"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q237"
+    },
+    {
+      "key": "venezuela",
+      "name": "Venezuela",
+      "aliases": [
+        "Republic of Venezuela, Bolivarian Republic of Venezuela, BR Venezuela"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q717"
+    },
+    {
+      "key": "vietnam",
+      "name": "Vietnam",
+      "aliases": [
+        "VNM, VN, Viet Nam, SRV, VIE, Socialist Republic of Viet Nam, Socialist Republic of Vietnam, Việt Nam"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q881"
+    },
+    {
+      "key": "yemen",
+      "name": "Yemen",
+      "aliases": [
+        "ye, Rep. Yemen, Republic of Yemen"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q805"
+    },
+    {
+      "key": "zambia",
+      "name": "Zambia",
+      "aliases": [
+        "Zed, ZAM, zm, Republic of Zambia"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q953"
+    },
+    {
+      "key": "zimbabwe",
+      "name": "Zimbabwe",
+      "aliases": [
+        "Rhodesia, Southern Rhodesia, Zimbabwe Rhodesia, Republic of Zimbabwe"
+      ],
+      "is_playable_answer": true,
+      "wikidata_qid": "Q954"
+    }
+  ]
+}

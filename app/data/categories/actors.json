@@ -1,0 +1,9 @@
+{
+  "slug": "actors",
+  "name": "Actors",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 1,
+  "elements": []
+}

@@ -1,0 +1,9 @@
+{
+  "slug": "foods",
+  "name": "Foods",
+  "mode": "flat",
+  "bucket": "Everyday life",
+  "bucket_order": 7,
+  "display_order": 2,
+  "elements": []
+}

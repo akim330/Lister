@@ -1,0 +1,118 @@
+{
+  "user_agent": "ListerCategoryFetcher/0.1 (local development; update contact before shared automation)",
+  "endpoint": "https://query.wikidata.org/sparql",
+  "output_dir": "app/data/categories",
+  "report_path": "tools/wikidata_category_report.md",
+  "categories": {
+    "animals": {
+      "slug": "animals",
+      "name": "Animals",
+      "mode": "taxonomy",
+      "root_qid": "Q729",
+      "root_key": "animal",
+      "root_name": "Animal",
+      "max_elements": 300,
+      "max_depth": 5,
+      "children_per_parent": 16,
+      "large_diff_threshold": 75,
+      "denylist_qids": [],
+      "seed_roots": [
+        {"qid": "Q7377", "name": "Mammal", "parent_qid": "Q729", "aliases": ["mammals"]},
+        {"qid": "Q5113", "name": "Bird", "parent_qid": "Q729", "aliases": ["birds"]},
+        {"qid": "Q10811", "name": "Reptile", "parent_qid": "Q729", "aliases": ["reptiles"]},
+        {"qid": "Q152", "name": "Fish", "parent_qid": "Q729", "aliases": ["fishes"]},
+        {"qid": "Q10908", "name": "Amphibian", "parent_qid": "Q729", "aliases": ["amphibians"]},
+        {"qid": "Q1390", "name": "Insect", "parent_qid": "Q729", "aliases": ["insects", "bugs"]},
+        {"qid": "Q1358", "name": "Arachnid", "parent_qid": "Q729", "aliases": ["arachnids"]},
+        {"qid": "Q25326", "name": "Mollusk", "parent_qid": "Q729", "aliases": ["mollusks", "molluscs"]},
+        {"qid": "Q25364", "name": "Crustacean", "parent_qid": "Q729", "aliases": ["crustaceans"]}
+      ],
+      "manual_elements": [
+        {"key": "robin", "name": "Robin", "aliases": ["robins"], "parent": "bird", "is_playable_answer": true},
+        {"key": "american_robin", "name": "American Robin", "aliases": ["american robins"], "parent": "robin", "is_playable_answer": true},
+        {"key": "american_barn_owl", "name": "American Barn Owl", "aliases": ["american barn owls"], "parent": "barn_owl", "is_playable_answer": true}
+      ],
+      "manual_aliases": {
+        "Q729": ["animals", "Animalia"],
+        "Q7377": ["mammals"],
+        "Q5113": ["birds"],
+        "Q10811": ["reptiles"],
+        "Q152": ["fish", "fishes"],
+        "Q10908": ["amphibians"],
+        "Q1390": ["bugs"]
+      }
+    },
+    "countries": {
+      "slug": "countries",
+      "name": "Countries",
+      "mode": "flat",
+      "sovereign_state_qid": "Q3624078",
+      "large_diff_threshold": 25,
+      "denylist_qids": [],
+      "manual_aliases": {
+        "Q30": ["USA", "US", "U.S.", "U.S.A.", "America", "United States of America"],
+        "Q145": ["UK", "U.K.", "Britain", "Great Britain"],
+        "Q148": ["PRC", "People's Republic of China"],
+        "Q159": ["Russian Federation"],
+        "Q183": ["Deutschland"],
+        "Q884": ["South Korea", "Republic of Korea"],
+        "Q423": ["North Korea", "DPRK"],
+        "Q213": ["Czech Republic"]
+      }
+    },
+    "fruits": {
+      "slug": "fruits",
+      "name": "Fruits",
+      "mode": "flat",
+      "root_qid": "Q3314483",
+      "max_candidates": 200,
+      "max_elements": 80,
+      "large_diff_threshold": 35,
+      "denylist_qids": [],
+      "required_names": [
+        "Apple",
+        "Banana",
+        "Orange",
+        "Grape",
+        "Strawberry",
+        "Blueberry",
+        "Raspberry",
+        "Blackberry",
+        "Pineapple",
+        "Mango",
+        "Papaya",
+        "Watermelon",
+        "Cantaloupe",
+        "Peach",
+        "Pear",
+        "Plum",
+        "Kiwi",
+        "Lemon",
+        "Lime",
+        "Cherry"
+      ],
+      "manual_aliases_by_name": {
+        "Apple": ["apples"],
+        "Banana": ["bananas"],
+        "Orange": ["oranges"],
+        "Grape": ["grapes"],
+        "Strawberry": ["strawberries"],
+        "Blueberry": ["blueberries"],
+        "Raspberry": ["raspberries"],
+        "Blackberry": ["blackberries"],
+        "Pineapple": ["pineapples"],
+        "Mango": ["mangoes", "mangos"],
+        "Papaya": ["papayas"],
+        "Watermelon": ["watermelons"],
+        "Cantaloupe": ["cantaloupes"],
+        "Peach": ["peaches"],
+        "Pear": ["pears"],
+        "Plum": ["plums"],
+        "Kiwi": ["kiwifruit", "kiwis"],
+        "Lemon": ["lemons"],
+        "Lime": ["limes"],
+        "Cherry": ["cherries"]
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Results — Lister{% endblock %}
+
+{% block content %}
+<section class="card results-card" data-game-id="{{ game.id }}" data-leaderboard-metric="{{ mode.leaderboard_metric }}">
+  <p class="eyebrow">{{ mode.name }} — {{ game.category_name }}</p>
+  <h1>Final score: {{ game.score }}</h1>
+  {% if game.elapsed_seconds is not none %}
+    <p class="muted">Elapsed time: {{ game.elapsed_seconds // 60 }}:{{ "%02d"|format(game.elapsed_seconds % 60) }}</p>
+  {% endif %}
+
+  <div class="final-list-block">
+    <h2>Your Final List</h2>
+    <ol class="answer-list final-list">
+      {% for answer in final_answers %}
+        <li>{{ answer.name }}</li>
+      {% else %}
+        <li class="muted">No accepted answers were saved for this run.</li>
+      {% endfor %}
+    </ol>
+  </div>
+
+  {% if can_submit %}
+    <div id="submitPanel" class="submit-panel">
+      <p>Submit this score to the {{ mode.name }} / {{ game.category_name }} leaderboard?</p>
+      <button id="submitScoreBtn" class="primary">Submit Score</button>
+      <button id="doNotSubmitBtn" class="secondary">Do Not Submit</button>
+    </div>
+  {% elif game.submitted_to_leaderboard %}
+    <p class="success">This score was submitted.</p>
+  {% elif mode.target_score is not none %}
+    <p class="muted">Reach {{ mode.target_score }} accepted answers to submit to this leaderboard.</p>
+  {% else %}
+    <p class="muted">This score is not eligible for submission.</p>
+  {% endif %}
+
+  <div class="leaderboard-block">
+    <h2>{{ mode.name }} / {{ game.category_name }} Leaderboard</h2>
+    <ol id="leaderboardList" class="leaderboard-list">
+      {% for entry in leaderboard %}
+        <li>
+          <span class="rank">{{ entry.rank }}.</span>
+          <strong>{{ entry.username }}</strong>
+          {% if mode.leaderboard_metric == "elapsed" %}
+            — {{ entry.elapsed_seconds // 60 }}:{{ "%02d"|format(entry.elapsed_seconds % 60) }}
+          {% else %}
+            — {{ entry.score }}
+          {% endif %}
+          <a class="inline-link" href="{{ entry.results_url }}">View list</a>
+        </li>
+      {% else %}
+        <li class="muted">No submitted scores yet.</li>
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="actions">
+    <button class="primary play-category-btn" data-game-mode="{{ mode.slug }}" data-category-slug="{{ game.category_slug }}">Play Again</button>
+    <a class="button secondary" href="/leaderboards">All Leaderboards</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/results.js') }}"></script>
+{% endblock %}

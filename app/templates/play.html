@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Playing {{ game.category_name }} — Lister{% endblock %}
+
+{% block content %}
+<section class="game-shell card" data-game-id="{{ game.id }}">
+  <p class="eyebrow">{{ mode.name }}</p>
+  <h1>{{ game.category_name }}</h1>
+  <p class="muted">{{ mode.description }}</p>
+  <div class="rules-block">
+    <h2>Rules</h2>
+    <ul>
+      {% for rule in mode.rules %}
+        <li>{{ rule }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div id="countdown" class="countdown">Ready?</div>
+
+  <div id="gameArea" class="game-area hidden">
+    <div class="game-stats">
+      <div>
+        <span id="timerLabel" class="stat-label">Time</span>
+        <strong id="timer">1:00</strong>
+      </div>
+      <div>
+        <span class="stat-label">Score</span>
+        <strong id="score">0</strong>
+      </div>
+    </div>
+
+    <form id="answerForm" class="answer-form" autocomplete="off">
+      <label for="answerInput">Your answer</label>
+      <input id="answerInput" type="text" autofocus placeholder="Type an answer and press Enter">
+    </form>
+
+    <p id="message" class="message"></p>
+
+    <div class="answer-list-block">
+      <h2>Accepted answers</h2>
+      <ul id="acceptedAnswers" class="answer-list"></ul>
+    </div>
+
+    <button id="stopBtn" class="danger">Stop</button>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.LISTER_GAME = {
+    gameId: {{ game.id|tojson }},
+    gameMode: {{ mode.slug|tojson }},
+    modeName: {{ mode.name|tojson }},
+    timerKind: {{ mode.timer_kind|tojson }},
+    startingSeconds: {{ starting_seconds|tojson }},
+    targetScore: {{ mode.target_score|tojson }}
+  };
+</script>
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+{% endblock %}

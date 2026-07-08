@@ -1,0 +1,2667 @@
+{
+  "slug": "animals",
+  "name": "Animals",
+  "mode": "taxonomy",
+  "bucket": "Nature and Science",
+  "bucket_order": 2,
+  "display_order": 1,
+  "source": "wikidata",
+  "last_fetched_at": "2026-07-07T21:27:23+00:00",
+  "elements": [
+    {
+      "key": "animal",
+      "name": "Animal",
+      "aliases": [
+        "Animalia",
+        "animals"
+      ],
+      "is_playable_answer": false,
+      "parent": null,
+      "wikidata_qid": "Q729"
+    },
+    {
+      "key": "amphibian",
+      "name": "Amphibian",
+      "aliases": [
+        "amphibians"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q10908"
+    },
+    {
+      "key": "arachnid",
+      "name": "Arachnid",
+      "aliases": [
+        "arachnids"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q1358"
+    },
+    {
+      "key": "bird",
+      "name": "Bird",
+      "aliases": [
+        "birds"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q5113"
+    },
+    {
+      "key": "crustacean",
+      "name": "Crustacean",
+      "aliases": [
+        "crustaceans"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q25364"
+    },
+    {
+      "key": "fish",
+      "name": "Fish",
+      "aliases": [
+        "fishes"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q152"
+    },
+    {
+      "key": "insect",
+      "name": "Insect",
+      "aliases": [
+        "bug",
+        "bugs",
+        "insects"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q1390"
+    },
+    {
+      "key": "mammal",
+      "name": "Mammal",
+      "aliases": [
+        "mammals"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q7377"
+    },
+    {
+      "key": "mollusk",
+      "name": "Mollusk",
+      "aliases": [
+        "molluscs",
+        "mollusks"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q25326"
+    },
+    {
+      "key": "reptile",
+      "name": "Reptile",
+      "aliases": [
+        "reptiles"
+      ],
+      "is_playable_answer": true,
+      "parent": "animal",
+      "wikidata_qid": "Q10811"
+    },
+    {
+      "key": "acari",
+      "name": "Acari",
+      "aliases": [
+        "mites and ticks, Acarina"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19137"
+    },
+    {
+      "key": "aculifera",
+      "name": "Aculifera",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q1185268"
+    },
+    {
+      "key": "alligator",
+      "name": "Alligator",
+      "aliases": [
+        "alligators",
+        "gator",
+        "gators"
+      ],
+      "is_playable_answer": true,
+      "parent": "reptile"
+    },
+    {
+      "key": "amphineura",
+      "name": "Amphineura",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q3614669"
+    },
+    {
+      "key": "anapsid",
+      "name": "Anapsid",
+      "aliases": [
+        "Anapsida"
+      ],
+      "is_playable_answer": true,
+      "parent": "reptile",
+      "wikidata_qid": "Q331974"
+    },
+    {
+      "key": "ant",
+      "name": "Ant",
+      "aliases": [
+        "ants"
+      ],
+      "is_playable_answer": true,
+      "parent": "insect"
+    },
+    {
+      "key": "anuran",
+      "name": "anuran",
+      "aliases": [
+        "frog",
+        "frog, frog order"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q53636"
+    },
+    {
+      "key": "apheliscidae",
+      "name": "Apheliscidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q31740373"
+    },
+    {
+      "key": "aplacophora",
+      "name": "Aplacophora",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q213228"
+    },
+    {
+      "key": "apoda",
+      "name": "Apoda",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q7307471"
+    },
+    {
+      "key": "apterygota",
+      "name": "Apterygota",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q276532"
+    },
+    {
+      "key": "araneida",
+      "name": "Araneida",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q30587689"
+    },
+    {
+      "key": "astigs",
+      "name": "Astigs",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q17505518"
+    },
+    {
+      "key": "bear",
+      "name": "Bear",
+      "aliases": [
+        "bears"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "bee",
+      "name": "Bee",
+      "aliases": [
+        "bees"
+      ],
+      "is_playable_answer": true,
+      "parent": "insect"
+    },
+    {
+      "key": "beetle",
+      "name": "Beetle",
+      "aliases": [
+        "beetles"
+      ],
+      "is_playable_answer": true,
+      "parent": "insect"
+    },
+    {
+      "key": "blattoptera",
+      "name": "Blattoptera",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q4925531"
+    },
+    {
+      "key": "bristletails",
+      "name": "Bristletails",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q19962575"
+    },
+    {
+      "key": "butterfly",
+      "name": "Butterfly",
+      "aliases": [
+        "butterflies"
+      ],
+      "is_playable_answer": true,
+      "parent": "insect"
+    },
+    {
+      "key": "caecilian",
+      "name": "Caecilian",
+      "aliases": [
+        "Apoda, Caecilian worm, Caecilians, Caecillian, Cicilian worm, Coecilians, Gymnophiona"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q4758"
+    },
+    {
+      "key": "carnivora",
+      "name": "Carnivora",
+      "aliases": [
+        "Carnivores, Fissipeda, Carnaria, Ferae, Caniformes, Carnassidentia, Carnivoramorphia, carnivorans, Carnivori, Carnivorida, Carnivoriformes, Carnivoripedida, Cynofeliformia, Cynofeloidea, Cynosia, Digitigrada, Digitigradae, Eucarnivora, Neocarnivora, Plantigrada"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q25306"
+    },
+    {
+      "key": "cat",
+      "name": "Cat",
+      "aliases": [
+        "cats",
+        "domestic cat",
+        "house cat"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "chiroptera",
+      "name": "Chiroptera",
+      "aliases": [
+        "bat, bats, chiropteran, chiropterans, the bats"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q28425"
+    },
+    {
+      "key": "coleopteria",
+      "name": "Coleopteria",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q2752876"
+    },
+    {
+      "key": "colymbiformes",
+      "name": "Colymbiformes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q2984609"
+    },
+    {
+      "key": "condorodon",
+      "name": "Condorodon",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q60790304"
+    },
+    {
+      "key": "craciformes",
+      "name": "Craciformes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q1837596"
+    },
+    {
+      "key": "crocodile",
+      "name": "Crocodile",
+      "aliases": [
+        "croc",
+        "crocodiles"
+      ],
+      "is_playable_answer": true,
+      "parent": "reptile"
+    },
+    {
+      "key": "cruschedula",
+      "name": "Cruschedula",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q5190172"
+    },
+    {
+      "key": "cyllonium",
+      "name": "Cyllonium",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q5199348"
+    },
+    {
+      "key": "dasyuromorphia",
+      "name": "Dasyuromorphia",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q213333"
+    },
+    {
+      "key": "diasoma",
+      "name": "Diasoma",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q3026361"
+    },
+    {
+      "key": "dicondylian",
+      "name": "dicondylian",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q1210274"
+    },
+    {
+      "key": "diprotodontia",
+      "name": "Diprotodontia",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q26332"
+    },
+    {
+      "key": "dog",
+      "name": "Dog",
+      "aliases": [
+        "dogs",
+        "domestic dog"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "dolphin",
+      "name": "Dolphin",
+      "aliases": [
+        "dolphins"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "dragonfly",
+      "name": "Dragonfly",
+      "aliases": [
+        "dragonflies"
+      ],
+      "is_playable_answer": true,
+      "parent": "insect"
+    },
+    {
+      "key": "dromopoda",
+      "name": "Dromopoda",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q5308296"
+    },
+    {
+      "key": "duck",
+      "name": "Duck",
+      "aliases": [
+        "ducks"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "eagle",
+      "name": "Eagle",
+      "aliases": [
+        "eagles"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "ectognatha",
+      "name": "Ectognatha",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q15712859"
+    },
+    {
+      "key": "elephant",
+      "name": "Elephant",
+      "aliases": [
+        "elephants"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "elephant_shrews",
+      "name": "Elephant Shrews",
+      "aliases": [
+        "elephant shrews, jumping shrews, sengis"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q9324400"
+    },
+    {
+      "key": "entomostraca",
+      "name": "Entomostraca",
+      "aliases": [
+        "Entomocostraca"
+      ],
+      "is_playable_answer": true,
+      "parent": "crustacean",
+      "wikidata_qid": "Q3055124"
+    },
+    {
+      "key": "erinaceomorpha",
+      "name": "Erinaceomorpha",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q6241223"
+    },
+    {
+      "key": "eumollusca",
+      "name": "Eumollusca",
+      "aliases": [
+        "Eumollusc, Eumolluscs"
+      ],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q3060356"
+    },
+    {
+      "key": "eureptilia",
+      "name": "Eureptilia",
+      "aliases": [
+        "Eureptile, Eureptiles, Eureptilian"
+      ],
+      "is_playable_answer": true,
+      "parent": "reptile",
+      "wikidata_qid": "Q3060510"
+    },
+    {
+      "key": "falcon",
+      "name": "Falcon",
+      "aliases": [
+        "falcons"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "frog",
+      "name": "Frog",
+      "aliases": [
+        "frogs"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian"
+    },
+    {
+      "key": "galbuliformes",
+      "name": "Galbuliformes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q3079028"
+    },
+    {
+      "key": "galliformes",
+      "name": "Galliformes",
+      "aliases": [
+        "galliforms, gallinaceous birds, gamebirds, gamefowl"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q21659"
+    },
+    {
+      "key": "giraffe",
+      "name": "Giraffe",
+      "aliases": [
+        "giraffes"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "hawk",
+      "name": "Hawk",
+      "aliases": [
+        "hawks"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "hemprichisaurus",
+      "name": "Hemprichisaurus",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q5712696"
+    },
+    {
+      "key": "hensonbatrachus",
+      "name": "Hensonbatrachus",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q122927807"
+    },
+    {
+      "key": "horse",
+      "name": "Horse",
+      "aliases": [
+        "horses"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "indobenthosuchus",
+      "name": "Indobenthosuchus",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q6025627"
+    },
+    {
+      "key": "insectivora",
+      "name": "Insectivora",
+      "aliases": [
+        "insectivore"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q25842"
+    },
+    {
+      "key": "itemirella",
+      "name": "Itemirella",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q6094366"
+    },
+    {
+      "key": "kangaroo",
+      "name": "Kangaroo",
+      "aliases": [
+        "kangaroos"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "kirengellidae",
+      "name": "Kirengellidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q2610671"
+    },
+    {
+      "key": "labyrinthodontia",
+      "name": "Labyrinthodontia",
+      "aliases": [
+        "labyrinthodont"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q753235"
+    },
+    {
+      "key": "licnodamaeidae",
+      "name": "Licnodamaeidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q4639594"
+    },
+    {
+      "key": "lipotyphla",
+      "name": "Lipotyphla",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q16920908"
+    },
+    {
+      "key": "lissamphibian",
+      "name": "lissamphibian",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q134861"
+    },
+    {
+      "key": "lizard",
+      "name": "Lizard",
+      "aliases": [
+        "lizards"
+      ],
+      "is_playable_answer": true,
+      "parent": "reptile"
+    },
+    {
+      "key": "louisinidae",
+      "name": "Louisinidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q33134400"
+    },
+    {
+      "key": "maxillopoda",
+      "name": "Maxillopoda",
+      "aliases": [
+        "Maxillopod"
+      ],
+      "is_playable_answer": true,
+      "parent": "crustacean",
+      "wikidata_qid": "Q132662"
+    },
+    {
+      "key": "microscorpions",
+      "name": "Microscorpions",
+      "aliases": [
+        "Microwhip scorpion, Palpigrade"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19117"
+    },
+    {
+      "key": "micrura",
+      "name": "Micrura",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q12901043"
+    },
+    {
+      "key": "mosquito",
+      "name": "Mosquito",
+      "aliases": [
+        "mosquitoes",
+        "mosquitos"
+      ],
+      "is_playable_answer": true,
+      "parent": "insect"
+    },
+    {
+      "key": "multicrustacea",
+      "name": "Multicrustacea",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "crustacean",
+      "wikidata_qid": "Q11937877"
+    },
+    {
+      "key": "neornithes",
+      "name": "Neornithes",
+      "aliases": [
+        "modern birds"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q19163"
+    },
+    {
+      "key": "opiliones",
+      "name": "Opiliones",
+      "aliases": [
+        "daddy longlegs, granddaddy longlegs, harvestmen, opilionid, opilionids"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19116"
+    },
+    {
+      "key": "ostrich",
+      "name": "Ostrich",
+      "aliases": [
+        "ostriches"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "owl",
+      "name": "Owl",
+      "aliases": [
+        "owls"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "pachydermata",
+      "name": "Pachydermata",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q1921355"
+    },
+    {
+      "key": "palaeognathae",
+      "name": "Palaeognathae",
+      "aliases": [
+        "palaeognaths, Paleognathae, Paleognathia, paleognaths"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q19166"
+    },
+    {
+      "key": "palaeoryctoidea",
+      "name": "Palaeoryctoidea",
+      "aliases": [
+        "Palaeoryctoid"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q7126494"
+    },
+    {
+      "key": "palmipedes",
+      "name": "Palmipedes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q3361632"
+    },
+    {
+      "key": "passerae",
+      "name": "Passerae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q7142618"
+    },
+    {
+      "key": "penguin",
+      "name": "Penguin",
+      "aliases": [
+        "penguins"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "peramelemorphia",
+      "name": "Peramelemorphia",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q244587"
+    },
+    {
+      "key": "pilosa",
+      "name": "Pilosa",
+      "aliases": [
+        "sloth, sloths"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q143441"
+    },
+    {
+      "key": "pleuroptyx",
+      "name": "Pleuroptyx",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q9061117"
+    },
+    {
+      "key": "polyplacophora",
+      "name": "Polyplacophora",
+      "aliases": [
+        "chiton, Chitons, Polyplacophoran, Sea cradle"
+      ],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q188906"
+    },
+    {
+      "key": "propelodytes",
+      "name": "Propelodytes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q7250156"
+    },
+    {
+      "key": "prototheria",
+      "name": "Prototheria",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q715778"
+    },
+    {
+      "key": "pseudoscorpions",
+      "name": "Pseudoscorpions",
+      "aliases": [
+        "book scorpion, false scorpion, pseudoscorpions, Pseudoscorpions"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19119"
+    },
+    {
+      "key": "pumiliornis",
+      "name": "Pumiliornis",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q21369068"
+    },
+    {
+      "key": "q25368",
+      "name": "Q25368",
+      "aliases": [
+        "bivalve, bivalves"
+      ],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q25368"
+    },
+    {
+      "key": "q4867740",
+      "name": "Q4867740",
+      "aliases": [
+        "gastropod"
+      ],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q4867740"
+    },
+    {
+      "key": "rhychocephalians",
+      "name": "rhychocephalians",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "reptile",
+      "wikidata_qid": "Q15099738"
+    },
+    {
+      "key": "ricinulei",
+      "name": "Ricinulei",
+      "aliases": [
+        "Hooded tickspider, Ricinuleid"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19120"
+    },
+    {
+      "key": "robin",
+      "name": "Robin",
+      "aliases": [
+        "robins"
+      ],
+      "is_playable_answer": true,
+      "parent": "bird"
+    },
+    {
+      "key": "salamander",
+      "name": "Salamander",
+      "aliases": [
+        "salamanders"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian"
+    },
+    {
+      "key": "salamanders",
+      "name": "salamanders",
+      "aliases": [
+        "salamander, salamanders, Urodela"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q53663"
+    },
+    {
+      "key": "salmon",
+      "name": "Salmon",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "fish"
+    },
+    {
+      "key": "scaphopoda",
+      "name": "Scaphopoda",
+      "aliases": [
+        "Tusk shell"
+      ],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q238314"
+    },
+    {
+      "key": "shark",
+      "name": "Shark",
+      "aliases": [
+        "sharks"
+      ],
+      "is_playable_answer": true,
+      "parent": "fish"
+    },
+    {
+      "key": "short_tailed_whipscorpions",
+      "name": "Short-tailed Whipscorpions",
+      "aliases": [
+        "Schizomid, shorttailed whipscorpion, Whip-spricket, short-tailed whip-scorpions, sprickets"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19123"
+    },
+    {
+      "key": "sirenia",
+      "name": "Sirenia",
+      "aliases": [
+        "sea cow, sea cows, sirenian, sirenians"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q25431"
+    },
+    {
+      "key": "snake",
+      "name": "Snake",
+      "aliases": [
+        "snakes"
+      ],
+      "is_playable_answer": true,
+      "parent": "reptile"
+    },
+    {
+      "key": "solenogastres",
+      "name": "Solenogastres",
+      "aliases": [
+        "Neomeniomorpha"
+      ],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q1152770"
+    },
+    {
+      "key": "spiders",
+      "name": "Spiders",
+      "aliases": [
+        "Spider, spider, spiders, spider (animal), spider (arachnid), spider (arthropod), the spider order, true spiders"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q1357"
+    },
+    {
+      "key": "stenothecoida",
+      "name": "Stenothecoida",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q16948595"
+    },
+    {
+      "key": "tailless_whipscorpions",
+      "name": "Tailless Whipscorpions",
+      "aliases": [
+        "tailless whip scorpion, tailless whip scorpions, whip spiders"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19111"
+    },
+    {
+      "key": "tentaculita",
+      "name": "Tentaculita",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "mollusk",
+      "wikidata_qid": "Q1758465"
+    },
+    {
+      "key": "theatonius",
+      "name": "Theatonius",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q7777320"
+    },
+    {
+      "key": "toad",
+      "name": "Toad",
+      "aliases": [
+        "toads"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian"
+    },
+    {
+      "key": "trochiliformes",
+      "name": "Trochiliformes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q3539809"
+    },
+    {
+      "key": "trout",
+      "name": "Trout",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "fish"
+    },
+    {
+      "key": "tuna",
+      "name": "Tuna",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "fish"
+    },
+    {
+      "key": "turtle",
+      "name": "Turtle",
+      "aliases": [
+        "tortoise",
+        "tortoises",
+        "turtles"
+      ],
+      "is_playable_answer": true,
+      "parent": "reptile"
+    },
+    {
+      "key": "upupiformes",
+      "name": "Upupiformes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "bird",
+      "wikidata_qid": "Q2621831"
+    },
+    {
+      "key": "whale",
+      "name": "Whale",
+      "aliases": [
+        "whales"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal"
+    },
+    {
+      "key": "windscorpions",
+      "name": "Windscorpions",
+      "aliases": [
+        "camel spider, solifuge, sun spider, wind scorpion"
+      ],
+      "is_playable_answer": true,
+      "parent": "arachnid",
+      "wikidata_qid": "Q19126"
+    },
+    {
+      "key": "xenocarida",
+      "name": "Xenocarida",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "crustacean",
+      "wikidata_qid": "Q8043532"
+    },
+    {
+      "key": "xestorrhytias",
+      "name": "Xestorrhytias",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q8043958"
+    },
+    {
+      "key": "yarengia",
+      "name": "Yarengia",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q8049313"
+    },
+    {
+      "key": "yinotheria",
+      "name": "Yinotheria",
+      "aliases": [
+        "Yinothere, Yinotheres, Yinotherian, Yinotherians"
+      ],
+      "is_playable_answer": true,
+      "parent": "mammal",
+      "wikidata_qid": "Q21448022"
+    },
+    {
+      "key": "zamolxis",
+      "name": "Zamolxis",
+      "aliases": [
+        "Zalmoxis"
+      ],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q16990946"
+    },
+    {
+      "key": "zygentoma",
+      "name": "Zygentoma",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "insect",
+      "wikidata_qid": "Q30111"
+    },
+    {
+      "key": "ailuridae",
+      "name": "Ailuridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "carnivora",
+      "wikidata_qid": "Q107658391"
+    },
+    {
+      "key": "ambystomatidae",
+      "name": "Ambystomatidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q764529"
+    },
+    {
+      "key": "american_giant_salamanders",
+      "name": "American Giant Salamanders",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q14547873"
+    },
+    {
+      "key": "american_robin",
+      "name": "American Robin",
+      "aliases": [
+        "american robins"
+      ],
+      "is_playable_answer": true,
+      "parent": "robin"
+    },
+    {
+      "key": "anactinotrichida",
+      "name": "Anactinotrichida",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q19961753"
+    },
+    {
+      "key": "apodimorphae",
+      "name": "Apodimorphae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "passerae",
+      "wikidata_qid": "Q19961761"
+    },
+    {
+      "key": "aquatic_caecilians",
+      "name": "Aquatic Caecilians",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q141997"
+    },
+    {
+      "key": "arthroleptidae",
+      "name": "Arthroleptidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q55455"
+    },
+    {
+      "key": "ateluridae",
+      "name": "Ateluridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "zygentoma",
+      "wikidata_qid": "Q21446093"
+    },
+    {
+      "key": "bald_eagle",
+      "name": "Bald Eagle",
+      "aliases": [
+        "bald eagles"
+      ],
+      "is_playable_answer": true,
+      "parent": "eagle"
+    },
+    {
+      "key": "banksinomidae",
+      "name": "Banksinomidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10426091"
+    },
+    {
+      "key": "barn_owl",
+      "name": "Barn Owl",
+      "aliases": [
+        "barn owls"
+      ],
+      "is_playable_answer": true,
+      "parent": "owl"
+    },
+    {
+      "key": "barred_owl",
+      "name": "Barred Owl",
+      "aliases": [
+        "barred owls"
+      ],
+      "is_playable_answer": true,
+      "parent": "owl"
+    },
+    {
+      "key": "batrachia",
+      "name": "Batrachia",
+      "aliases": [
+        "Batrachian, Batrachians"
+      ],
+      "is_playable_answer": true,
+      "parent": "lissamphibian",
+      "wikidata_qid": "Q13514368"
+    },
+    {
+      "key": "black_bear",
+      "name": "Black Bear",
+      "aliases": [
+        "american black bear",
+        "black bears"
+      ],
+      "is_playable_answer": true,
+      "parent": "bear"
+    },
+    {
+      "key": "bombinatoridae",
+      "name": "Bombinatoridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q55354"
+    },
+    {
+      "key": "brevicipitidae",
+      "name": "Brevicipitidae",
+      "aliases": [
+        "brevicipitids, rain frogs"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q55364"
+    },
+    {
+      "key": "brown_bear",
+      "name": "Brown Bear",
+      "aliases": [
+        "brown bears",
+        "grizzlies",
+        "grizzly",
+        "grizzly bear"
+      ],
+      "is_playable_answer": true,
+      "parent": "bear"
+    },
+    {
+      "key": "bulungu",
+      "name": "Bulungu",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "peramelemorphia",
+      "wikidata_qid": "Q16750361"
+    },
+    {
+      "key": "caeciliidae",
+      "name": "Caeciliidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q913066"
+    },
+    {
+      "key": "canestriniidae",
+      "name": "Canestriniidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10441700"
+    },
+    {
+      "key": "caniformia",
+      "name": "Caniformia",
+      "aliases": [
+        "Caniform, Caniforms"
+      ],
+      "is_playable_answer": true,
+      "parent": "carnivora",
+      "wikidata_qid": "Q27414"
+    },
+    {
+      "key": "centrolenidae",
+      "name": "Centrolenidae",
+      "aliases": [
+        "Glass frog family"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q53752"
+    },
+    {
+      "key": "chanea",
+      "name": "Chanea",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q20646157"
+    },
+    {
+      "key": "chikilidae",
+      "name": "Chikilidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q751312"
+    },
+    {
+      "key": "chummidae",
+      "name": "Chummidae",
+      "aliases": [
+        "Kpatindaringa"
+      ],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q8629"
+    },
+    {
+      "key": "cobra",
+      "name": "Cobra",
+      "aliases": [
+        "cobras"
+      ],
+      "is_playable_answer": true,
+      "parent": "snake"
+    },
+    {
+      "key": "coddingtonia",
+      "name": "Coddingtonia",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q13219062"
+    },
+    {
+      "key": "cotylosauria",
+      "name": "Cotylosauria",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anapsid",
+      "wikidata_qid": "Q3696002"
+    },
+    {
+      "key": "cougar",
+      "name": "Cougar",
+      "aliases": [
+        "cougars",
+        "mountain lion",
+        "mountain lions",
+        "panther",
+        "puma",
+        "pumas"
+      ],
+      "is_playable_answer": true,
+      "parent": "cat"
+    },
+    {
+      "key": "coyote",
+      "name": "Coyote",
+      "aliases": [
+        "coyotes"
+      ],
+      "is_playable_answer": true,
+      "parent": "dog"
+    },
+    {
+      "key": "craci",
+      "name": "Craci",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q12232395"
+    },
+    {
+      "key": "cracidae",
+      "name": "Cracidae",
+      "aliases": [
+        "cracids"
+      ],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q725342"
+    },
+    {
+      "key": "cryptobranchidae",
+      "name": "Cryptobranchidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q754032"
+    },
+    {
+      "key": "cryptobranchoidea",
+      "name": "Cryptobranchoidea",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q348838"
+    },
+    {
+      "key": "cuculimorphae",
+      "name": "Cuculimorphae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "neornithes",
+      "wikidata_qid": "Q17273280"
+    },
+    {
+      "key": "dasyuridae",
+      "name": "Dasyuridae",
+      "aliases": [
+        "kunovcovití"
+      ],
+      "is_playable_answer": true,
+      "parent": "dasyuromorphia",
+      "wikidata_qid": "Q23133"
+    },
+    {
+      "key": "dasyuroidea",
+      "name": "Dasyuroidea",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "dasyuromorphia",
+      "wikidata_qid": "Q29577284"
+    },
+    {
+      "key": "dendrobatidae",
+      "name": "Dendrobatidae",
+      "aliases": [
+        "poison dart frog family"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q53750"
+    },
+    {
+      "key": "dermophiidae",
+      "name": "Dermophiidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q3086182"
+    },
+    {
+      "key": "donkey",
+      "name": "Donkey",
+      "aliases": [
+        "ass",
+        "donkeys"
+      ],
+      "is_playable_answer": true,
+      "parent": "horse"
+    },
+    {
+      "key": "dugongidae",
+      "name": "Dugongidae",
+      "aliases": [
+        "dugongid"
+      ],
+      "is_playable_answer": true,
+      "parent": "sirenia",
+      "wikidata_qid": "Q838603"
+    },
+    {
+      "key": "dwarf_tarantula",
+      "name": "Dwarf tarantula",
+      "aliases": [
+        "Mecicobothriidae, sheet funnel-web spiders"
+      ],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10630"
+    },
+    {
+      "key": "emballonuridae",
+      "name": "Emballonuridae",
+      "aliases": [
+        "Sac-winged bat family"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q838530"
+    },
+    {
+      "key": "eocaeciliidae",
+      "name": "Eocaeciliidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q3055566"
+    },
+    {
+      "key": "erinaceidae",
+      "name": "Erinaceidae",
+      "aliases": [
+        "erinaceid, erinaceids, hedgehogs"
+      ],
+      "is_playable_answer": true,
+      "parent": "erinaceomorpha",
+      "wikidata_qid": "Q28257"
+    },
+    {
+      "key": "erythracaridae",
+      "name": "Erythracaridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10488604"
+    },
+    {
+      "key": "euzetidae",
+      "name": "Euzetidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10492558"
+    },
+    {
+      "key": "feliformia",
+      "name": "Feliformia",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "carnivora",
+      "wikidata_qid": "Q27070"
+    },
+    {
+      "key": "fish_caecilians",
+      "name": "Fish Caecilians",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q1069149"
+    },
+    {
+      "key": "fissipedia",
+      "name": "Fissipedia",
+      "aliases": [
+        "Fissipeda, Fissipedina, land dwelling carnivorans"
+      ],
+      "is_playable_answer": true,
+      "parent": "carnivora",
+      "wikidata_qid": "Q1197437"
+    },
+    {
+      "key": "fox",
+      "name": "Fox",
+      "aliases": [
+        "foxes"
+      ],
+      "is_playable_answer": true,
+      "parent": "dog"
+    },
+    {
+      "key": "furipteridae",
+      "name": "Furipteridae",
+      "aliases": [
+        "furipterid, furipterids"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q581472"
+    },
+    {
+      "key": "gaoligonga",
+      "name": "Gaoligonga",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q3095233"
+    },
+    {
+      "key": "gaviomorphae",
+      "name": "Gaviomorphae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "neornithes",
+      "wikidata_qid": "Q16910814"
+    },
+    {
+      "key": "gephyrosauridae",
+      "name": "Gephyrosauridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "rhychocephalians",
+      "wikidata_qid": "Q745322"
+    },
+    {
+      "key": "golden_eagle",
+      "name": "Golden Eagle",
+      "aliases": [
+        "golden eagles"
+      ],
+      "is_playable_answer": true,
+      "parent": "eagle"
+    },
+    {
+      "key": "gradungulidae",
+      "name": "Gradungulidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10549"
+    },
+    {
+      "key": "great_horned_owl",
+      "name": "Great Horned Owl",
+      "aliases": [
+        "great horned owls"
+      ],
+      "is_playable_answer": true,
+      "parent": "owl"
+    },
+    {
+      "key": "great_white_shark",
+      "name": "Great White Shark",
+      "aliases": [
+        "great white sharks"
+      ],
+      "is_playable_answer": true,
+      "parent": "shark"
+    },
+    {
+      "key": "herpelidae",
+      "name": "Herpelidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q3086167"
+    },
+    {
+      "key": "hipposideridae",
+      "name": "Hipposideridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q604995"
+    },
+    {
+      "key": "hylidae",
+      "name": "Hylidae",
+      "aliases": [
+        "hylid, Tree frog, Hylid"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q53696"
+    },
+    {
+      "key": "hynobiidae",
+      "name": "Hynobiidae",
+      "aliases": [
+        "the Asiatic salamander family"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q827251"
+    },
+    {
+      "key": "hyperoliidae",
+      "name": "Hyperoliidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q55476"
+    },
+    {
+      "key": "ichthyostegalia",
+      "name": "Ichthyostegalia",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "labyrinthodontia",
+      "wikidata_qid": "Q3364269"
+    },
+    {
+      "key": "ichthyostomatogasteridae",
+      "name": "Ichthyostomatogasteridae",
+      "aliases": [
+        "Ichthyosomatogasteridae"
+      ],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q3147698"
+    },
+    {
+      "key": "iguana",
+      "name": "Iguana",
+      "aliases": [
+        "iguanas"
+      ],
+      "is_playable_answer": true,
+      "parent": "lizard"
+    },
+    {
+      "key": "ilariidae",
+      "name": "Ilariidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "diprotodontia",
+      "wikidata_qid": "Q148200"
+    },
+    {
+      "key": "incubator_birds",
+      "name": "Incubator birds",
+      "aliases": [
+        "incubator birds, megapodes, Megapodiidae"
+      ],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q213536"
+    },
+    {
+      "key": "indo_african_caecilians",
+      "name": "Indo-African caecilians",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q107262150"
+    },
+    {
+      "key": "indotyphlidae",
+      "name": "Indotyphlidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q2913779"
+    },
+    {
+      "key": "jaguar",
+      "name": "Jaguar",
+      "aliases": [
+        "jaguars"
+      ],
+      "is_playable_answer": true,
+      "parent": "cat"
+    },
+    {
+      "key": "kramerellidae",
+      "name": "Kramerellidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10548493"
+    },
+    {
+      "key": "laccotriton",
+      "name": "Laccotriton",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q6468169"
+    },
+    {
+      "key": "lamponidae",
+      "name": "Lamponidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10583"
+    },
+    {
+      "key": "leiopelmatidae",
+      "name": "Leiopelmatidae",
+      "aliases": [
+        "Ascaphidae"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q55477"
+    },
+    {
+      "key": "leopard",
+      "name": "Leopard",
+      "aliases": [
+        "leopards"
+      ],
+      "is_playable_answer": true,
+      "parent": "cat"
+    },
+    {
+      "key": "leptodactylidae",
+      "name": "Leptodactylidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q55475"
+    },
+    {
+      "key": "lion",
+      "name": "Lion",
+      "aliases": [
+        "lions"
+      ],
+      "is_playable_answer": true,
+      "parent": "cat"
+    },
+    {
+      "key": "long_legged_sac_spiders",
+      "name": "Long-legged sac spiders",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10646"
+    },
+    {
+      "key": "lungless_salamanders",
+      "name": "Lungless Salamanders",
+      "aliases": [
+        "plethodont, plethodontid, plethodontids, plethodonts, lungless salamander, lungless salamanders, the lungless salamander family",
+        "plethodontids"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q100340"
+    },
+    {
+      "key": "macropodiformes",
+      "name": "Macropodiformes",
+      "aliases": [
+        "macropod, macropods"
+      ],
+      "is_playable_answer": true,
+      "parent": "diprotodontia",
+      "wikidata_qid": "Q691795"
+    },
+    {
+      "key": "maindroniidae",
+      "name": "Maindroniidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "zygentoma",
+      "wikidata_qid": "Q2084097"
+    },
+    {
+      "key": "manatee",
+      "name": "Manatee",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "sirenia",
+      "wikidata_qid": "Q10827895"
+    },
+    {
+      "key": "mantellidae",
+      "name": "Mantellidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q56054"
+    },
+    {
+      "key": "megadermatidae",
+      "name": "Megadermatidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q841327"
+    },
+    {
+      "key": "megophryidae",
+      "name": "Megophryidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q56056"
+    },
+    {
+      "key": "meleagrididae",
+      "name": "Meleagrididae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q11777078"
+    },
+    {
+      "key": "meyerellidae",
+      "name": "Meyerellidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10583629"
+    },
+    {
+      "key": "microchiroptera",
+      "name": "Microchiroptera",
+      "aliases": [
+        "microbat suborder"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q971343"
+    },
+    {
+      "key": "microhylidae",
+      "name": "Microhylidae",
+      "aliases": [
+        "Microhyidae"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q56057"
+    },
+    {
+      "key": "microstigmatidae",
+      "name": "Microstigmatidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10637"
+    },
+    {
+      "key": "mites_and_ticks",
+      "name": "mites and ticks",
+      "aliases": [
+        "mitelike mites"
+      ],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q1341457"
+    },
+    {
+      "key": "molossidae",
+      "name": "Molossidae",
+      "aliases": [
+        "molossid, Free-tailed bat family"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q737399"
+    },
+    {
+      "key": "mormoopidae",
+      "name": "Mormoopidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q853268"
+    },
+    {
+      "key": "mudpuppy",
+      "name": "mudpuppy",
+      "aliases": [
+        "Proteidae"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q743692"
+    },
+    {
+      "key": "mycobatidae",
+      "name": "Mycobatidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10591063"
+    },
+    {
+      "key": "myobatrachidae",
+      "name": "Myobatrachidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q56058"
+    },
+    {
+      "key": "mystacinidae",
+      "name": "Mystacinidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q15211016"
+    },
+    {
+      "key": "natalidae",
+      "name": "Natalidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q772206"
+    },
+    {
+      "key": "neognathae",
+      "name": "Neognathae",
+      "aliases": [
+        "Neognath, Neognaths"
+      ],
+      "is_playable_answer": true,
+      "parent": "neornithes",
+      "wikidata_qid": "Q19168"
+    },
+    {
+      "key": "nicodamidae",
+      "name": "Nicodamidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10961"
+    },
+    {
+      "key": "nicoletiidae",
+      "name": "Nicoletiidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "zygentoma",
+      "wikidata_qid": "Q3430452"
+    },
+    {
+      "key": "notopalaeognathae",
+      "name": "Notopalaeognathae",
+      "aliases": [
+        "Notopalaeognath, Notopalaeognaths"
+      ],
+      "is_playable_answer": true,
+      "parent": "palaeognathae",
+      "wikidata_qid": "Q19598162"
+    },
+    {
+      "key": "novacaesareala",
+      "name": "Novacaesareala",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "neornithes",
+      "wikidata_qid": "Q7064378"
+    },
+    {
+      "key": "numididae",
+      "name": "Numididae",
+      "aliases": [
+        "guineafowl family"
+      ],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q171953"
+    },
+    {
+      "key": "odontophoridae",
+      "name": "Odontophoridae",
+      "aliases": [
+        "odontophorids, New World quail family, New World quails"
+      ],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q72968"
+    },
+    {
+      "key": "opilioacariformes",
+      "name": "Opilioacariformes",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q11846223"
+    },
+    {
+      "key": "opisthothelae",
+      "name": "Opisthothelae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q12072"
+    },
+    {
+      "key": "orophodontidae",
+      "name": "Orophodontidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "pilosa",
+      "wikidata_qid": "Q7103847"
+    },
+    {
+      "key": "orsolobidae",
+      "name": "Orsolobidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10969"
+    },
+    {
+      "key": "palaeotringa",
+      "name": "Palaeotringa",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "neornithes",
+      "wikidata_qid": "Q7126515"
+    },
+    {
+      "key": "parasitiform",
+      "name": "parasitiform",
+      "aliases": [
+        "Anactinotrichida"
+      ],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q132756"
+    },
+    {
+      "key": "pelobatidae",
+      "name": "Pelobatidae",
+      "aliases": [
+        "European spadefoot toad family"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q720765"
+    },
+    {
+      "key": "peramelidae",
+      "name": "Peramelidae",
+      "aliases": [
+        "bandicoots, bandicoot family, peramelids"
+      ],
+      "is_playable_answer": true,
+      "parent": "peramelemorphia",
+      "wikidata_qid": "Q23146"
+    },
+    {
+      "key": "peroryctidae",
+      "name": "Peroryctidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "peramelemorphia",
+      "wikidata_qid": "Q3375547"
+    },
+    {
+      "key": "phalangerida",
+      "name": "Phalangerida",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "diprotodontia",
+      "wikidata_qid": "Q7180249"
+    },
+    {
+      "key": "phalangeriformes",
+      "name": "Phalangeriformes",
+      "aliases": [
+        "gliders, possum, possums"
+      ],
+      "is_playable_answer": true,
+      "parent": "diprotodontia",
+      "wikidata_qid": "Q279198"
+    },
+    {
+      "key": "phasiani",
+      "name": "Phasiani",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q11296652"
+    },
+    {
+      "key": "phasianoidea",
+      "name": "Phasianoidea",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q22933805"
+    },
+    {
+      "key": "phyllostomidae",
+      "name": "Phyllostomidae",
+      "aliases": [
+        "leaf-nosed bat family"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q600042"
+    },
+    {
+      "key": "pinnipedimorpha",
+      "name": "Pinnipedimorpha",
+      "aliases": [
+        "Pinnipedimorph, Pinnipedimorphs"
+      ],
+      "is_playable_answer": true,
+      "parent": "carnivora",
+      "wikidata_qid": "Q18577902"
+    },
+    {
+      "key": "podothrombiidae",
+      "name": "Podothrombiidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10635359"
+    },
+    {
+      "key": "polar_bear",
+      "name": "Polar Bear",
+      "aliases": [
+        "polar bears"
+      ],
+      "is_playable_answer": true,
+      "parent": "bear"
+    },
+    {
+      "key": "procera",
+      "name": "Procera",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "lissamphibian",
+      "wikidata_qid": "Q16948447"
+    },
+    {
+      "key": "protorothyrididae",
+      "name": "Protorothyrididae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "eureptilia",
+      "wikidata_qid": "Q137521"
+    },
+    {
+      "key": "protrinemuridae",
+      "name": "Protrinemuridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "zygentoma",
+      "wikidata_qid": "Q28432753"
+    },
+    {
+      "key": "psoroptoididae",
+      "name": "Psoroptoididae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10645022"
+    },
+    {
+      "key": "pteropodidae",
+      "name": "Pteropodidae",
+      "aliases": [
+        "pteropodid, pteropodids, flying fox, flying foxes, fruit bat, fruit bats, megabat, megabat family, megabats, Old World fruit bats, Pteropidae"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q185230"
+    },
+    {
+      "key": "pterygotan",
+      "name": "pterygotan",
+      "aliases": [
+        "flying insect, flying insects, Pterygote, Pterygotes, Pterygotous, winged insect, winged insects"
+      ],
+      "is_playable_answer": true,
+      "parent": "dicondylian",
+      "wikidata_qid": "Q22708"
+    },
+    {
+      "key": "pumiliornis_tessellatus",
+      "name": "Pumiliornis tessellatus",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "pumiliornis",
+      "wikidata_qid": "Q16688836"
+    },
+    {
+      "key": "python",
+      "name": "Python",
+      "aliases": [
+        "pythons"
+      ],
+      "is_playable_answer": true,
+      "parent": "snake"
+    },
+    {
+      "key": "ratites",
+      "name": "ratites",
+      "aliases": [
+        "Ratitae, ratite"
+      ],
+      "is_playable_answer": true,
+      "parent": "palaeognathae",
+      "wikidata_qid": "Q19170"
+    },
+    {
+      "key": "rhinatrematidae",
+      "name": "Rhinatrematidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q912940"
+    },
+    {
+      "key": "rhinolophidae",
+      "name": "Rhinolophidae",
+      "aliases": [
+        "cave-dwelling horseshoe bats, horseshoe bat family"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q830900"
+    },
+    {
+      "key": "salamandridae",
+      "name": "Salamandridae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q319469"
+    },
+    {
+      "key": "salamandroidea",
+      "name": "Salamandroidea",
+      "aliases": [
+        "Salamandroid, Salamandroids"
+      ],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q348844"
+    },
+    {
+      "key": "scolecomorphidae",
+      "name": "Scolecomorphidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q387119"
+    },
+    {
+      "key": "scuttling_spiders",
+      "name": "scuttling spiders",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q10030"
+    },
+    {
+      "key": "segmented_spider",
+      "name": "Segmented spider",
+      "aliases": [
+        "Liphistiomorpha"
+      ],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q12076"
+    },
+    {
+      "key": "silverfish",
+      "name": "Silverfish",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "zygentoma",
+      "wikidata_qid": "Q1066550"
+    },
+    {
+      "key": "simaoa",
+      "name": "Simaoa",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q3484089"
+    },
+    {
+      "key": "sinopimoidae",
+      "name": "Sinopimoidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "spiders",
+      "wikidata_qid": "Q11719"
+    },
+    {
+      "key": "siphonopidae",
+      "name": "Siphonopidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "caecilian",
+      "wikidata_qid": "Q2542641"
+    },
+    {
+      "key": "sirenidae",
+      "name": "Sirenidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q240755"
+    },
+    {
+      "key": "slit_faced_bats",
+      "name": "Slit-faced bats.",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q15614857"
+    },
+    {
+      "key": "sloth",
+      "name": "sloth",
+      "aliases": [
+        "sloths"
+      ],
+      "is_playable_answer": true,
+      "parent": "pilosa",
+      "wikidata_qid": "Q2274076"
+    },
+    {
+      "key": "sphenodontidae",
+      "name": "Sphenodontidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "rhychocephalians",
+      "wikidata_qid": "Q3493224"
+    },
+    {
+      "key": "struthioniformes",
+      "name": "Struthioniformes",
+      "aliases": [
+        "Ratitae, Ratite, Ratites, Struthioniform, Struthioniforms"
+      ],
+      "is_playable_answer": true,
+      "parent": "palaeognathae",
+      "wikidata_qid": "Q840849"
+    },
+    {
+      "key": "tetraoninae",
+      "name": "Tetraoninae",
+      "aliases": [
+        "grouse subfamily, Tetraonidae"
+      ],
+      "is_playable_answer": true,
+      "parent": "galliformes",
+      "wikidata_qid": "Q201240"
+    },
+    {
+      "key": "thysanura",
+      "name": "Thysanura",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "apterygota",
+      "wikidata_qid": "Q226951"
+    },
+    {
+      "key": "tiger",
+      "name": "Tiger",
+      "aliases": [
+        "tigers"
+      ],
+      "is_playable_answer": true,
+      "parent": "cat"
+    },
+    {
+      "key": "tongueless_frog",
+      "name": "tongueless frog",
+      "aliases": [
+        "clawed frog",
+        "clawed frogs, tongueless frogs"
+      ],
+      "is_playable_answer": true,
+      "parent": "anuran",
+      "wikidata_qid": "Q56067"
+    },
+    {
+      "key": "trochilidae",
+      "name": "Trochilidae",
+      "aliases": [
+        "hummingbird, hummer, hummers, hummingbirds"
+      ],
+      "is_playable_answer": true,
+      "parent": "trochiliformes",
+      "wikidata_qid": "Q43624"
+    },
+    {
+      "key": "trouessartiidae",
+      "name": "Trouessartiidae",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "acari",
+      "wikidata_qid": "Q10705224"
+    },
+    {
+      "key": "valdotriton",
+      "name": "Valdotriton",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "amphibian",
+      "wikidata_qid": "Q7909462"
+    },
+    {
+      "key": "vermilingua",
+      "name": "Vermilingua",
+      "aliases": [
+        "anteaters, ant-eaters"
+      ],
+      "is_playable_answer": true,
+      "parent": "pilosa",
+      "wikidata_qid": "Q972452"
+    },
+    {
+      "key": "vespertilionidae",
+      "name": "Vespertilionidae",
+      "aliases": [
+        "evening bat, evening bats, plain-nosed bat, plain-nosed bats, vesper bat, vesper bats, vespertilionid, vespertilionid bat, vespertilionid bats, vespertilionids"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q210358"
+    },
+    {
+      "key": "vombatiformes",
+      "name": "Vombatiformes",
+      "aliases": [
+        "Vombatiform, Vombatiforms"
+      ],
+      "is_playable_answer": true,
+      "parent": "diprotodontia",
+      "wikidata_qid": "Q1067017"
+    },
+    {
+      "key": "wolf",
+      "name": "Wolf",
+      "aliases": [
+        "wolves"
+      ],
+      "is_playable_answer": true,
+      "parent": "dog"
+    },
+    {
+      "key": "yangochiroptera",
+      "name": "Yangochiroptera",
+      "aliases": [],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q10862877"
+    },
+    {
+      "key": "yinpterochiroptera",
+      "name": "Yinpterochiroptera",
+      "aliases": [
+        "Yinpterochiropteran, Yinpterochiropterans"
+      ],
+      "is_playable_answer": true,
+      "parent": "chiroptera",
+      "wikidata_qid": "Q2191450"
+    },
+    {
+      "key": "zebra",
+      "name": "Zebra",
+      "aliases": [
+        "zebras"
+      ],
+      "is_playable_answer": true,
+      "parent": "horse"
+    },
+    {
+      "key": "american_barn_owl",
+      "name": "American Barn Owl",
+      "aliases": [
+        "american barn owls"
+      ],
+      "is_playable_answer": true,
+      "parent": "barn_owl"
+    }
+  ]
+}

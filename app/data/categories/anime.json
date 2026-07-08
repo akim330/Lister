@@ -1,0 +1,9 @@
+{
+  "slug": "anime",
+  "name": "Anime",
+  "mode": "flat",
+  "bucket": "Fiction",
+  "bucket_order": 6,
+  "display_order": 2,
+  "elements": []
+}

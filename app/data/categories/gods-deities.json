@@ -1,0 +1,9 @@
+{
+  "slug": "gods-deities",
+  "name": "Gods / Deities",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 10,
+  "elements": []
+}

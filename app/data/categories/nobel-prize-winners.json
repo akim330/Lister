@@ -1,0 +1,9 @@
+{
+  "slug": "nobel-prize-winners",
+  "name": "Nobel Prize winners",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 5,
+  "elements": []
+}

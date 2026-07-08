@@ -1,0 +1,9 @@
+{
+  "slug": "albums",
+  "name": "Albums",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 11,
+  "elements": []
+}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Lister — Play{% endblock %}
+
+{% block content %}
+<section class="hero card">
+  <p class="eyebrow">A fast listing game</p>
+  <h1>Choose your mode, pick a category, and start listing.</h1>
+  <p class="muted">Duplicates do not count. Minor typos and aliases are supported.</p>
+
+  <div class="username-panel">
+    <label for="usernameInput">Username</label>
+    <div class="inline-form">
+      <input id="usernameInput" type="text" maxlength="40" placeholder="Enter username">
+      <button id="saveUsernameBtn" class="secondary">Save</button>
+    </div>
+    <p id="usernameStatus" class="status-line"></p>
+  </div>
+
+  <div class="actions">
+    <button id="playSelectedBtn" class="primary" disabled>Play</button>
+    <a class="button secondary" href="/leaderboards">View All Leaderboards</a>
+  </div>
+  <p id="selectionStatus" class="status-line">Choose a mode and category to play.</p>
+</section>
+
+<section class="card">
+  <h2>Choose a mode</h2>
+  <div class="mode-grid">
+    {% for mode in game_modes %}
+      <button class="mode-card mode-select-btn" type="button" data-game-mode="{{ mode.slug }}">
+        <span>
+          <strong>{{ mode.name }}</strong>
+          <small>{{ mode.description }}</small>
+        </span>
+        <ul>
+          {% for rule in mode.rules %}
+            <li>{{ rule }}</li>
+          {% endfor %}
+        </ul>
+      </button>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="card">
+  <h2>Choose a category</h2>
+  <div class="category-bucket-list">
+    {% for group in category_groups %}
+      <section class="category-bucket">
+        <h3>{{ group.bucket }}</h3>
+        <div class="category-grid">
+          {% for category in group.categories %}
+            <button class="category-tile category-select-btn" type="button" data-category-slug="{{ category.slug }}" data-category-name="{{ category.name }}">
+              <strong>{{ category.name }}</strong>
+            </button>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

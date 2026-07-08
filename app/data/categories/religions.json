@@ -1,0 +1,9 @@
+{
+  "slug": "religions",
+  "name": "Religions",
+  "mode": "flat",
+  "bucket": "Societies and Politics",
+  "bucket_order": 5,
+  "display_order": 5,
+  "elements": []
+}

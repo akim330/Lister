@@ -1,0 +1,9 @@
+{
+  "slug": "classical-composers",
+  "name": "Classical composers",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 3,
+  "elements": []
+}

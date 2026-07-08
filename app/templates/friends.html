@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Friends — Lister{% endblock %}
+
+{% block content %}
+<section class="friends-page">
+  <aside class="card friends-sidebar">
+    <h1>Friends</h1>
+    <p id="friendsUserStatus" class="muted">Loading your profile...</p>
+
+    <form id="friendRequestForm" class="friend-request-form">
+      <label for="friendUsernameInput">Add by exact username</label>
+      <div class="inline-form">
+        <input id="friendUsernameInput" type="text" maxlength="40" placeholder="Username">
+        <button class="primary" type="submit">Send</button>
+      </div>
+      <p id="friendRequestStatus" class="status-line"></p>
+    </form>
+
+    <div class="friend-panel-block">
+      <h2>Requests</h2>
+      <div id="incomingRequests" class="friend-list">
+        <p class="muted">Loading requests...</p>
+      </div>
+    </div>
+
+    <div class="friend-panel-block">
+      <h2>Sent</h2>
+      <div id="outgoingRequests" class="friend-list">
+        <p class="muted">Loading sent requests...</p>
+      </div>
+    </div>
+
+    <div class="friend-panel-block">
+      <h2>Your Friends</h2>
+      <div id="friendsList" class="friend-list">
+        <p class="muted">Loading friends...</p>
+      </div>
+    </div>
+  </aside>
+
+  <section class="card friends-comparison">
+    <div class="mode-switcher friends-mode-switcher">
+      <button id="friendModeBtn" class="mode-switch-btn selected" type="button">By Friend</button>
+      <button id="categoryModeBtn" class="mode-switch-btn" type="button">By Category</button>
+    </div>
+
+    <div id="friendModePanel" class="comparison-panel">
+      <div class="comparison-heading">
+        <div>
+          <p class="eyebrow">Shared Categories</p>
+          <h1>Compare With A Friend</h1>
+        </div>
+        <select id="friendSelect" class="comparison-select"></select>
+      </div>
+      <div id="friendComparisonResults" class="comparison-results">
+        <p class="muted">Choose a friend to compare shared lists.</p>
+      </div>
+    </div>
+
+    <div id="categoryModePanel" class="comparison-panel hidden">
+      <div class="comparison-heading">
+        <div>
+          <p class="eyebrow">One Category</p>
+          <h1>Compare A Category</h1>
+        </div>
+        <select id="categorySelect" class="comparison-select"></select>
+      </div>
+      <div id="categoryComparisonResults" class="comparison-results">
+        <p class="muted">Choose a category to see friends who played it.</p>
+      </div>
+    </div>
+  </section>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/friends.js') }}"></script>
+{% endblock %}

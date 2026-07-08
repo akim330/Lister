@@ -1,0 +1,9 @@
+{
+  "slug": "dinosaurs",
+  "name": "Dinosaurs",
+  "mode": "taxonomy",
+  "bucket": "Nature and Science",
+  "bucket_order": 2,
+  "display_order": 4,
+  "elements": []
+}

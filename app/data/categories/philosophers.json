@@ -1,0 +1,9 @@
+{
+  "slug": "philosophers",
+  "name": "Philosophers",
+  "mode": "flat",
+  "bucket": "Culture",
+  "bucket_order": 4,
+  "display_order": 7,
+  "elements": []
+}

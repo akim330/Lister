@@ -1,0 +1,9 @@
+{
+  "slug": "video-games",
+  "name": "Video games",
+  "mode": "flat",
+  "bucket": "Fiction",
+  "bucket_order": 6,
+  "display_order": 7,
+  "elements": []
+}
