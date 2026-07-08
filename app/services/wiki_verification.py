@@ -10,6 +10,8 @@ import urllib.parse
 import urllib.request
 import zlib
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from typing import Any
 
 from flask import current_app
@@ -339,10 +341,16 @@ CATEGORY_RULES: dict[str, dict[str, Any]] = {
 
 
 _WIKIDATA_ACTION_API_THROTTLED = False
+_WIKI_THROTTLED_UNTIL = 0.0
+_NEGATIVE_VERIFICATION_CACHE: dict[tuple[int, str], float] = {}
 
 
 class WikiVerificationError(RuntimeError):
     """Raised when the remote wiki APIs fail before an answer can be verified."""
+
+
+class WikiRateLimitedError(WikiVerificationError):
+    """Raised when Wikimedia asks this process to stop making requests briefly."""
 
 
 class WikiEntityNotFound(RuntimeError):
@@ -366,6 +374,115 @@ class CachedWikiEntity:
 class MembershipResult:
     is_member: bool
     reason: str
+
+
+@dataclass
+class WikiRequestBudget:
+    """Track the remote work allowed for one live answer verification.
+
+    Cached local rows do not consume budget because they do not touch Wikimedia.
+    Only cold-cache network work is counted, which lets common/cached answers
+    keep behaving normally while preventing one obscure answer from walking a
+    large Wikidata graph during gameplay.
+    """
+
+    wikipedia_lookup_remaining: int
+    primary_wikidata_fetches_remaining: int
+    related_qid_fetches_remaining: int
+    live_path_max_nodes: int
+
+    def consume_wikipedia_lookup(self, submitted_text: str) -> None:
+        """Reserve the single Wikipedia lookup flow for this answer.
+
+        The lookup flow may perform OpenSearch and page metadata requests, but
+        it should only happen once for a player submission. If another call path
+        unexpectedly tries to resolve the same answer again, failing loudly keeps
+        the request fan-out visible instead of silently hammering Wikimedia.
+        """
+
+        if self.wikipedia_lookup_remaining <= 0:
+            current_app.logger.error(
+                "Wiki request budget exhausted before resolving submitted text %r.",
+                submitted_text,
+            )
+            raise WikiVerificationError("Could not verify that answer right now.")
+        self.wikipedia_lookup_remaining -= 1
+
+    def consume_primary_wikidata_fetch(self, qid: str) -> None:
+        """Reserve the one primary Wikidata entity fetch for the submitted answer."""
+
+        if self.primary_wikidata_fetches_remaining <= 0:
+            current_app.logger.error(
+                "Wiki request budget exhausted before fetching primary entity %s.",
+                qid,
+            )
+            raise WikiVerificationError("Could not verify that answer right now.")
+        self.primary_wikidata_fetches_remaining -= 1
+
+    def consume_related_qid_fetch(self, qid: str) -> None:
+        """Reserve one cold-cache related QID fetch during membership walking.
+
+        Related QIDs are where request chains used to balloon. Stopping here
+        means the answer is temporarily unverifiable rather than letting a player
+        request trigger dozens of upstream calls.
+        """
+
+        if self.related_qid_fetches_remaining <= 0:
+            current_app.logger.error(
+                "Wiki request budget exhausted before fetching related entity %s.",
+                qid,
+            )
+            raise WikiVerificationError("Could not verify that answer right now.")
+        self.related_qid_fetches_remaining -= 1
+
+
+def new_wiki_request_budget() -> WikiRequestBudget:
+    """Create the conservative live-verification budget for one submitted answer."""
+
+    return WikiRequestBudget(
+        wikipedia_lookup_remaining=1,
+        primary_wikidata_fetches_remaining=1,
+        related_qid_fetches_remaining=_config_int("WIKI_LIVE_RELATED_QID_FETCH_BUDGET", 5),
+        live_path_max_nodes=_config_int("WIKI_LIVE_PATH_MAX_NODES", 8),
+    )
+
+
+def recently_failed_live_verification(category_id: int, normalized: str) -> bool:
+    """Return whether a recent cold-cache failure should short-circuit retries.
+
+    This cache is intentionally short-lived and in-memory. It protects gameplay
+    and Wikimedia from repeated submissions of the same currently-unverifiable
+    text without changing the permanent SQLite answer cache.
+    """
+
+    key = (category_id, normalized)
+    expires_at = _NEGATIVE_VERIFICATION_CACHE.get(key)
+    if expires_at is None:
+        return False
+    if expires_at <= time.monotonic():
+        _NEGATIVE_VERIFICATION_CACHE.pop(key, None)
+        return False
+    return True
+
+
+def remember_failed_live_verification(category_id: int, normalized: str) -> None:
+    """Temporarily remember a failed uncached verification attempt."""
+
+    ttl = _config_int("WIKI_NEGATIVE_CACHE_TTL_SECONDS", 300)
+    if ttl <= 0:
+        return
+    _NEGATIVE_VERIFICATION_CACHE[(category_id, normalized)] = time.monotonic() + ttl
+
+
+def _config_int(key: str, default: int) -> int:
+    """Read an integer config value and log unexpected values before falling back."""
+
+    value = current_app.config.get(key, default)
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        current_app.logger.error("Config %s must be an integer; using %s.", key, default)
+        return default
 
 
 def cached_entity_for_text(db: sqlite3.Connection, normalized: str) -> CachedWikiEntity | None:
@@ -414,9 +531,15 @@ def manual_alias_lookups(db: sqlite3.Connection, category_id: int, normalized: s
     return [row["lookup_text"] for row in rows]
 
 
-def resolve_and_cache_entity(db: sqlite3.Connection, submitted_text: str) -> CachedWikiEntity:
+def resolve_and_cache_entity(
+    db: sqlite3.Connection,
+    submitted_text: str,
+    budget: WikiRequestBudget | None = None,
+) -> CachedWikiEntity:
     """Resolve submitted text through Wikipedia, then cache the linked Wikidata item."""
 
+    if budget:
+        budget.consume_wikipedia_lookup(submitted_text)
     title = _opensearch_title(submitted_text)
     page = _fetch_page_metadata(title)
     if page.get("disambiguation"):
@@ -431,7 +554,7 @@ def resolve_and_cache_entity(db: sqlite3.Connection, submitted_text: str) -> Cac
         )
         raise WikiEntityNotFound("Could not verify that answer.")
 
-    entity = _fetch_wikidata_entity(qid)
+    entity = _fetch_wikidata_entity(qid, budget=budget, fetch_kind="primary")
     entity_id = _upsert_wiki_entity(db, entity, page, submitted_text)
     _replace_wiki_entity_claims(db, entity_id, entity)
     _replace_wikipedia_categories(db, entity_id, page.get("categories", []))
@@ -439,7 +562,12 @@ def resolve_and_cache_entity(db: sqlite3.Connection, submitted_text: str) -> Cac
     return get_entity_by_id(db, entity_id)
 
 
-def ensure_qid_cached(db: sqlite3.Connection, qid: str) -> CachedWikiEntity | None:
+def ensure_qid_cached(
+    db: sqlite3.Connection,
+    qid: str,
+    budget: WikiRequestBudget | None = None,
+    fetch_kind: str = "related",
+) -> CachedWikiEntity | None:
     """Make sure an ancestor/class QID exists in the local structured cache.
 
     Category checks walk from the submitted entity through its class, subclass,
@@ -452,7 +580,7 @@ def ensure_qid_cached(db: sqlite3.Connection, qid: str) -> CachedWikiEntity | No
         return _entity_from_row(row)
 
     try:
-        entity = _fetch_wikidata_entity(qid)
+        entity = _fetch_wikidata_entity(qid, budget=budget, fetch_kind=fetch_kind)
     except WikiVerificationError:
         raise
     except Exception as exc:
@@ -477,6 +605,7 @@ def evaluate_category_membership(
     db: sqlite3.Connection,
     category: sqlite3.Row,
     entity: CachedWikiEntity,
+    budget: WikiRequestBudget | None = None,
 ) -> MembershipResult:
     """Check and cache whether one wiki entity belongs to one game category."""
 
@@ -489,8 +618,7 @@ def evaluate_category_membership(
         (int(category["id"]), entity.id),
     ).fetchone()
     if cached:
-        if bool(cached["is_member"]):
-            return MembershipResult(True, cached["reason"])
+        return MembershipResult(bool(cached["is_member"]), cached["reason"])
 
     slug = category["slug"]
     rule = CATEGORY_RULES.get(slug)
@@ -498,7 +626,15 @@ def evaluate_category_membership(
     if not rule:
         current_app.logger.error("Category %r has no live wiki membership rule.", slug)
         result = MembershipResult(False, "No live verification rule is configured for this category.")
-    elif properties and _has_any_path(db, entity.qid, set(rule.get("excluded", set())), properties, max_depth=2):
+    elif properties and _has_any_path(
+        db,
+        entity.qid,
+        set(rule.get("excluded", set())),
+        properties,
+        max_depth=2,
+        max_nodes=budget.live_path_max_nodes if budget else 40,
+        budget=budget,
+    ):
         result = MembershipResult(False, "Excluded by category rule.")
     elif properties and _has_any_path(
         db,
@@ -506,6 +642,8 @@ def evaluate_category_membership(
         set(rule["targets"]),
         properties,
         max_depth=int(rule.get("max_depth", 10)),
+        max_nodes=budget.live_path_max_nodes if budget else 40,
+        budget=budget,
     ):
         result = MembershipResult(True, rule["reason"])
     elif _has_any_matching_category(db, entity.id, set(rule.get("category_patterns", set()))):
@@ -532,12 +670,13 @@ def upsert_category_element(
     db: sqlite3.Connection,
     category: sqlite3.Row,
     entity: CachedWikiEntity,
+    budget: WikiRequestBudget | None = None,
 ) -> int:
     """Create or update the category-specific answer row for a verified entity."""
 
     parent_id = None
     if category["slug"] == "animals":
-        parent_id = _ensure_taxonomy_parent_element(db, int(category["id"]), entity.qid)
+        parent_id = _ensure_taxonomy_parent_element(db, int(category["id"]), entity.qid, budget=budget)
 
     is_playable = 0 if entity.qid == "Q729" else 1
     now = utc_now_iso()
@@ -621,7 +760,12 @@ def upsert_category_element(
     return element_id
 
 
-def _ensure_taxonomy_parent_element(db: sqlite3.Connection, category_id: int, qid: str) -> int | None:
+def _ensure_taxonomy_parent_element(
+    db: sqlite3.Connection,
+    category_id: int,
+    qid: str,
+    budget: WikiRequestBudget | None = None,
+) -> int | None:
     """Ensure the immediate parent taxon exists as a category element.
 
     Animal replacement logic depends on ``category_elements.parent_id``. Wikidata
@@ -629,14 +773,22 @@ def _ensure_taxonomy_parent_element(db: sqlite3.Connection, category_id: int, qi
     chain into the existing game table whenever an animal answer is accepted.
     """
 
-    parent_qid = _first_claim_value(db, qid, PARENT_TAXON)
+    try:
+        parent_qid = _first_claim_value(db, qid, PARENT_TAXON, budget=budget)
+    except WikiVerificationError as exc:
+        current_app.logger.error("Could not inspect parent taxon for %s: %s", qid, exc)
+        return None
     if not parent_qid:
         return None
     if parent_qid == qid:
         current_app.logger.error("Broken taxonomy chain for %s: parent points to itself.", qid)
         return None
 
-    parent = ensure_qid_cached(db, parent_qid)
+    try:
+        parent = ensure_qid_cached(db, parent_qid, budget=budget)
+    except WikiVerificationError as exc:
+        current_app.logger.error("Could not cache parent taxon %s for child %s: %s", parent_qid, qid, exc)
+        return None
     if not parent:
         current_app.logger.error("Could not cache parent taxon %s for child %s.", parent_qid, qid)
         return None
@@ -667,7 +819,7 @@ def _ensure_taxonomy_parent_element(db: sqlite3.Connection, category_id: int, qi
             return int(existing_by_name["id"])
 
         branch_targets = set(CATEGORY_RULES["animals"]["targets"])
-        grandparent_id = None if parent.qid in branch_targets else _ensure_taxonomy_parent_element(db, category_id, parent.qid)
+        grandparent_id = None if parent.qid in branch_targets else _ensure_taxonomy_parent_element(db, category_id, parent.qid, budget=budget)
         db.execute(
             """
             UPDATE category_elements
@@ -693,7 +845,7 @@ def _ensure_taxonomy_parent_element(db: sqlite3.Connection, category_id: int, qi
         return int(existing_by_name["id"])
 
     branch_targets = set(CATEGORY_RULES["animals"]["targets"])
-    grandparent_id = None if parent.qid in branch_targets else _ensure_taxonomy_parent_element(db, category_id, parent.qid)
+    grandparent_id = None if parent.qid in branch_targets else _ensure_taxonomy_parent_element(db, category_id, parent.qid, budget=budget)
     now = utc_now_iso()
     db.execute(
         """
@@ -736,8 +888,15 @@ def _has_any_path(
     properties: set[str],
     max_depth: int = 10,
     max_nodes: int = 40,
+    budget: WikiRequestBudget | None = None,
 ) -> bool:
-    """Walk cached Wikidata QID relationships looking for a category target."""
+    """Walk Wikidata QID relationships looking for a category target.
+
+    The walk is allowed to use cached rows freely, but cold-cache related QIDs
+    spend from the live answer budget. If that budget runs out, the caller gets
+    a temporary verification failure instead of a false category-membership
+    result, which avoids poisoning the permanent membership cache.
+    """
 
     if not target_qids:
         return False
@@ -751,6 +910,8 @@ def _has_any_path(
                 max_nodes,
                 sorted(target_qids),
             )
+            if budget:
+                raise WikiVerificationError("Could not verify that answer right now.")
             return False
         qid, depth = queue.pop(0)
         if qid in target_qids:
@@ -758,7 +919,7 @@ def _has_any_path(
         if qid in seen or depth >= max_depth:
             continue
         seen.add(qid)
-        entity = ensure_qid_cached(db, qid)
+        entity = ensure_qid_cached(db, qid, budget=budget)
         if not entity:
             continue
         value_qids = _claim_values(db, entity.id, properties)
@@ -802,8 +963,13 @@ def _has_any_matching_category(db: sqlite3.Connection, entity_id: int, category_
     return False
 
 
-def _first_claim_value(db: sqlite3.Connection, qid: str, property_id: str) -> str | None:
-    entity = ensure_qid_cached(db, qid)
+def _first_claim_value(
+    db: sqlite3.Connection,
+    qid: str,
+    property_id: str,
+    budget: WikiRequestBudget | None = None,
+) -> str | None:
+    entity = ensure_qid_cached(db, qid, budget=budget)
     if not entity:
         return None
     row = db.execute(
@@ -846,6 +1012,12 @@ def _opensearch_title(search_text: str) -> str:
                 "format": "json",
             },
         )
+    except WikiRateLimitedError:
+        current_app.logger.error(
+            "Wikipedia OpenSearch rate-limited for %r; skipping direct title fallback.",
+            search_text,
+        )
+        raise
     except WikiVerificationError:
         current_app.logger.error(
             "Wikipedia OpenSearch failed for %r; trying direct title lookup.",
@@ -889,8 +1061,21 @@ def _fetch_page_metadata(title: str) -> dict[str, Any]:
     }
 
 
-def _fetch_wikidata_entity(qid: str) -> dict[str, Any]:
+def _fetch_wikidata_entity(
+    qid: str,
+    budget: WikiRequestBudget | None = None,
+    fetch_kind: str = "related",
+) -> dict[str, Any]:
     global _WIKIDATA_ACTION_API_THROTTLED
+
+    if budget:
+        if fetch_kind == "primary":
+            budget.consume_primary_wikidata_fetch(qid)
+        elif fetch_kind == "related":
+            budget.consume_related_qid_fetch(qid)
+        else:
+            current_app.logger.error("Unknown Wikidata fetch budget kind %r for %s.", fetch_kind, qid)
+            raise WikiVerificationError("Could not verify that answer right now.")
 
     data = None
     if not _WIKIDATA_ACTION_API_THROTTLED:
@@ -905,6 +1090,13 @@ def _fetch_wikidata_entity(qid: str) -> dict[str, Any]:
                     "format": "json",
                 },
             )
+        except WikiRateLimitedError:
+            _WIKIDATA_ACTION_API_THROTTLED = True
+            current_app.logger.error(
+                "Wikidata wbgetentities rate-limited for %s; skipping fallback during gameplay.",
+                qid,
+            )
+            raise
         except WikiVerificationError:
             _WIKIDATA_ACTION_API_THROTTLED = True
             current_app.logger.error(
@@ -929,6 +1121,9 @@ def _wiki_json(url: str, params: dict[str, str], retries: int = 1) -> Any:
 def _wiki_url_json(full_url: str, retries: int = 1) -> Any:
     """Fetch one JSON URL while respecting short Wikimedia throttle signals."""
 
+    if _wiki_throttle_active():
+        raise WikiRateLimitedError("Could not verify that answer right now.")
+
     request = urllib.request.Request(
         full_url,
         headers={
@@ -949,9 +1144,14 @@ def _wiki_url_json(full_url: str, retries: int = 1) -> Any:
                 return json.loads(raw.decode("utf-8"))
         except urllib.error.HTTPError as exc:
             retry_after = exc.headers.get("Retry-After")
-            if attempt < retries and exc.code == 429:
-                time.sleep(min(float(retry_after or "1"), 3.0))
-                continue
+            if exc.code == 429:
+                retry_after_seconds = _retry_after_seconds(retry_after)
+                if attempt < retries and (retry_after_seconds is None or retry_after_seconds <= 3.0):
+                    time.sleep(min(retry_after_seconds or 1.0, 3.0))
+                    continue
+                _activate_wiki_throttle(retry_after_seconds)
+                current_app.logger.error("Wiki API request rate-limited for %s: %s", full_url, exc)
+                raise WikiRateLimitedError("Could not verify that answer right now.") from exc
             if attempt >= retries:
                 current_app.logger.error("Wiki API request failed for %s: %s", full_url, exc)
                 raise WikiVerificationError("Could not verify that answer right now.") from exc
@@ -962,6 +1162,55 @@ def _wiki_url_json(full_url: str, retries: int = 1) -> Any:
                 raise WikiVerificationError("Could not verify that answer right now.") from exc
             time.sleep(0.5 + attempt)
     raise WikiVerificationError("Could not verify that answer right now.")
+
+
+def _wiki_throttle_active() -> bool:
+    """Return whether a recent 429 should prevent more Wikimedia requests."""
+
+    global _WIKI_THROTTLED_UNTIL
+
+    if _WIKI_THROTTLED_UNTIL <= 0:
+        return False
+    if _WIKI_THROTTLED_UNTIL <= time.monotonic():
+        _WIKI_THROTTLED_UNTIL = 0.0
+        return False
+    return True
+
+
+def _activate_wiki_throttle(retry_after_seconds: float | None) -> None:
+    """Remember Wikimedia's throttle signal without sleeping through gameplay.
+
+    ``Retry-After`` can ask for a longer pause than a player request should wait.
+    This stores the pause globally for the process so the current submission can
+    fail quickly and later submissions avoid making the same doomed request.
+    """
+
+    global _WIKI_THROTTLED_UNTIL
+
+    ttl = _config_int("WIKI_THROTTLE_TTL_SECONDS", 60)
+    throttle_seconds = max(float(ttl), retry_after_seconds or 0.0)
+    if throttle_seconds <= 0:
+        return
+    _WIKI_THROTTLED_UNTIL = max(_WIKI_THROTTLED_UNTIL, time.monotonic() + throttle_seconds)
+
+
+def _retry_after_seconds(value: str | None) -> float | None:
+    """Parse a Retry-After header as seconds, supporting both legal formats."""
+
+    if not value:
+        return None
+    try:
+        return max(float(value), 0.0)
+    except ValueError:
+        pass
+    try:
+        retry_at = parsedate_to_datetime(value)
+    except (TypeError, ValueError, IndexError, OverflowError):
+        current_app.logger.error("Could not parse Wikimedia Retry-After header %r.", value)
+        return None
+    if retry_at.tzinfo is None:
+        retry_at = retry_at.replace(tzinfo=timezone.utc)
+    return max((retry_at - datetime.now(timezone.utc)).total_seconds(), 0.0)
 
 
 def _upsert_wiki_entity(

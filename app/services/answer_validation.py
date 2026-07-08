@@ -14,6 +14,9 @@ from .wiki_verification import (
     cached_entity_for_text,
     evaluate_category_membership,
     manual_alias_lookups,
+    new_wiki_request_budget,
+    recently_failed_live_verification,
+    remember_failed_live_verification,
     resolve_and_cache_entity,
     upsert_category_element,
 )
@@ -217,22 +220,32 @@ def _match_live_wiki_answer(
         lookup_text = manual_lookups[0]
         lookup_normalized = normalize_text(lookup_text)
 
+    category_id = int(category["id"])
+    budget = new_wiki_request_budget()
     try:
         entity = cached_entity_for_text(db, lookup_normalized)
+        if recently_failed_live_verification(category_id, lookup_normalized):
+            return MatchResult(
+                status="invalid",
+                normalized_text=normalized,
+                message="Could not verify that answer right now.",
+            )
         if not entity:
-            entity = resolve_and_cache_entity(db, lookup_text)
-        membership = evaluate_category_membership(db, category, entity)
+            entity = resolve_and_cache_entity(db, lookup_text, budget=budget)
+        membership = evaluate_category_membership(db, category, entity, budget=budget)
     except WikiEntityAmbiguous as exc:
         return MatchResult(status="ambiguous", normalized_text=normalized, message=str(exc))
     except WikiEntityNotFound:
+        remember_failed_live_verification(category_id, lookup_normalized)
         return MatchResult(status="invalid", normalized_text=normalized, message="That is not a valid answer for this category.")
     except WikiVerificationError as exc:
+        remember_failed_live_verification(category_id, lookup_normalized)
         return MatchResult(status="invalid", normalized_text=normalized, message=str(exc))
 
     if not membership.is_member:
         return MatchResult(status="invalid", normalized_text=normalized, message="That is not a valid answer for this category.")
 
-    element_id = upsert_category_element(db, category, entity)
+    element_id = upsert_category_element(db, category, entity, budget=budget)
     element = _element_row(db, element_id)
     canonical_name = element["canonical_name"] if element else entity.canonical_name
     return MatchResult(
