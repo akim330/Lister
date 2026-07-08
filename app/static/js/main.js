@@ -34,7 +34,21 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ client_uuid: getClientUuid(), username })
     });
-    if (!response.ok) throw new Error("Could not save user.");
+    if (!response.ok) {
+      // The API returns player-facing JSON errors for expected save failures
+      // like duplicate usernames. Reading that payload keeps the UI from
+      // replacing a useful message with the generic network failure fallback.
+      let message = "Could not save user.";
+      try {
+        const errorData = await response.json();
+        if (errorData.error) message = errorData.error;
+      } catch (error) {
+        // If the server ever replies with non-JSON error content, keep the
+        // original generic message so the save button still reports failure
+        // without surfacing a parsing exception to the player.
+      }
+      throw new Error(message);
+    }
     const data = await response.json();
     localStorage.setItem(USER_ID_KEY, data.client_uuid);
     setUsername(data.username);

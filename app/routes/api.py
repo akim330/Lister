@@ -48,10 +48,17 @@ def ensure_user(client_uuid: str | None, username: str | None):
     normalized_username = normalize_username_for_lookup(username)
     user = db.execute("SELECT * FROM users WHERE client_uuid = ?", (client_uuid,)).fetchone()
     owner = db.execute(
-        "SELECT id FROM users WHERE normalized_username = ?",
+        "SELECT * FROM users WHERE normalized_username = ?",
         (normalized_username,),
     ).fetchone()
-    if owner and (not user or int(owner["id"]) != int(user["id"])):
+    if owner and not user:
+        # Browser-local UUIDs can disappear when localStorage is cleared or a
+        # player opens the app in a fresh browser profile. Because this project
+        # does not have real accounts yet, let an otherwise unknown browser
+        # recover the existing local user by typing that exact username, then
+        # return the stored UUID so future requests use the same identity.
+        return owner
+    if owner and int(owner["id"]) != int(user["id"]):
         raise UsernameTakenError("That username is already taken.")
     if user:
         db.execute(
